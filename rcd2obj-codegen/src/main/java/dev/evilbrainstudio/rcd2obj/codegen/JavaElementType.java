@@ -55,6 +55,18 @@ public enum JavaElementType {
    * The end of the parameter definition.
    */
   PARAMETER_END,
+  /**
+   * The start of the modifier definition.
+   */
+  MODIFIER_BEGIN,
+  /**
+   * The keyword of the public modifier.
+   */
+  MODIFIER_PUBLIC_KEYWORD("public"),
+  /**
+   * The end of the modifier definition.
+   */
+  MODIFIER_END,
 
   IMPLEMENTS_BLOCK_BEGIN,
 
