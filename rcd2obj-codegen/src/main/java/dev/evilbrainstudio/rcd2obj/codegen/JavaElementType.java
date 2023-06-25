@@ -24,9 +24,13 @@ package dev.evilbrainstudio.rcd2obj.codegen;
  */
 public enum JavaElementType {
   /**
+   * The start of the package definition.
+   */
+  PACKAGE_BEGIN,
+  /**
    * The keyword of the Java package.
    */
-  PACKAGE_BEGIN("package"),
+  PACKAGE_KEYWORD("package"),
   /**
    * The name of the package.
    */
@@ -34,7 +38,53 @@ public enum JavaElementType {
   /**
    * The end of the package definition.
    */
-  PACKAGE_END(";");
+  PACKAGE_END(";"),
+  /**
+   * The start of the parameter definition.
+   */
+  PARAMETER_BEGIN,
+  /**
+   * Type of the parameter.
+   */
+  PARAMETER_TYPE,
+  /**
+   * Name of the parameter.
+   */
+  PARAMETER_NAME,
+  /**
+   * The end of the parameter definition.
+   */
+  PARAMETER_END,
+
+  IMPLEMENTS_BLOCK_BEGIN,
+
+  IMPLEMENTS_KEYWORD("implements"),
+
+  IMPLEMENTS_SEPARATOR(","),
+
+  IMPLEMENTS_BLOCK_END,
+
+  INHERITED_ELEMENT_BEGIN,
+
+  INHERITED_ELEMENT_TYPE,
+
+  INHERITED_ELEMENT_END,
+
+  GENERIC_PARAMS_BLOCK_BEGIN("<"),
+  GENERIC_PARAMS_SEPARATOR(","),
+  GENERIC_PARAMS_BLOCK_END(">"),
+
+  CLASS_DEFINITION_BLOCK_BEGIN,
+  CLASS_KEYWORD("class"),
+  CLASS_NAME,
+  CLASS_DEFINITION_BLOCK_END,
+
+  IMPORT_BLOCK_BEGIN,
+  IMPORT_BEGIN,
+  IMPORT_KEYWORD("import"),
+  IMPORT_TYPE,
+  IMPORT_END,
+  IMPORT_BLOCK_END;
 
   private final String value;
 
@@ -44,5 +94,14 @@ public enum JavaElementType {
 
   JavaElementType(String value) {
     this.value = value;
+  }
+
+  /**
+   * Returns value of the type.
+   *
+   * @return value of the type
+   */
+  public String getValue() {
+    return value;
   }
 }

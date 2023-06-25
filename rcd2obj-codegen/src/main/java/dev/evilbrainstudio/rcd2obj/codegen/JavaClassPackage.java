@@ -40,6 +40,7 @@ public class JavaClassPackage implements JavaElement {
   public void render(JavaElementRender target) {
     target
         .append(JavaElementType.PACKAGE_BEGIN)
+        .append(JavaElementType.PACKAGE_KEYWORD)
         .append(JavaElementType.PACKAGE_NAME, name)
         .append(JavaElementType.PACKAGE_END);
   }
