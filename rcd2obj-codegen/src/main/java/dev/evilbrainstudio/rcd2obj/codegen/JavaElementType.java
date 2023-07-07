@@ -52,6 +52,10 @@ public enum JavaElementType {
    */
   PARAMETER_NAME,
   /**
+   * Value of the parameter.
+   */
+  PARAMETER_VALUE,
+  /**
    * The end of the parameter definition.
    */
   PARAMETER_END,
@@ -67,6 +71,63 @@ public enum JavaElementType {
    * The end of the modifier definition.
    */
   MODIFIER_END,
+
+  THROW_BEGIN,
+  THROW_KEYWORD("throw"),
+  THROW_END,
+
+  NEW_BEGIN,
+  NEW_KEYWORD("new"),
+  NEW_TYPE,
+  NEW_TYPE_PARAMS_BLOCK_BEGIN("("),
+  NEW_TYPE_PARAMS_SEPARATOR(","),
+  NEW_TYPE_PARAMS_BLOCK_END(")"),
+  NEW_END(";"),
+
+  /**
+   * The start of the method definition.
+   */
+  METHOD_BEGIN,
+  /**
+   * The start of the method's access modifier definition.
+   */
+  METHOD_ACCESS_MODIFIER_BEGIN,
+  /**
+   * The end of the method's access modifier definition.
+   */
+  METHOD_ACCESS_MODIFIER_END,
+  /**
+   * Return type of the method.
+   */
+  METHOD_RETURN_TYPE,
+  /**
+   * Name of the method.
+   */
+  METHOD_NAME,
+  /**
+   * The start of the method parameters.
+   */
+  METHOD_PARAMS_BLOCK_BEGIN("("),
+  /**
+   * Separator of the method parameters.
+   */
+  METHOD_PARAMS_SEPARATOR(","),
+  /**
+   * The end of the method parameters.
+   */
+  METHOD_PARAMS_BLOCK_END(")"),
+  /**
+   * The start of the method implementation.
+   */
+  METHOD_IMPL_BLOCK_BEGIN("{"),
+  /**
+   * The end of the method implementation.
+   */
+  METHOD_IMPL_BLOCK_END("}"),
+  /**
+   * The end of the method definition.
+   */
+  METHOD_END,
 
   IMPLEMENTS_BLOCK_BEGIN,
 
@@ -96,7 +157,12 @@ public enum JavaElementType {
   IMPORT_KEYWORD("import"),
   IMPORT_TYPE,
   IMPORT_END,
-  IMPORT_BLOCK_END;
+  IMPORT_BLOCK_END,
+
+  /**
+   * Empty literal for testing only.
+   */
+  EMPTY_LITERAL;
 
   private final String value;
 
@@ -115,5 +181,12 @@ public enum JavaElementType {
    */
   public String getValue() {
     return value;
+  }
+
+  /**
+   *
+   */
+  public JavaElement toElement() {
+    return (target) -> target.append(this);
   }
 }
