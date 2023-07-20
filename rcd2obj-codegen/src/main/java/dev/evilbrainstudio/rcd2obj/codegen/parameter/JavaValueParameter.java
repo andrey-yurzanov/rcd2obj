@@ -20,16 +20,17 @@ import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 
 /**
- * Parameter of generics.
+ * The parameter with a value. Used with constructors and methods.
  *
  * @author Andrey_Yurzanov
- * @since 1.0
  */
-public class JavaGenericParameter extends JavaParameter {
+public class JavaValueParameter extends JavaParameter {
+  protected Object paramValue;
+
   /**
    * Constructs new instance of the parameter.
    */
-  public JavaGenericParameter() {
+  public JavaValueParameter() {
     super();
   }
 
@@ -39,35 +40,44 @@ public class JavaGenericParameter extends JavaParameter {
    * @param parameterOrder order of the parameter
    * @param parameterName  name of the parameter
    */
-  public JavaGenericParameter(Integer parameterOrder, String parameterName) {
+  public JavaValueParameter(Integer parameterOrder, String parameterName) {
     super(parameterOrder, parameterName);
   }
 
-  @Override
-  public JavaGenericParameter parameterOrder(Integer parameterOrder) {
-    super.parameterOrder(parameterOrder);
+  /**
+   * Sets value of the parameter.
+   *
+   * @param paramValue value of the parameter
+   * @return current instance
+   */
+  public JavaValueParameter paramValue(Object paramValue) {
+    this.paramValue = paramValue;
     return this;
   }
 
   @Override
-  public JavaGenericParameter parameterName(String parameterName) {
+  public JavaValueParameter parameterName(String parameterName) {
     super.parameterName(parameterName);
     return this;
   }
 
   @Override
-  public JavaGenericParameter parameterType(Class<?> parameterType) {
+  public JavaValueParameter parameterOrder(Integer parameterOrder) {
+    super.parameterOrder(parameterOrder);
+    return this;
+  }
+
+  @Override
+  public JavaValueParameter parameterType(Class<?> parameterType) {
     super.parameterType(parameterType);
     return this;
   }
 
   @Override
   public void render(JavaElementRender target) {
-    target.append(JavaElementType.PARAMETER_BEGIN);
-    if (parameterType != null) {
-      target.append(JavaElementType.PARAMETER_TYPE, parameterType);
-    }
-
-    target.append(JavaElementType.PARAMETER_END);
+    target
+        .append(JavaElementType.PARAMETER_BEGIN)
+        .append(JavaElementType.PARAMETER_VALUE, paramValue, parameterType)
+        .append(JavaElementType.PARAMETER_END);
   }
 }

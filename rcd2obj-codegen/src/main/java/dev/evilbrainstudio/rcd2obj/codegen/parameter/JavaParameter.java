@@ -33,9 +33,15 @@ public class JavaParameter implements JavaElement {
 
   /**
    * Constructs new instance of the parameter.
+   */
+  public JavaParameter() {
+  }
+
+  /**
+   * Constructs new instance of the parameter.
    *
    * @param parameterOrder order of the parameter
-   * @param parameterName name of the parameter
+   * @param parameterName  name of the parameter
    */
   public JavaParameter(Integer parameterOrder, String parameterName) {
     this.parameterOrder = parameterOrder;

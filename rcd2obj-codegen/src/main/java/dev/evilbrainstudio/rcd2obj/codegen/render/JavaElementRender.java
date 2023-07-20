@@ -98,12 +98,14 @@ public interface JavaElementRender {
    * @return current instance
    */
   default JavaElementRender append(JavaElementType type, Object value, Class<?> valueType) {
-    Map<Class<?>, JavaElementRender> renders = getTypeRenders();
-    for (Entry<Class<?>, JavaElementRender> entry : renders.entrySet()) {
-      Class<?> renderType = entry.getKey();
-      if (renderType.isAssignableFrom(valueType)) {
-        JavaElementRender render = entry.getValue();
-        return render.append(type, String.valueOf(value));
+    if (value != null) {
+      Map<Class<?>, JavaElementRender> renders = getTypeRenders();
+      for (Entry<Class<?>, JavaElementRender> entry : renders.entrySet()) {
+        Class<?> renderType = entry.getKey();
+        if (renderType.isAssignableFrom(valueType)) {
+          JavaElementRender render = entry.getValue();
+          return render.append(type, String.valueOf(value));
+        }
       }
     }
 
