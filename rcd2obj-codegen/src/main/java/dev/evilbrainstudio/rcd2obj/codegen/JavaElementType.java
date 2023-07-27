@@ -71,17 +71,45 @@ public enum JavaElementType {
    * The end of the modifier definition.
    */
   MODIFIER_END,
-
+  /**
+   * The start of the throw operator.
+   */
   THROW_BEGIN,
+  /**
+   * The keyword of the throw operator.
+   */
   THROW_KEYWORD("throw"),
+  /**
+   * The end of the throw operator.
+   */
   THROW_END,
-
+  /**
+   * The start of the new operator.
+   */
   NEW_BEGIN,
+  /**
+   * The keyword of the new operator.
+   */
   NEW_KEYWORD("new"),
+  /**
+   * The type of new instance.
+   */
   NEW_TYPE,
+  /**
+   * The start of type's constructor.
+   */
   NEW_TYPE_PARAMS_BLOCK_BEGIN("("),
+  /**
+   * The separator of type's constructor parameters.
+   */
   NEW_TYPE_PARAMS_SEPARATOR(","),
+  /**
+   * The end of type's constructor.
+   */
   NEW_TYPE_PARAMS_BLOCK_END(")"),
+  /**
+   * The end of the new operator.
+   */
   NEW_END(";"),
 
   /**

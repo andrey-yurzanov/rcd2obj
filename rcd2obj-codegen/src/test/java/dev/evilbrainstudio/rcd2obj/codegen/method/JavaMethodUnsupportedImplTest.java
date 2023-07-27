@@ -27,7 +27,8 @@ import org.junit.jupiter.api.Test;
  * @author Andrey_Yurzanov
  */
 class JavaMethodUnsupportedImplTest {
-  private static final String EXPECTED_VALUE = "{thrownewjava.lang.UnsupportedOperationException();}";
+  private static final String EXPECTED_VALUE =
+      "{thrownewjava.lang.UnsupportedOperationException();}";
 
   @Test
   void renderTest() {
