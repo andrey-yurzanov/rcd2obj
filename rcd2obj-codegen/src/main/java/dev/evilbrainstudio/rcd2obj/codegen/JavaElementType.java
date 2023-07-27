@@ -188,7 +188,7 @@ public enum JavaElementType {
   IMPORT_BLOCK_END,
 
   /**
-   * Empty literal for testing only.
+   * Empty literal.
    */
   EMPTY_LITERAL;
 

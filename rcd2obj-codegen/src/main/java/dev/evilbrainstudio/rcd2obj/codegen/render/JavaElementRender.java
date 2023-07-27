@@ -32,6 +32,11 @@ import java.util.Map.Entry;
  */
 public interface JavaElementRender {
   /**
+   * Java core package.
+   */
+  String LANG_PACKAGE_NAME = "java.lang";
+
+  /**
    * Appends the Java element to the render.
    *
    * @param type     element's type {@link JavaElementType}
@@ -48,6 +53,10 @@ public interface JavaElementRender {
    * @return current instance
    */
   default JavaElementRender append(JavaElementType type, Class<?> element) {
+    String packageName = element.getPackage().getName();
+    if (LANG_PACKAGE_NAME.equals(packageName)) {
+      return append(type, element.getSimpleName());
+    }
     return append(type, element.getCanonicalName());
   }
 
