@@ -20,6 +20,7 @@ import dev.evilbrainstudio.rcd2obj.codegen.JavaElement;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 
+import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Parameter;
 
 /**
@@ -32,6 +33,7 @@ public class JavaParameter implements JavaElement {
   protected Integer parameterOrder;
   protected String parameterName;
   protected Class<?> parameterType;
+  protected AnnotatedType annotatedType;
 
   /**
    * Constructs new instance of the parameter.
@@ -46,7 +48,7 @@ public class JavaParameter implements JavaElement {
    * @param parameter      parameter's meta information
    */
   public JavaParameter(Integer parameterOrder, Parameter parameter) {
-    this(parameterOrder, parameter.getName(), parameter.getType());
+    this(parameterOrder, parameter.getName(), parameter.getType(), parameter.getAnnotatedType());
   }
 
   /**
@@ -56,7 +58,7 @@ public class JavaParameter implements JavaElement {
    * @param parameterName  name of the parameter
    */
   public JavaParameter(Integer parameterOrder, String parameterName) {
-    this(parameterOrder, parameterName, Object.class);
+    this(parameterOrder, parameterName, Object.class, null);
   }
 
   /**
@@ -65,11 +67,18 @@ public class JavaParameter implements JavaElement {
    * @param parameterOrder order of the parameter
    * @param parameterName  name of the parameter
    * @param parameterType  type of the parameter
+   * @param annotatedType  annotated type of the parameter
    */
-  public JavaParameter(Integer parameterOrder, String parameterName, Class<?> parameterType) {
+  public JavaParameter(
+    Integer parameterOrder,
+    String parameterName,
+    Class<?> parameterType,
+    AnnotatedType annotatedType
+  ) {
     this.parameterOrder = parameterOrder;
     this.parameterName = parameterName;
     this.parameterType = parameterType;
+    this.annotatedType = annotatedType;
   }
 
   /**
@@ -130,6 +139,26 @@ public class JavaParameter implements JavaElement {
    */
   public Class<?> getParameterType() {
     return parameterType;
+  }
+
+  /**
+   * Sets annotated type of the parameter.
+   *
+   * @param annotatedType annotated type of the parameter
+   * @return current instance
+   */
+  public JavaParameter setAnnotatedType(AnnotatedType annotatedType) {
+    this.annotatedType = annotatedType;
+    return this;
+  }
+
+  /**
+   * Returns annotated type of the parameter.
+   *
+   * @return annotated type of the parameter
+   */
+  public AnnotatedType getAnnotatedType() {
+    return annotatedType;
   }
 
   @Override

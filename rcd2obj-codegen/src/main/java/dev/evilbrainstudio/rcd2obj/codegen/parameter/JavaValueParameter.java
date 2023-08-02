@@ -25,7 +25,7 @@ import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
  * @author Andrey_Yurzanov
  */
 public class JavaValueParameter extends JavaParameter {
-  protected Object paramValue;
+  protected Object parameterValue;
 
   /**
    * Constructs new instance of the parameter.
@@ -47,37 +47,46 @@ public class JavaValueParameter extends JavaParameter {
   /**
    * Sets value of the parameter.
    *
-   * @param paramValue value of the parameter
+   * @param parameterValue value of the parameter
    * @return current instance
    */
-  public JavaValueParameter paramValue(Object paramValue) {
-    this.paramValue = paramValue;
+  public JavaValueParameter setParameterValue(Object parameterValue) {
+    this.parameterValue = parameterValue;
+    return this;
+  }
+
+  /**
+   * Returns value of the parameter.
+   *
+   * @return value of the parameter
+   */
+  public Object getParameterValue() {
+    return parameterValue;
+  }
+
+  @Override
+  public JavaValueParameter setParameterName(String parameterName) {
+    super.setParameterName(parameterName);
     return this;
   }
 
   @Override
-  public JavaValueParameter parameterName(String parameterName) {
-    super.parameterName(parameterName);
+  public JavaValueParameter setParameterOrder(Integer parameterOrder) {
+    super.setParameterOrder(parameterOrder);
     return this;
   }
 
   @Override
-  public JavaValueParameter parameterOrder(Integer parameterOrder) {
-    super.parameterOrder(parameterOrder);
-    return this;
-  }
-
-  @Override
-  public JavaValueParameter parameterType(Class<?> parameterType) {
-    super.parameterType(parameterType);
+  public JavaValueParameter setParameterType(Class<?> parameterType) {
+    super.setParameterType(parameterType);
     return this;
   }
 
   @Override
   public void render(JavaElementRender target) {
     target
-        .append(JavaElementType.PARAMETER_BEGIN)
-        .append(JavaElementType.PARAMETER_VALUE, paramValue, parameterType)
-        .append(JavaElementType.PARAMETER_END);
+      .append(JavaElementType.PARAMETER_BEGIN)
+      .append(JavaElementType.PARAMETER_VALUE, parameterValue, parameterType)
+      .append(JavaElementType.PARAMETER_END);
   }
 }

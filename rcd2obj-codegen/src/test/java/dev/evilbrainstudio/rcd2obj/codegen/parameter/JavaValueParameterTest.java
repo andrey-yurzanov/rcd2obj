@@ -36,16 +36,16 @@ class JavaValueParameterTest {
   @Test
   void renderTest() {
     JavaValueParameter parameter = new JavaValueParameter()
-        .parameterName(NAME)
-        .parameterOrder(ORDER)
-        .parameterType(String.class);
+        .setParameterName(NAME)
+        .setParameterOrder(ORDER)
+        .setParameterType(String.class);
 
     StringWriter writer = new StringWriter();
     parameter.render(new JavaElementWriteRender(writer));
     Assertions.assertEquals(EXPECTED_WITHOUT_VALUE, writer.toString());
 
     writer = new StringWriter();
-    parameter.paramValue(VALUE).render(new JavaElementWriteRender(writer));
+    parameter.setParameterValue(VALUE).render(new JavaElementWriteRender(writer));
     Assertions.assertEquals(EXPECTED_WITH_VALUE, writer.toString());
   }
 }
