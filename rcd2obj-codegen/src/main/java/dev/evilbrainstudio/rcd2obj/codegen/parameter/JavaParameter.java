@@ -20,6 +20,8 @@ import dev.evilbrainstudio.rcd2obj.codegen.JavaElement;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 
+import java.lang.reflect.Parameter;
+
 /**
  * Parameter of constructor, method and something else.
  *
@@ -29,7 +31,7 @@ import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 public class JavaParameter implements JavaElement {
   protected Integer parameterOrder;
   protected String parameterName;
-  protected Class<?> parameterType = Object.class;
+  protected Class<?> parameterType;
 
   /**
    * Constructs new instance of the parameter.
@@ -41,11 +43,33 @@ public class JavaParameter implements JavaElement {
    * Constructs new instance of the parameter.
    *
    * @param parameterOrder order of the parameter
+   * @param parameter      parameter's meta information
+   */
+  public JavaParameter(Integer parameterOrder, Parameter parameter) {
+    this(parameterOrder, parameter.getName(), parameter.getType());
+  }
+
+  /**
+   * Constructs new instance of the parameter.
+   *
+   * @param parameterOrder order of the parameter
    * @param parameterName  name of the parameter
    */
   public JavaParameter(Integer parameterOrder, String parameterName) {
+    this(parameterOrder, parameterName, Object.class);
+  }
+
+  /**
+   * Constructs new instance of the parameter.
+   *
+   * @param parameterOrder order of the parameter
+   * @param parameterName  name of the parameter
+   * @param parameterType  type of the parameter
+   */
+  public JavaParameter(Integer parameterOrder, String parameterName, Class<?> parameterType) {
     this.parameterOrder = parameterOrder;
     this.parameterName = parameterName;
+    this.parameterType = parameterType;
   }
 
   /**
@@ -54,7 +78,7 @@ public class JavaParameter implements JavaElement {
    * @param parameterOrder new order of the parameter
    * @return current instance
    */
-  public JavaParameter parameterOrder(Integer parameterOrder) {
+  public JavaParameter setParameterOrder(Integer parameterOrder) {
     this.parameterOrder = parameterOrder;
     return this;
   }
@@ -64,7 +88,7 @@ public class JavaParameter implements JavaElement {
    *
    * @return order of the parameter
    */
-  public Integer parameterOrder() {
+  public Integer getParameterOrder() {
     return parameterOrder;
   }
 
@@ -74,7 +98,7 @@ public class JavaParameter implements JavaElement {
    * @param parameterName new name of the parameter
    * @return current instance
    */
-  public JavaParameter parameterName(String parameterName) {
+  public JavaParameter setParameterName(String parameterName) {
     this.parameterName = parameterName;
     return this;
   }
@@ -84,7 +108,7 @@ public class JavaParameter implements JavaElement {
    *
    * @return name of the parameter
    */
-  public String parameterName() {
+  public String getParameterName() {
     return parameterName;
   }
 
@@ -94,7 +118,7 @@ public class JavaParameter implements JavaElement {
    * @param parameterType new type of the parameter
    * @return current instance
    */
-  public JavaParameter parameterType(Class<?> parameterType) {
+  public JavaParameter setParameterType(Class<?> parameterType) {
     this.parameterType = parameterType;
     return this;
   }
@@ -104,7 +128,7 @@ public class JavaParameter implements JavaElement {
    *
    * @return type of the parameter
    */
-  public Class<?> parameterType() {
+  public Class<?> getParameterType() {
     return parameterType;
   }
 

@@ -19,11 +19,15 @@ package dev.evilbrainstudio.rcd2obj.codegen.method;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElement;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
 import dev.evilbrainstudio.rcd2obj.codegen.modifier.JavaModifier;
+import dev.evilbrainstudio.rcd2obj.codegen.modifier.JavaPublicModifier;
 import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaParameter;
 import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaParameterComparator;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
-import java.util.Set;
+import java.util.Collection;
 import java.util.TreeSet;
 
 /**
@@ -35,17 +39,60 @@ import java.util.TreeSet;
 public class JavaMethod implements JavaElement {
   private String methodName;
   private JavaModifier methodAccessModifier;
-  private Class<?> methodReturnType = void.class;
-  private Set<JavaParameter> methodParameters;
-  private JavaMethodImpl methodImpl = new JavaMethodUnsupportedImpl();
+  private Class<?> methodReturnType;
+  private Collection<JavaParameter> methodParameters;
+  private JavaMethodImpl methodImpl;
+
+  /**
+   * Constructs new instance of a method's generator.
+   */
+  public JavaMethod() {
+  }
 
   /**
    * Constructs new instance of a method's generator.
    *
-   * @param methodName name of the method
+   * @param method method's meta information
    */
-  public JavaMethod(String methodName) {
+  public JavaMethod(Method method) {
+    this(
+      method.getName(),
+      new JavaPublicModifier(),
+      method.getReturnType(),
+      null,
+      new JavaMethodUnsupportedImpl()
+    );
+
+    Parameter[] parameters = method.getParameters();
+    if (parameters.length > 0) {
+      this.methodParameters = new TreeSet<>(new JavaParameterComparator<>());
+      for (int i = 0; i < parameters.length; i++) {
+        this.methodParameters.add(new JavaParameter(i + 1, parameters[i]));
+      }
+    }
+  }
+
+  /**
+   * Constructs new instance of a method's generator.
+   *
+   * @param methodName           method's name
+   * @param methodAccessModifier method's access modifier
+   * @param methodReturnType     method's return type
+   * @param methodParameters     method's parameters
+   * @param methodImpl           method's implementation
+   */
+  public JavaMethod(
+    String methodName,
+    JavaModifier methodAccessModifier,
+    Class<?> methodReturnType,
+    Collection<JavaParameter> methodParameters,
+    JavaMethodImpl methodImpl
+  ) {
     this.methodName = methodName;
+    this.methodAccessModifier = methodAccessModifier;
+    this.methodReturnType = methodReturnType;
+    this.methodParameters = methodParameters;
+    this.methodImpl = methodImpl;
   }
 
   /**
@@ -54,7 +101,7 @@ public class JavaMethod implements JavaElement {
    * @param methodName name of the method
    * @return current method's instance
    */
-  public JavaMethod methodName(String methodName) {
+  public JavaMethod setMethodName(String methodName) {
     this.methodName = methodName;
     return this;
   }
@@ -64,7 +111,7 @@ public class JavaMethod implements JavaElement {
    *
    * @return method's name
    */
-  public String methodName() {
+  public String getMethodName() {
     return methodName;
   }
 
@@ -74,7 +121,7 @@ public class JavaMethod implements JavaElement {
    * @param methodAccessModifier method's access modfier
    * @return current method's instance
    */
-  public JavaMethod methodAccessModifier(JavaModifier methodAccessModifier) {
+  public JavaMethod setMethodAccessModifier(JavaModifier methodAccessModifier) {
     this.methodAccessModifier = methodAccessModifier;
     return this;
   }
@@ -84,7 +131,7 @@ public class JavaMethod implements JavaElement {
    *
    * @return method's access modifier
    */
-  public JavaModifier methodAccessModifier() {
+  public JavaModifier getMethodAccessModifier() {
     return methodAccessModifier;
   }
 
@@ -94,7 +141,7 @@ public class JavaMethod implements JavaElement {
    * @param methodReturnType method's return type
    * @return current method's instance
    */
-  public JavaMethod methodReturnType(Class<?> methodReturnType) {
+  public JavaMethod setMethodReturnType(Class<?> methodReturnType) {
     this.methodReturnType = methodReturnType;
     return this;
   }
@@ -104,7 +151,7 @@ public class JavaMethod implements JavaElement {
    *
    * @return method's return type
    */
-  public Class<?> methodReturnType() {
+  public Class<?> getMethodReturnType() {
     return methodReturnType;
   }
 
@@ -114,7 +161,7 @@ public class JavaMethod implements JavaElement {
    * @param methodParameters method's parameters
    * @return current method's instance
    */
-  public JavaMethod methodParameters(JavaParameter... methodParameters) {
+  public JavaMethod setMethodParameters(JavaParameter... methodParameters) {
     if (this.methodParameters == null) {
       this.methodParameters = new TreeSet<>(new JavaParameterComparator<>());
     }
@@ -128,7 +175,7 @@ public class JavaMethod implements JavaElement {
    *
    * @return method's parameters
    */
-  public Set<JavaParameter> methodParameters() {
+  public Collection<JavaParameter> getMethodParameters() {
     return methodParameters;
   }
 
@@ -138,7 +185,7 @@ public class JavaMethod implements JavaElement {
    * @param methodImpl method's implementation
    * @return current method's instance
    */
-  public JavaMethod methodImpl(JavaMethodImpl methodImpl) {
+  public JavaMethod setMethodImpl(JavaMethodImpl methodImpl) {
     this.methodImpl = methodImpl;
     return this;
   }
@@ -148,23 +195,23 @@ public class JavaMethod implements JavaElement {
    *
    * @return method's implementation
    */
-  public JavaMethodImpl methodImpl() {
+  public JavaMethodImpl getMethodImpl() {
     return methodImpl;
   }
 
   @Override
   public void render(JavaElementRender target) {
     target
-        .append(JavaElementType.METHOD_BEGIN)
-        .append(JavaElementType.METHOD_ACCESS_MODIFIER_BEGIN)
-        .append(methodAccessModifier)
-        .append(JavaElementType.METHOD_ACCESS_MODIFIER_END)
-        .append(JavaElementType.METHOD_RETURN_TYPE, methodReturnType)
-        .append(JavaElementType.METHOD_NAME, methodName)
-        .append(JavaElementType.METHOD_PARAMS_BLOCK_BEGIN)
-        .append(methodParameters, JavaElementType.METHOD_PARAMS_SEPARATOR.toElement())
-        .append(JavaElementType.METHOD_PARAMS_BLOCK_END)
-        .append(methodImpl)
-        .append(JavaElementType.METHOD_END);
+      .append(JavaElementType.METHOD_BEGIN)
+      .append(JavaElementType.METHOD_ACCESS_MODIFIER_BEGIN)
+      .append(methodAccessModifier)
+      .append(JavaElementType.METHOD_ACCESS_MODIFIER_END)
+      .append(JavaElementType.METHOD_RETURN_TYPE, methodReturnType)
+      .append(JavaElementType.METHOD_NAME, methodName)
+      .append(JavaElementType.METHOD_PARAMS_BLOCK_BEGIN)
+      .append(methodParameters, JavaElementType.METHOD_PARAMS_SEPARATOR.toElement())
+      .append(JavaElementType.METHOD_PARAMS_BLOCK_END)
+      .append(methodImpl)
+      .append(JavaElementType.METHOD_END);
   }
 }

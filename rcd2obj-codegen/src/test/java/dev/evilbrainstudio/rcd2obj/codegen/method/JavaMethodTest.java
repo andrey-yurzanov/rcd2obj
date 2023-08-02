@@ -18,7 +18,9 @@ package dev.evilbrainstudio.rcd2obj.codegen.method;
 
 import dev.evilbrainstudio.rcd2obj.codegen.modifier.JavaPublicModifier;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
+
 import java.io.StringWriter;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -30,18 +32,23 @@ import org.junit.jupiter.api.Test;
 class JavaMethodTest {
   private static final String METHOD_NAME = "renderTest";
   private static final String EXPECTED_VALUE =
-      "voidrenderTest(){thrownewjava.lang.UnsupportedOperationException();}";
+    "voidrenderTest(){thrownewUnsupportedOperationException();}";
   private static final String EXPECTED_VALUE_WITH_RETURN =
-      "java.lang.StringrenderTest(){thrownewjava.lang.UnsupportedOperationException();}";
+    "StringrenderTest(){thrownewUnsupportedOperationException();}";
   private static final String EXPECTED_VALUE_WITH_ACCESS_MODIFIER =
-      "publicjava.lang.StringrenderTest(){thrownewjava.lang.UnsupportedOperationException();}";
+    "publicStringrenderTest(){thrownewUnsupportedOperationException();}";
+  private static final String EXPECTED_VALUE_BY_METHOD =
+    "publicintcompareTo(Objectarg0){thrownewUnsupportedOperationException();}";
 
   @Test
   void renderTest() {
     StringWriter writer = new StringWriter();
 
-    JavaMethod method = new JavaMethod(METHOD_NAME);
-    method.render(new JavaElementWriteRender(writer));
+    new JavaMethod()
+      .setMethodName(METHOD_NAME)
+      .setMethodReturnType(void.class)
+      .setMethodImpl(new JavaMethodUnsupportedImpl())
+      .render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(EXPECTED_VALUE, writer.toString());
   }
@@ -50,9 +57,11 @@ class JavaMethodTest {
   void renderWithReturnTest() {
     StringWriter writer = new StringWriter();
 
-    JavaMethod method = new JavaMethod(METHOD_NAME);
-    method.methodReturnType(String.class);
-    method.render(new JavaElementWriteRender(writer));
+    new JavaMethod()
+      .setMethodName(METHOD_NAME)
+      .setMethodReturnType(String.class)
+      .setMethodImpl(new JavaMethodUnsupportedImpl())
+      .render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(EXPECTED_VALUE_WITH_RETURN, writer.toString());
   }
@@ -61,11 +70,23 @@ class JavaMethodTest {
   void renderWithAccessModifierTest() {
     StringWriter writer = new StringWriter();
 
-    JavaMethod method = new JavaMethod(METHOD_NAME);
-    method.methodReturnType(String.class);
-    method.methodAccessModifier(new JavaPublicModifier());
-    method.render(new JavaElementWriteRender(writer));
+    new JavaMethod()
+      .setMethodName(METHOD_NAME)
+      .setMethodReturnType(String.class)
+      .setMethodAccessModifier(new JavaPublicModifier())
+      .setMethodImpl(new JavaMethodUnsupportedImpl())
+      .render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(EXPECTED_VALUE_WITH_ACCESS_MODIFIER, writer.toString());
+  }
+
+  @Test
+  void renderByMethodTest() {
+    StringWriter writer = new StringWriter();
+
+    new JavaMethod(Comparable.class.getDeclaredMethods()[0])
+      .render(new JavaElementWriteRender(writer));
+
+    Assertions.assertEquals(EXPECTED_VALUE_BY_METHOD, writer.toString());
   }
 }

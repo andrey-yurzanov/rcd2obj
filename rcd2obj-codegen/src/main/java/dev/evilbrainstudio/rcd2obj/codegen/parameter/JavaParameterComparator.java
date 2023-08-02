@@ -26,6 +26,6 @@ import java.util.Comparator;
 public class JavaParameterComparator<T extends JavaParameter> implements Comparator<T> {
   @Override
   public int compare(T first, T second) {
-    return Integer.compare(first.parameterOrder(), second.parameterOrder());
+    return Integer.compare(first.getParameterOrder(), second.getParameterOrder());
   }
 }

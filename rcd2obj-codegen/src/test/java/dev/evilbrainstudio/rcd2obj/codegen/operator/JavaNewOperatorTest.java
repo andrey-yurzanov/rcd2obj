@@ -46,8 +46,8 @@ class JavaNewOperatorTest {
     JavaNewOperator operator = new JavaNewOperator(UnsupportedOperationException.class);
     operator.newParameters(
         new JavaValueParameter(1, "message")
-            .paramValue("message")
-            .parameterType(String.class)
+            .setParameterValue("message")
+            .setParameterType(String.class)
     );
 
     StringWriter writer = new StringWriter();

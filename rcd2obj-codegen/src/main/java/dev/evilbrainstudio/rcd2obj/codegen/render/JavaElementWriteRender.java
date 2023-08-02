@@ -17,6 +17,7 @@
 package dev.evilbrainstudio.rcd2obj.codegen.render;
 
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
+
 import java.io.IOException;
 import java.io.Writer;
 

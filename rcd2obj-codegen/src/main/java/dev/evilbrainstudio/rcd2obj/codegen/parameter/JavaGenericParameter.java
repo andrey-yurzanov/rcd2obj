@@ -44,20 +44,20 @@ public class JavaGenericParameter extends JavaParameter {
   }
 
   @Override
-  public JavaGenericParameter parameterOrder(Integer parameterOrder) {
-    super.parameterOrder(parameterOrder);
+  public JavaGenericParameter setParameterOrder(Integer parameterOrder) {
+    super.setParameterOrder(parameterOrder);
     return this;
   }
 
   @Override
-  public JavaGenericParameter parameterName(String parameterName) {
-    super.parameterName(parameterName);
+  public JavaGenericParameter setParameterName(String parameterName) {
+    super.setParameterName(parameterName);
     return this;
   }
 
   @Override
-  public JavaGenericParameter parameterType(Class<?> parameterType) {
-    super.parameterType(parameterType);
+  public JavaGenericParameter setParameterType(Class<?> parameterType) {
+    super.setParameterType(parameterType);
     return this;
   }
 

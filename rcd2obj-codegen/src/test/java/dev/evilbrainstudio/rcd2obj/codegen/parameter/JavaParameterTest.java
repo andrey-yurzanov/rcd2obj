@@ -35,15 +35,15 @@ class JavaParameterTest {
   @Test
   void render() {
     JavaParameter parameter = new JavaParameter()
-        .parameterName(NAME)
-        .parameterOrder(ORDER);
+        .setParameterName(NAME)
+        .setParameterOrder(ORDER);
 
     StringWriter writer = new StringWriter();
     parameter.render(new JavaElementWriteRender(writer));
     Assertions.assertEquals(EXPECTED_WITHOUT_TYPE, writer.toString());
 
     writer = new StringWriter();
-    parameter.parameterType(String.class).render(new JavaElementWriteRender(writer));
+    parameter.setParameterType(String.class).render(new JavaElementWriteRender(writer));
     Assertions.assertEquals(EXPECTED_WITH_TYPE, writer.toString());
   }
 }

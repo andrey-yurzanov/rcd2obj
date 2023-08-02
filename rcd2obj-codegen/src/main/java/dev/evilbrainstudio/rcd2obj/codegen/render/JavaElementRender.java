@@ -18,6 +18,7 @@ package dev.evilbrainstudio.rcd2obj.codegen.render;
 
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElement;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -53,8 +54,8 @@ public interface JavaElementRender {
    * @return current instance
    */
   default JavaElementRender append(JavaElementType type, Class<?> element) {
-    String packageName = element.getPackage().getName();
-    if (LANG_PACKAGE_NAME.equals(packageName)) {
+    Package elementPackage = element.getPackage();
+    if (elementPackage == null || LANG_PACKAGE_NAME.equals(elementPackage.getName())) {
       return append(type, element.getSimpleName());
     }
     return append(type, element.getCanonicalName());
@@ -81,14 +82,13 @@ public interface JavaElementRender {
    *                  element
    * @return current instance
    */
-  default JavaElementRender append(Collection<? extends JavaElement> elements,
-      JavaElement separator) {
+  default JavaElementRender append(Collection<? extends JavaElement> elements, JavaElement separator) {
     if (elements != null && !elements.isEmpty()) {
       Iterator<? extends JavaElement> iterator = elements.iterator();
       while (iterator.hasNext()) {
         iterator
-            .next()
-            .render(this);
+          .next()
+          .render(this);
 
         if (iterator.hasNext() && separator != null) {
           separator.render(this);
