@@ -16,6 +16,7 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.method;
 
+import dev.evilbrainstudio.rcd2obj.codegen.JavaGenericType;
 import dev.evilbrainstudio.rcd2obj.codegen.modifier.JavaPublicModifier;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
 
@@ -46,7 +47,7 @@ class JavaMethodTest {
 
     new JavaMethod()
       .setMethodName(METHOD_NAME)
-      .setMethodReturnType(void.class)
+      .setMethodReturnType(new JavaGenericType(void.class))
       .setMethodImpl(new JavaMethodUnsupportedImpl())
       .render(new JavaElementWriteRender(writer));
 
@@ -59,7 +60,7 @@ class JavaMethodTest {
 
     new JavaMethod()
       .setMethodName(METHOD_NAME)
-      .setMethodReturnType(String.class)
+      .setMethodReturnType(new JavaGenericType(String.class))
       .setMethodImpl(new JavaMethodUnsupportedImpl())
       .render(new JavaElementWriteRender(writer));
 
@@ -72,7 +73,7 @@ class JavaMethodTest {
 
     new JavaMethod()
       .setMethodName(METHOD_NAME)
-      .setMethodReturnType(String.class)
+      .setMethodReturnType(new JavaGenericType(String.class))
       .setMethodAccessModifier(new JavaPublicModifier())
       .setMethodImpl(new JavaMethodUnsupportedImpl())
       .render(new JavaElementWriteRender(writer));

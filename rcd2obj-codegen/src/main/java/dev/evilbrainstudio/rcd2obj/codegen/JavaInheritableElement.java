@@ -17,16 +17,20 @@
 package dev.evilbrainstudio.rcd2obj.codegen;
 
 import dev.evilbrainstudio.rcd2obj.codegen.method.JavaMethod;
-import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaGenericParameter;
 import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaParameter;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 
-import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Base inheritable element of Java language. Can be the class or the interface.
@@ -34,9 +38,9 @@ import java.util.*;
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaInheritableElement implements JavaElement {
+public class JavaInheritableElement implements JavaElement, JavaGenericTarget {
   private final Class<?> type;
-  private final Map<String, JavaGenericParameter> genericTypes;
+  private final Map<String, JavaParameter> genericTypes;
 
   /**
    * Constructs new instance.
@@ -50,7 +54,10 @@ public class JavaInheritableElement implements JavaElement {
     TypeVariable<? extends Class<?>>[] types = type.getTypeParameters();
     for (int i = 0; i < types.length; i++) {
       String typeName = types[i].getTypeName();
-      genericTypes.put(typeName, new JavaGenericParameter(i, typeName));
+      genericTypes.put(
+        typeName,
+        new JavaParameter(i, null, new JavaGenericType(Object.class, typeName))
+      );
     }
   }
 
@@ -60,8 +67,12 @@ public class JavaInheritableElement implements JavaElement {
    * @param typeName name of the type
    * @return generic type
    */
-  public JavaGenericParameter getGenericType(String typeName) {
-    return genericTypes.get(typeName);
+  public Collection<JavaGenericType> getGenericType(String typeName) {
+    JavaParameter parameter = genericTypes.get(typeName);
+    if (parameter != null) {
+      return Collections.singletonList(parameter.getParameterType());
+    }
+    return Collections.emptyList();
   }
 
   /**
@@ -94,14 +105,12 @@ public class JavaInheritableElement implements JavaElement {
       for (Method method : type.getMethods()) {
         if (!isDefinedInObject(method) && canOverride(method)) {
           JavaMethod javaMethod = new JavaMethod(method);
-          for (JavaParameter parameter : javaMethod.getMethodParameters()) {
-            AnnotatedType annotatedType = parameter.getAnnotatedType();
-            if (annotatedType != null) {
-              Type typeValue = annotatedType.getType();
-              JavaGenericParameter genericParameter = genericTypes.get(typeValue.getTypeName());
-              if (genericParameter != null) {
-                parameter.setParameterType(genericParameter.getParameterType());
-              }
+
+          for (Map.Entry<String, JavaParameter> entry : genericTypes.entrySet()) {
+            Collection<JavaGenericType> types = javaMethod.getGenericType(entry.getKey());
+            for (JavaGenericType type : types) {
+              JavaGenericType parameterType = entry.getValue().getParameterType();
+              type.setType(parameterType.getType());
             }
           }
           methods.add(javaMethod);
@@ -121,7 +130,7 @@ public class JavaInheritableElement implements JavaElement {
     if (!genericTypes.isEmpty()) {
       target.append(JavaElementType.GENERIC_PARAMS_BLOCK_BEGIN);
 
-      Iterator<JavaGenericParameter> iterator = genericTypes.values().iterator();
+      Iterator<JavaParameter> iterator = genericTypes.values().iterator();
       while (iterator.hasNext()) {
         iterator
           .next()

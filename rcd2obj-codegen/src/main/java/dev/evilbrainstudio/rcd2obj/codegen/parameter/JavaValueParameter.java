@@ -17,6 +17,7 @@
 package dev.evilbrainstudio.rcd2obj.codegen.parameter;
 
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
+import dev.evilbrainstudio.rcd2obj.codegen.JavaGenericType;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 
 /**
@@ -77,7 +78,7 @@ public class JavaValueParameter extends JavaParameter {
   }
 
   @Override
-  public JavaValueParameter setParameterType(Class<?> parameterType) {
+  public JavaValueParameter setParameterType(JavaGenericType parameterType) {
     super.setParameterType(parameterType);
     return this;
   }
@@ -86,7 +87,7 @@ public class JavaValueParameter extends JavaParameter {
   public void render(JavaElementRender target) {
     target
       .append(JavaElementType.PARAMETER_BEGIN)
-      .append(JavaElementType.PARAMETER_VALUE, parameterValue, parameterType)
+      .append(JavaElementType.PARAMETER_VALUE, parameterValue, parameterType.getType())
       .append(JavaElementType.PARAMETER_END);
   }
 }

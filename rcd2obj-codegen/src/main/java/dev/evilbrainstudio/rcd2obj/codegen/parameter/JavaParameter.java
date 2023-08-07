@@ -18,10 +18,14 @@ package dev.evilbrainstudio.rcd2obj.codegen.parameter;
 
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElement;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
+import dev.evilbrainstudio.rcd2obj.codegen.JavaGenericTarget;
+import dev.evilbrainstudio.rcd2obj.codegen.JavaGenericType;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 
-import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Parameter;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Objects;
 
 /**
  * Parameter of constructor, method and something else.
@@ -29,16 +33,16 @@ import java.lang.reflect.Parameter;
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaParameter implements JavaElement {
+public class JavaParameter implements JavaElement, JavaGenericTarget {
   protected Integer parameterOrder;
   protected String parameterName;
-  protected Class<?> parameterType;
-  protected AnnotatedType annotatedType;
+  protected JavaGenericType parameterType;
 
   /**
    * Constructs new instance of the parameter.
    */
   public JavaParameter() {
+    this(null, null, new JavaGenericType(Object.class));
   }
 
   /**
@@ -48,7 +52,14 @@ public class JavaParameter implements JavaElement {
    * @param parameter      parameter's meta information
    */
   public JavaParameter(Integer parameterOrder, Parameter parameter) {
-    this(parameterOrder, parameter.getName(), parameter.getType(), parameter.getAnnotatedType());
+    this(
+      parameterOrder,
+      parameter.getName(),
+      new JavaGenericType(
+        parameter.getType(),
+        parameter.getAnnotatedType()
+      )
+    );
   }
 
   /**
@@ -58,7 +69,11 @@ public class JavaParameter implements JavaElement {
    * @param parameterName  name of the parameter
    */
   public JavaParameter(Integer parameterOrder, String parameterName) {
-    this(parameterOrder, parameterName, Object.class, null);
+    this(
+      parameterOrder,
+      parameterName,
+      new JavaGenericType(Object.class)
+    );
   }
 
   /**
@@ -67,18 +82,15 @@ public class JavaParameter implements JavaElement {
    * @param parameterOrder order of the parameter
    * @param parameterName  name of the parameter
    * @param parameterType  type of the parameter
-   * @param annotatedType  annotated type of the parameter
    */
   public JavaParameter(
     Integer parameterOrder,
     String parameterName,
-    Class<?> parameterType,
-    AnnotatedType annotatedType
+    JavaGenericType parameterType
   ) {
     this.parameterOrder = parameterOrder;
     this.parameterName = parameterName;
     this.parameterType = parameterType;
-    this.annotatedType = annotatedType;
   }
 
   /**
@@ -127,7 +139,7 @@ public class JavaParameter implements JavaElement {
    * @param parameterType new type of the parameter
    * @return current instance
    */
-  public JavaParameter setParameterType(Class<?> parameterType) {
+  public JavaParameter setParameterType(JavaGenericType parameterType) {
     this.parameterType = parameterType;
     return this;
   }
@@ -137,35 +149,23 @@ public class JavaParameter implements JavaElement {
    *
    * @return type of the parameter
    */
-  public Class<?> getParameterType() {
+  public JavaGenericType getParameterType() {
     return parameterType;
   }
 
-  /**
-   * Sets annotated type of the parameter.
-   *
-   * @param annotatedType annotated type of the parameter
-   * @return current instance
-   */
-  public JavaParameter setAnnotatedType(AnnotatedType annotatedType) {
-    this.annotatedType = annotatedType;
-    return this;
-  }
-
-  /**
-   * Returns annotated type of the parameter.
-   *
-   * @return annotated type of the parameter
-   */
-  public AnnotatedType getAnnotatedType() {
-    return annotatedType;
+  @Override
+  public Collection<JavaGenericType> getGenericType(String name) {
+    if (Objects.equals(name, parameterType.getGenericTypeName())) {
+      return Collections.singletonList(parameterType);
+    }
+    return Collections.emptyList();
   }
 
   @Override
   public void render(JavaElementRender target) {
     target.append(JavaElementType.PARAMETER_BEGIN);
     if (parameterType != null) {
-      target.append(JavaElementType.PARAMETER_TYPE, parameterType);
+      target.append(JavaElementType.PARAMETER_TYPE, parameterType.getType());
     }
 
     if (parameterName != null) {

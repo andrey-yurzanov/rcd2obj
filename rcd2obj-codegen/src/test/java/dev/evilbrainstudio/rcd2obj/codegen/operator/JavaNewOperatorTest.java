@@ -16,6 +16,7 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.operator;
 
+import dev.evilbrainstudio.rcd2obj.codegen.JavaGenericType;
 import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaValueParameter;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
 import java.io.StringWriter;
@@ -28,9 +29,9 @@ import org.junit.jupiter.api.Test;
  * @author Andrey_Yurzanov
  */
 class JavaNewOperatorTest {
-  private static final String RESULT = "newjava.lang.UnsupportedOperationException();";
+  private static final String RESULT = "newUnsupportedOperationException();";
   private static final String RESULT_WITH_PARAMS =
-      "newjava.lang.UnsupportedOperationException(\"message\");";
+      "newUnsupportedOperationException(\"message\");";
 
   @Test
   void renderTest() {
@@ -47,7 +48,7 @@ class JavaNewOperatorTest {
     operator.newParameters(
         new JavaValueParameter(1, "message")
             .setParameterValue("message")
-            .setParameterType(String.class)
+            .setParameterType(new JavaGenericType(String.class))
     );
 
     StringWriter writer = new StringWriter();

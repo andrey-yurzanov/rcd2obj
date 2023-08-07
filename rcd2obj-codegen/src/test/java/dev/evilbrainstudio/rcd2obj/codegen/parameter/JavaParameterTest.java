@@ -16,6 +16,7 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.parameter;
 
+import dev.evilbrainstudio.rcd2obj.codegen.JavaGenericType;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
 import java.io.StringWriter;
 import org.junit.jupiter.api.Assertions;
@@ -29,8 +30,8 @@ import org.junit.jupiter.api.Test;
 class JavaParameterTest {
   private static final int ORDER = 1;
   private static final String NAME = "testParameter";
-  private static final String EXPECTED_WITHOUT_TYPE = "java.lang.ObjecttestParameter";
-  private static final String EXPECTED_WITH_TYPE = "java.lang.StringtestParameter";
+  private static final String EXPECTED_WITHOUT_TYPE = "ObjecttestParameter";
+  private static final String EXPECTED_WITH_TYPE = "StringtestParameter";
 
   @Test
   void render() {
@@ -43,7 +44,7 @@ class JavaParameterTest {
     Assertions.assertEquals(EXPECTED_WITHOUT_TYPE, writer.toString());
 
     writer = new StringWriter();
-    parameter.setParameterType(String.class).render(new JavaElementWriteRender(writer));
+    parameter.setParameterType(new JavaGenericType(String.class)).render(new JavaElementWriteRender(writer));
     Assertions.assertEquals(EXPECTED_WITH_TYPE, writer.toString());
   }
 }
