@@ -171,20 +171,36 @@ public enum JavaElementType {
 
   INHERITED_ELEMENT_END,
 
-  GENERIC_PARAMS_BLOCK_BEGIN("<"),
-  GENERIC_PARAMS_SEPARATOR(","),
-  GENERIC_PARAMS_BLOCK_END(">"),
-
   CLASS_DEFINITION_BLOCK_BEGIN,
   CLASS_KEYWORD("class"),
   CLASS_NAME,
+  CLASS_BODY_BEGIN("{"),
+  CLASS_BODY_END("}"),
   CLASS_DEFINITION_BLOCK_END,
 
+  /**
+   * The start of imports.
+   */
   IMPORT_BLOCK_BEGIN,
+  /**
+   * The start of import's operator.
+   */
   IMPORT_BEGIN,
+  /**
+   * The import's keyword.
+   */
   IMPORT_KEYWORD("import"),
+  /**
+   * The type of the import's operator.
+   */
   IMPORT_TYPE,
-  IMPORT_END,
+  /**
+   * The end of import's operator.
+   */
+  IMPORT_END(";"),
+  /**
+   * The end of imports.
+   */
   IMPORT_BLOCK_END,
 
   /**
