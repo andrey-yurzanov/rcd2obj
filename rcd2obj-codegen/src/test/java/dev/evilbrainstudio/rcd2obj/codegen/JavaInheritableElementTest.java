@@ -25,7 +25,6 @@ import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.function.Function;
 
 /**
  * Tests of the inherited element.
@@ -33,56 +32,35 @@ import java.util.function.Function;
  * @author Andrey_Yurzanov
  */
 class JavaInheritableElementTest {
-  private static final String GET_GENERIC_TYPE_EXPECTED = "java.util.Comparator<String>";
-  private static final String GET_GENERIC_TYPE_EMPTY_TYPE_EXPECTED = "java.util.Comparator<Object>";
-  private static final String GET_GENERIC_TYPE_NO_PARAMS_EXPECTED = "java.io.Serializable";
-  private static final String GET_INHERITED_METHOD_EXPECTED =
-    "publicintcompare(Stringarg0,Stringarg1){thrownewUnsupportedOperationException();}";
-  private static final String GET_INHERITED_METHOD_WITH_RETURN_EXPECTED =
-    "publicIntegerapply(Stringarg0){thrownewUnsupportedOperationException();}";
-  private static final String GET_INHERITED_METHOD_WITH_RETURN_DEFAULT_EXPECTED =
-    "publicObjectapply(Stringarg0){thrownewUnsupportedOperationException();}";
+  private static final String INHERITABLE_EXPECTED = "java.util.Comparator";
+  private static final String INHERITABLE_EMPTY_EXPECTED = "java.io.Serializable";
+  private static final String INHERITED_METHOD_EXPECTED =
+    "publicintcompare(Objectarg0,Objectarg1){thrownewUnsupportedOperationException();}";
   private static final int INHERITED_METHODS_SIZE_EXPECTED = 1;
 
   @Test
-  void getGenericTypeTest() {
-    JavaInheritableElement element = new JavaInheritableElement(Comparator.class);
-    element
-      .getGenericType("T")
-      .forEach(param -> param.setType(String.class));
-
-    StringWriter writer = new StringWriter();
-    element.render(new JavaElementWriteRender(writer));
-
-    Assertions.assertEquals(GET_GENERIC_TYPE_EXPECTED, writer.toString());
-  }
-
-  @Test
-  void getGenericTypeEmptyTypeTest() {
+  void renderTest() {
     JavaInheritableElement element = new JavaInheritableElement(Comparator.class);
 
     StringWriter writer = new StringWriter();
     element.render(new JavaElementWriteRender(writer));
 
-    Assertions.assertEquals(GET_GENERIC_TYPE_EMPTY_TYPE_EXPECTED, writer.toString());
+    Assertions.assertEquals(INHERITABLE_EXPECTED, writer.toString());
   }
 
   @Test
-  void getGenericTypeNoParamsTest() {
+  void renderEmptyTest() {
     JavaInheritableElement element = new JavaInheritableElement(Serializable.class);
 
     StringWriter writer = new StringWriter();
     element.render(new JavaElementWriteRender(writer));
 
-    Assertions.assertEquals(GET_GENERIC_TYPE_NO_PARAMS_EXPECTED, writer.toString());
+    Assertions.assertEquals(INHERITABLE_EMPTY_EXPECTED, writer.toString());
   }
 
   @Test
-  void getInheritedMethodsTest() {
+  void renderMethodsTest() {
     JavaInheritableElement element = new JavaInheritableElement(Comparator.class);
-    element
-      .getGenericType("T")
-      .forEach(param -> param.setType(String.class));
 
     Collection<JavaMethod> methods = element.getInheritedMethods();
     Assertions.assertEquals(INHERITED_METHODS_SIZE_EXPECTED, methods.size());
@@ -94,60 +72,14 @@ class JavaInheritableElementTest {
       .get()
       .render(new JavaElementWriteRender(writer));
 
-    Assertions.assertEquals(GET_INHERITED_METHOD_EXPECTED, writer.toString());
+    Assertions.assertEquals(INHERITED_METHOD_EXPECTED, writer.toString());
   }
 
   @Test
-  void getInheritedMethodsEmptyTest() {
+  void renderEmptyMethodsTest() {
     JavaInheritableElement element = new JavaInheritableElement(Serializable.class);
 
     Collection<JavaMethod> methods = element.getInheritedMethods();
     Assertions.assertTrue(methods.isEmpty());
-  }
-
-  @Test
-  void getInheritedMethodsWithReturnDefaultTest() {
-    JavaInheritableElement element = new JavaInheritableElement(Function.class);
-
-    element
-      .getGenericType("T")
-      .forEach(param -> param.setType(String.class));
-
-    Collection<JavaMethod> methods = element.getInheritedMethods();
-    Assertions.assertEquals(INHERITED_METHODS_SIZE_EXPECTED, methods.size());
-
-    StringWriter writer = new StringWriter();
-    methods
-      .stream()
-      .findFirst()
-      .get()
-      .render(new JavaElementWriteRender(writer));
-
-    Assertions.assertEquals(GET_INHERITED_METHOD_WITH_RETURN_DEFAULT_EXPECTED, writer.toString());
-  }
-
-  @Test
-  void getInheritedMethodsWithReturnTest() {
-    JavaInheritableElement element = new JavaInheritableElement(Function.class);
-
-    element
-      .getGenericType("T")
-      .forEach(param -> param.setType(String.class));
-
-    element
-      .getGenericType("R")
-      .forEach(param -> param.setType(Integer.class));
-
-    Collection<JavaMethod> methods = element.getInheritedMethods();
-    Assertions.assertEquals(INHERITED_METHODS_SIZE_EXPECTED, methods.size());
-
-    StringWriter writer = new StringWriter();
-    methods
-      .stream()
-      .findFirst()
-      .get()
-      .render(new JavaElementWriteRender(writer));
-
-    Assertions.assertEquals(GET_INHERITED_METHOD_WITH_RETURN_EXPECTED, writer.toString());
   }
 }

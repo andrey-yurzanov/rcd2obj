@@ -14,21 +14,15 @@
  *    limitations under the License.
  */
 
-package dev.evilbrainstudio.rcd2obj.codegen;
+package dev.evilbrainstudio.rcd2obj.codegen.type;
 
-import java.util.Collection;
+import dev.evilbrainstudio.rcd2obj.codegen.JavaElement;
 
 /**
- * Base abstraction indicating that the element works with generics.
+ * The base abstraction of Java type.
  *
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public interface JavaGenericTarget {
-  /**
-   * Returns generic types by name of the type.
-   *
-   * @return generic types
-   */
-  Collection<JavaGenericType> getGenericType(String name);
+public interface JavaType extends JavaElement {
 }

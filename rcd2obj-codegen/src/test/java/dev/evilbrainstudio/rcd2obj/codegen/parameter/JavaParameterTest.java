@@ -16,9 +16,10 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.parameter;
 
-import dev.evilbrainstudio.rcd2obj.codegen.JavaGenericType;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
 import java.io.StringWriter;
+
+import dev.evilbrainstudio.rcd2obj.codegen.type.JavaExplicitType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +45,7 @@ class JavaParameterTest {
     Assertions.assertEquals(EXPECTED_WITHOUT_TYPE, writer.toString());
 
     writer = new StringWriter();
-    parameter.setParameterType(new JavaGenericType(String.class)).render(new JavaElementWriteRender(writer));
+    parameter.setParameterType(new JavaExplicitType(String.class)).render(new JavaElementWriteRender(writer));
     Assertions.assertEquals(EXPECTED_WITH_TYPE, writer.toString());
   }
 }

@@ -18,14 +18,11 @@ package dev.evilbrainstudio.rcd2obj.codegen.parameter;
 
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElement;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
-import dev.evilbrainstudio.rcd2obj.codegen.JavaGenericTarget;
-import dev.evilbrainstudio.rcd2obj.codegen.JavaGenericType;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
+import dev.evilbrainstudio.rcd2obj.codegen.type.JavaExplicitType;
+import dev.evilbrainstudio.rcd2obj.codegen.type.JavaType;
 
 import java.lang.reflect.Parameter;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
 
 /**
  * Parameter of constructor, method and something else.
@@ -33,16 +30,16 @@ import java.util.Objects;
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaParameter implements JavaElement, JavaGenericTarget {
+public class JavaParameter implements JavaElement {
   protected Integer parameterOrder;
   protected String parameterName;
-  protected JavaGenericType parameterType;
+  protected JavaType parameterType;
 
   /**
    * Constructs new instance of the parameter.
    */
   public JavaParameter() {
-    this(null, null, new JavaGenericType(Object.class));
+    this(null, null, new JavaExplicitType(Object.class));
   }
 
   /**
@@ -55,10 +52,7 @@ public class JavaParameter implements JavaElement, JavaGenericTarget {
     this(
       parameterOrder,
       parameter.getName(),
-      new JavaGenericType(
-        parameter.getType(),
-        parameter.getAnnotatedType()
-      )
+      new JavaExplicitType(parameter.getType())
     );
   }
 
@@ -72,7 +66,7 @@ public class JavaParameter implements JavaElement, JavaGenericTarget {
     this(
       parameterOrder,
       parameterName,
-      new JavaGenericType(Object.class)
+      new JavaExplicitType(Object.class)
     );
   }
 
@@ -86,7 +80,7 @@ public class JavaParameter implements JavaElement, JavaGenericTarget {
   public JavaParameter(
     Integer parameterOrder,
     String parameterName,
-    JavaGenericType parameterType
+    JavaType parameterType
   ) {
     this.parameterOrder = parameterOrder;
     this.parameterName = parameterName;
@@ -139,7 +133,7 @@ public class JavaParameter implements JavaElement, JavaGenericTarget {
    * @param parameterType new type of the parameter
    * @return current instance
    */
-  public JavaParameter setParameterType(JavaGenericType parameterType) {
+  public JavaParameter setParameterType(JavaType parameterType) {
     this.parameterType = parameterType;
     return this;
   }
@@ -149,23 +143,15 @@ public class JavaParameter implements JavaElement, JavaGenericTarget {
    *
    * @return type of the parameter
    */
-  public JavaGenericType getParameterType() {
+  public JavaType getParameterType() {
     return parameterType;
-  }
-
-  @Override
-  public Collection<JavaGenericType> getGenericType(String name) {
-    if (Objects.equals(name, parameterType.getGenericTypeName())) {
-      return Collections.singletonList(parameterType);
-    }
-    return Collections.emptyList();
   }
 
   @Override
   public void render(JavaElementRender target) {
     target.append(JavaElementType.PARAMETER_BEGIN);
     if (parameterType != null) {
-      target.append(JavaElementType.PARAMETER_TYPE, parameterType.getType());
+      target.append(JavaElementType.PARAMETER_TYPE, parameterType);
     }
 
     if (parameterName != null) {

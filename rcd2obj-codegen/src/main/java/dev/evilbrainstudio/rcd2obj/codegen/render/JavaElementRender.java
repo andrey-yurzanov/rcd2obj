@@ -77,6 +77,21 @@ public interface JavaElementRender {
   /**
    * Appends the Java element to the render.
    *
+   * @param element some element for rendering
+   * @return current instance
+   */
+  default JavaElementRender append(JavaElementType type, JavaElement element) {
+    if (element != null) {
+      this
+        .append(type)
+        .append(element);
+    }
+    return this;
+  }
+
+  /**
+   * Appends the Java element to the render.
+   *
    * @param elements  the collection of some elements for rendering
    * @param separator the separator for rendering, appends after each element, except of the last
    *                  element

@@ -18,20 +18,18 @@ package dev.evilbrainstudio.rcd2obj.codegen.method;
 
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElement;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
-import dev.evilbrainstudio.rcd2obj.codegen.JavaGenericTarget;
-import dev.evilbrainstudio.rcd2obj.codegen.JavaGenericType;
 import dev.evilbrainstudio.rcd2obj.codegen.modifier.JavaModifier;
 import dev.evilbrainstudio.rcd2obj.codegen.modifier.JavaPublicModifier;
 import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaParameter;
 import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaParameterComparator;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
+import dev.evilbrainstudio.rcd2obj.codegen.type.JavaExplicitType;
+import dev.evilbrainstudio.rcd2obj.codegen.type.JavaType;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.TreeSet;
 
 /**
@@ -40,10 +38,10 @@ import java.util.TreeSet;
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaMethod implements JavaElement, JavaGenericTarget {
+public class JavaMethod implements JavaElement {
   private String methodName;
   private JavaModifier methodAccessModifier;
-  private JavaGenericType methodReturnType;
+  private JavaType methodReturnType;
   private Collection<JavaParameter> methodParameters;
   private JavaMethodImpl methodImpl;
 
@@ -62,7 +60,7 @@ public class JavaMethod implements JavaElement, JavaGenericTarget {
     this(
       method.getName(),
       new JavaPublicModifier(),
-      new JavaGenericType(method.getReturnType(), method.getAnnotatedReturnType()),
+      new JavaExplicitType(method.getReturnType()),
       null,
       new JavaMethodUnsupportedImpl()
     );
@@ -88,7 +86,7 @@ public class JavaMethod implements JavaElement, JavaGenericTarget {
   public JavaMethod(
     String methodName,
     JavaModifier methodAccessModifier,
-    JavaGenericType methodReturnType,
+    JavaType methodReturnType,
     Collection<JavaParameter> methodParameters,
     JavaMethodImpl methodImpl
   ) {
@@ -145,7 +143,7 @@ public class JavaMethod implements JavaElement, JavaGenericTarget {
    * @param methodReturnType method's return type
    * @return current method's instance
    */
-  public JavaMethod setMethodReturnType(JavaGenericType methodReturnType) {
+  public JavaMethod setMethodReturnType(JavaType methodReturnType) {
     this.methodReturnType = methodReturnType;
     return this;
   }
@@ -155,7 +153,7 @@ public class JavaMethod implements JavaElement, JavaGenericTarget {
    *
    * @return method's return type
    */
-  public JavaGenericType getMethodReturnType() {
+  public JavaType getMethodReturnType() {
     return methodReturnType;
   }
 
@@ -204,26 +202,13 @@ public class JavaMethod implements JavaElement, JavaGenericTarget {
   }
 
   @Override
-  public Collection<JavaGenericType> getGenericType(String name) {
-    ArrayList<JavaGenericType> types = new ArrayList<>();
-    for (JavaParameter parameter : methodParameters) {
-      types.addAll(parameter.getGenericType(name));
-    }
-
-    if (Objects.equals(name, methodReturnType.getGenericTypeName())) {
-      types.add(methodReturnType);
-    }
-    return types;
-  }
-
-  @Override
   public void render(JavaElementRender target) {
     target
       .append(JavaElementType.METHOD_BEGIN)
       .append(JavaElementType.METHOD_ACCESS_MODIFIER_BEGIN)
       .append(methodAccessModifier)
       .append(JavaElementType.METHOD_ACCESS_MODIFIER_END)
-      .append(JavaElementType.METHOD_RETURN_TYPE, methodReturnType.getType())
+      .append(JavaElementType.METHOD_RETURN_TYPE, methodReturnType)
       .append(JavaElementType.METHOD_NAME, methodName)
       .append(JavaElementType.METHOD_PARAMS_BLOCK_BEGIN)
       .append(methodParameters, JavaElementType.METHOD_PARAMS_SEPARATOR.toElement())

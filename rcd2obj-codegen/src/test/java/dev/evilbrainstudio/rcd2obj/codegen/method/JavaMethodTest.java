@@ -16,14 +16,15 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.method;
 
-import dev.evilbrainstudio.rcd2obj.codegen.JavaGenericType;
+import dev.evilbrainstudio.rcd2obj.codegen.type.JavaExplicitType;
+import dev.evilbrainstudio.rcd2obj.codegen.type.JavaType;
 import dev.evilbrainstudio.rcd2obj.codegen.modifier.JavaPublicModifier;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
-
-import java.io.StringWriter;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.StringWriter;
+import java.util.function.Function;
 
 /**
  * Tests of the method code generator.
@@ -40,6 +41,8 @@ class JavaMethodTest {
     "publicStringrenderTest(){thrownewUnsupportedOperationException();}";
   private static final String EXPECTED_VALUE_BY_METHOD =
     "publicintcompareTo(Objectarg0){thrownewUnsupportedOperationException();}";
+  private static final String EXPECTED_GENERIC =
+    "Map<Integer,List<Double>>apply(Collection<String> arg0){thrownewUnsupportedOperationException();}";
 
   @Test
   void renderTest() {
@@ -47,7 +50,7 @@ class JavaMethodTest {
 
     new JavaMethod()
       .setMethodName(METHOD_NAME)
-      .setMethodReturnType(new JavaGenericType(void.class))
+      .setMethodReturnType(new JavaExplicitType(void.class))
       .setMethodImpl(new JavaMethodUnsupportedImpl())
       .render(new JavaElementWriteRender(writer));
 
@@ -60,7 +63,7 @@ class JavaMethodTest {
 
     new JavaMethod()
       .setMethodName(METHOD_NAME)
-      .setMethodReturnType(new JavaGenericType(String.class))
+      .setMethodReturnType(new JavaExplicitType(String.class))
       .setMethodImpl(new JavaMethodUnsupportedImpl())
       .render(new JavaElementWriteRender(writer));
 
@@ -73,7 +76,7 @@ class JavaMethodTest {
 
     new JavaMethod()
       .setMethodName(METHOD_NAME)
-      .setMethodReturnType(new JavaGenericType(String.class))
+      .setMethodReturnType(new JavaExplicitType(String.class))
       .setMethodAccessModifier(new JavaPublicModifier())
       .setMethodImpl(new JavaMethodUnsupportedImpl())
       .render(new JavaElementWriteRender(writer));
@@ -89,5 +92,21 @@ class JavaMethodTest {
       .render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(EXPECTED_VALUE_BY_METHOD, writer.toString());
+  }
+
+  @Test
+  void renderGenericMethod() { // TODO. Issue: #10
+    // 1. нужно иметь список типов для резолвинга: Map<String, Class<?>> = {"T", String.class, "R", Integer.class};
+    // 2. нужно иметь список стратегий обработки различных типов дженериков. ParamGenericType, ArrayGenericType и т.д.
+    // 3. нужно иметь фабрику для создания стратегий
+    // 4. нужены ли пункты 2 и 3?
+    // 5. пример создания типа: factory.create(Type) -> type.get(Type.getClass()).create(Type, this);
+
+    StringWriter writer = new StringWriter();
+
+    new JavaMethod(Function.class.getDeclaredMethods()[0])
+      .render(new JavaElementWriteRender(writer));
+
+//    Assertions.assertEquals(EXPECTED_GENERIC, writer.toString());
   }
 }
