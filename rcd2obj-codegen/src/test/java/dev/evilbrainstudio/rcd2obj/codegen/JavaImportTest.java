@@ -26,7 +26,9 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
+ * Tests of the import's operator.
  *
+ * @author Andrey_Yurzanov
  */
 class JavaImportTest {
   private static final String IMPORT_EXPECTED = "importjava.util.ArrayList;";
