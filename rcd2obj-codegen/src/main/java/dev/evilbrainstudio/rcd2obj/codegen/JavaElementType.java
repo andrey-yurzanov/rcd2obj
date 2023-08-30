@@ -111,7 +111,6 @@ public enum JavaElementType {
    * The end of the new operator.
    */
   NEW_END(";"),
-
   /**
    * The start of the method definition.
    */
@@ -156,26 +155,57 @@ public enum JavaElementType {
    * The end of the method definition.
    */
   METHOD_END,
-
+  /**
+   * The start of the implements block.
+   */
   IMPLEMENTS_BLOCK_BEGIN,
-
+  /**
+   * The implements keyword.
+   */
   IMPLEMENTS_KEYWORD("implements"),
-
+  /**
+   * The separator of interfaces.
+   */
   IMPLEMENTS_SEPARATOR(","),
-
+  /**
+   * The end of the implements block.
+   */
   IMPLEMENTS_BLOCK_END,
-
+  /**
+   * The start of type's name in the extends or implements statements.
+   */
   INHERITED_ELEMENT_BEGIN,
-
+  /**
+   * The type's name in the extends or implements statements.
+   */
   INHERITED_ELEMENT_TYPE,
-
+  /**
+   * The end of type's name in the extends or implements statements.
+   */
   INHERITED_ELEMENT_END,
-
+  /**
+   * The start of a class definition.
+   */
   CLASS_DEFINITION_BLOCK_BEGIN,
+  /**
+   * The keyword of the class.
+   */
   CLASS_KEYWORD("class"),
+  /**
+   * Name of the class.
+   */
   CLASS_NAME,
+  /**
+   * The start of a class body.
+   */
   CLASS_BODY_BEGIN("{"),
+  /**
+   * The end of a class body.
+   */
   CLASS_BODY_END("}"),
+  /**
+   * The end of a class definition.
+   */
   CLASS_DEFINITION_BLOCK_END,
 
   /**
@@ -228,7 +258,9 @@ public enum JavaElementType {
   }
 
   /**
+   * Converts type to the renderable element.
    *
+   * @return renderable element
    */
   public JavaElement toElement() {
     return (target) -> target.append(this);

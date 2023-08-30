@@ -17,7 +17,6 @@
 package dev.evilbrainstudio.rcd2obj.codegen.operator;
 
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
-import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaParameterComparator;
 import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaValueParameter;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 import java.util.Arrays;
@@ -49,9 +48,9 @@ public class JavaNewOperator implements JavaOperator {
    * @param newParameters parameters of new operator
    * @return current instance
    */
-  public JavaNewOperator newParameters(JavaValueParameter... newParameters) {
+  public JavaNewOperator setNewParameters(JavaValueParameter... newParameters) {
     if (this.newParameters == null) {
-      this.newParameters = new TreeSet<>(new JavaParameterComparator<>());
+      this.newParameters = new TreeSet<>();
     }
     this.newParameters.addAll(Arrays.asList(newParameters));
 

@@ -14,8 +14,10 @@
  *    limitations under the License.
  */
 
-package dev.evilbrainstudio.rcd2obj.codegen;
+package dev.evilbrainstudio.rcd2obj.codegen.inherited;
 
+import dev.evilbrainstudio.rcd2obj.codegen.JavaElement;
+import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
 import dev.evilbrainstudio.rcd2obj.codegen.method.JavaMethod;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 
@@ -33,7 +35,7 @@ import java.util.List;
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaInheritableElement implements JavaElement {
+public class JavaInheritableElement implements JavaElement, Comparable<JavaInheritableElement> {
   private final Class<?> type;
 
   /**
@@ -80,6 +82,12 @@ public class JavaInheritableElement implements JavaElement {
       return methods;
     }
     return Collections.emptyList();
+  }
+
+  @Override
+  public int compareTo(JavaInheritableElement other) {
+    String name = type.getCanonicalName();
+    return name.compareTo(other.getType().getCanonicalName());
   }
 
   @Override

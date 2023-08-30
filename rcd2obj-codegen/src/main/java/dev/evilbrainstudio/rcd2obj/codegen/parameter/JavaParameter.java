@@ -30,7 +30,7 @@ import java.lang.reflect.Parameter;
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaParameter implements JavaElement {
+public class JavaParameter implements JavaElement, Comparable<JavaParameter> {
   protected Integer parameterOrder;
   protected String parameterName;
   protected JavaType parameterType;
@@ -145,6 +145,15 @@ public class JavaParameter implements JavaElement {
    */
   public JavaType getParameterType() {
     return parameterType;
+  }
+
+  @Override
+  public int compareTo(JavaParameter other) {
+    int result = Integer.compare(parameterOrder, other.getParameterOrder());
+    if (result == 0) {
+      result = parameterType.compareTo(other.getParameterType());
+    }
+    return result;
   }
 
   @Override

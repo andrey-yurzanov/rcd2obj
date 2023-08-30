@@ -21,7 +21,6 @@ import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
 import dev.evilbrainstudio.rcd2obj.codegen.modifier.JavaModifier;
 import dev.evilbrainstudio.rcd2obj.codegen.modifier.JavaPublicModifier;
 import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaParameter;
-import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaParameterComparator;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 import dev.evilbrainstudio.rcd2obj.codegen.type.JavaExplicitType;
 import dev.evilbrainstudio.rcd2obj.codegen.type.JavaType;
@@ -30,6 +29,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.TreeSet;
 
 /**
@@ -38,7 +38,7 @@ import java.util.TreeSet;
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaMethod implements JavaElement {
+public class JavaMethod implements JavaElement, Comparable<JavaMethod> {
   private String methodName;
   private JavaModifier methodAccessModifier;
   private JavaType methodReturnType;
@@ -67,7 +67,7 @@ public class JavaMethod implements JavaElement {
 
     Parameter[] parameters = method.getParameters();
     if (parameters.length > 0) {
-      this.methodParameters = new TreeSet<>(new JavaParameterComparator<>());
+      this.methodParameters = new TreeSet<>();
       for (int i = 0; i < parameters.length; i++) {
         this.methodParameters.add(new JavaParameter(i + 1, parameters[i]));
       }
@@ -165,7 +165,7 @@ public class JavaMethod implements JavaElement {
    */
   public JavaMethod setMethodParameters(JavaParameter... methodParameters) {
     if (this.methodParameters == null) {
-      this.methodParameters = new TreeSet<>(new JavaParameterComparator<>());
+      this.methodParameters = new TreeSet<>();
     }
     this.methodParameters.addAll(Arrays.asList(methodParameters));
 
@@ -199,6 +199,28 @@ public class JavaMethod implements JavaElement {
    */
   public JavaMethodImpl getMethodImpl() {
     return methodImpl;
+  }
+
+  @Override
+  public int compareTo(JavaMethod other) {
+    int result = methodName.compareTo(other.getMethodName());
+    if (result == 0) {
+      Collection<JavaParameter> otherMethodParams = other.getMethodParameters();
+
+      result = methodParameters.size() - otherMethodParams.size();
+      if (result == 0) {
+        Iterator<JavaParameter> paramsIterator = methodParameters.iterator();
+        Iterator<JavaParameter> otherParamsIterator = otherMethodParams.iterator();
+
+        while (paramsIterator.hasNext() && result == 0) {
+          JavaParameter param = paramsIterator.next();
+          JavaParameter otherParam = otherParamsIterator.next();
+
+          result = param.compareTo(otherParam);
+        }
+      }
+    }
+    return result;
   }
 
   @Override
