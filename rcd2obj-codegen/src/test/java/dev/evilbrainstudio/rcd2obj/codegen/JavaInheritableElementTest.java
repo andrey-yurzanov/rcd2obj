@@ -16,6 +16,7 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen;
 
+import dev.evilbrainstudio.rcd2obj.codegen.inherited.JavaInheritableElement;
 import dev.evilbrainstudio.rcd2obj.codegen.method.JavaMethod;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
 import org.junit.jupiter.api.Assertions;

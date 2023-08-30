@@ -46,7 +46,7 @@ class JavaNewOperatorTest {
   @Test
   void renderTestWithParams() {
     JavaNewOperator operator = new JavaNewOperator(UnsupportedOperationException.class);
-    operator.newParameters(
+    operator.setNewParameters(
         new JavaValueParameter(1, "message")
             .setParameterValue("message")
             .setParameterType(new JavaExplicitType(String.class))

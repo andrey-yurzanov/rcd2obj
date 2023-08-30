@@ -37,11 +37,6 @@ public class JavaExplicitType implements JavaType {
     this.type = type;
   }
 
-  @Override
-  public void render(JavaElementRender target) {
-    target.append(JavaElementType.EMPTY_LITERAL, type);
-  }
-
   /**
    * Returns the class for rendering.
    *
@@ -49,5 +44,21 @@ public class JavaExplicitType implements JavaType {
    */
   public Class<?> getType() {
     return type;
+  }
+
+  @Override
+  public int compareTo(JavaType other) {
+    int result = -1;
+    if (JavaExplicitType.class.isAssignableFrom(other.getClass())) {
+      String name = type.getCanonicalName();
+      Class<?> otherType = ((JavaExplicitType) other).getType();
+      return name.compareTo(otherType.getCanonicalName());
+    }
+    return result;
+  }
+
+  @Override
+  public void render(JavaElementRender target) {
+    target.append(JavaElementType.EMPTY_LITERAL, type);
   }
 }

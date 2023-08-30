@@ -24,5 +24,5 @@ import dev.evilbrainstudio.rcd2obj.codegen.JavaElement;
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public interface JavaType extends JavaElement {
+public interface JavaType extends JavaElement, Comparable<JavaType> {
 }
