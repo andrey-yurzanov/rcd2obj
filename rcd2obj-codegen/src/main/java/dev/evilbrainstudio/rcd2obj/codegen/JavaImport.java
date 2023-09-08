@@ -58,7 +58,8 @@ public class JavaImport implements JavaElement, Comparable<JavaImport> {
     target
       .append(JavaElementType.IMPORT_BEGIN)
       .append(JavaElementType.IMPORT_KEYWORD)
-      .append(JavaElementType.IMPORT_TYPE, type)
+      .append(JavaElementType.IMPORT_TYPE)
+      .append(type)
       .append(JavaElementType.IMPORT_END);
   }
 }

@@ -175,7 +175,8 @@ public class JavaClass implements JavaElement {
       .append(JavaElementType.CLASS_DEFINITION_BLOCK_BEGIN)
       .append(classAccessModifier)
       .append(JavaElementType.CLASS_KEYWORD)
-      .append(JavaElementType.CLASS_NAME, className);
+      .append(JavaElementType.CLASS_NAME)
+      .append(className);
 
     // implements
     if (classImplements != null && !classImplements.isEmpty()) {
@@ -189,7 +190,7 @@ public class JavaClass implements JavaElement {
     // methods
     classRender
       .append(JavaElementType.CLASS_BODY_BEGIN)
-      .append(classMethods, JavaElementType.EMPTY_LITERAL.toElement())
+      .append(classMethods)
       .append(JavaElementType.CLASS_BODY_END)
       .append(JavaElementType.CLASS_DEFINITION_BLOCK_END);
 
@@ -198,9 +199,9 @@ public class JavaClass implements JavaElement {
       .append(classPackage)
       // imports
       .append(JavaElementType.IMPORT_BLOCK_BEGIN)
-      .append(classRender.getImports(), JavaElementType.EMPTY_LITERAL.toElement())
+      .append(classRender.getImports())
       .append(JavaElementType.IMPORT_BLOCK_END)
       // class
-      .append(classRender.getBuffer(), JavaElementType.EMPTY_LITERAL.toElement());
+      .append(classRender.getBuffer());
   }
 }

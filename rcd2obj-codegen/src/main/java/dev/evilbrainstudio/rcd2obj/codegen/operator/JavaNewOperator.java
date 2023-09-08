@@ -19,6 +19,7 @@ package dev.evilbrainstudio.rcd2obj.codegen.operator;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
 import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaValueParameter;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.TreeSet;
@@ -60,12 +61,13 @@ public class JavaNewOperator implements JavaOperator {
   @Override
   public void render(JavaElementRender target) {
     target
-        .append(JavaElementType.NEW_BEGIN)
-        .append(JavaElementType.NEW_KEYWORD)
-        .append(JavaElementType.NEW_TYPE, newType)
-        .append(JavaElementType.NEW_TYPE_PARAMS_BLOCK_BEGIN)
-        .append(newParameters, JavaElementType.NEW_TYPE_PARAMS_SEPARATOR.toElement())
-        .append(JavaElementType.NEW_TYPE_PARAMS_BLOCK_END)
-        .append(JavaElementType.NEW_END);
+      .append(JavaElementType.NEW_BEGIN)
+      .append(JavaElementType.NEW_KEYWORD)
+      .append(JavaElementType.NEW_TYPE)
+      .append(newType)
+      .append(JavaElementType.NEW_TYPE_PARAMS_BLOCK_BEGIN)
+      .append(newParameters, JavaElementType.NEW_TYPE_PARAMS_SEPARATOR.toElement())
+      .append(JavaElementType.NEW_TYPE_PARAMS_BLOCK_END)
+      .append(JavaElementType.NEW_END);
   }
 }

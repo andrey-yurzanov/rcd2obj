@@ -88,7 +88,8 @@ public class JavaValueParameter extends JavaParameter {
   public void render(JavaElementRender target) {
     target
       .append(JavaElementType.PARAMETER_BEGIN)
-      .append(JavaElementType.PARAMETER_VALUE, parameterValue, ((JavaExplicitType) parameterType).getType())
+      .append(JavaElementType.PARAMETER_VALUE)
+      .append(parameterValue, ((JavaExplicitType) parameterType).getType()) // TODO. DO NOT USE 'JavaExplicitType'
       .append(JavaElementType.PARAMETER_END);
   }
 }

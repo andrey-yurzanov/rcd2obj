@@ -16,11 +16,11 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.operator;
 
-import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
-import java.io.StringWriter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.io.StringWriter;
 
 /**
  * Tests for {@link JavaThrowOperator}.
@@ -34,7 +34,7 @@ class JavaThrowOperatorTest {
   @Test
   void renderTestTest() {
     JavaThrowOperator operator = new JavaThrowOperator(
-        (target) -> target.append(JavaElementType.EMPTY_LITERAL, TYPE)
+      (target) -> target.append(TYPE)
     );
 
     StringWriter writer = new StringWriter();
