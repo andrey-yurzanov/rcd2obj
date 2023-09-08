@@ -16,9 +16,9 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.render;
 
-import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 /**
  * The abstract renderer realizes specific types rendering.
@@ -27,12 +27,17 @@ import java.util.Map;
  * @since 1.0
  */
 public abstract class JavaElementTypeRender implements JavaElementRender {
-  protected final Map<Class<?>, JavaElementRender> typeRenders;
+  protected final Map<Class<?>, BiConsumer<Object, JavaElementRender>> typeRenders;
 
   /**
    * Double quote for strings building.
    */
   protected static final String DOUBLE_QUOTE = "\"";
+
+  /**
+   * Java core package.
+   */
+  protected static final String LANG_PACKAGE_NAME = "java.lang";
 
   /**
    * Constructs of new instance of the type renderer.
@@ -43,18 +48,50 @@ public abstract class JavaElementTypeRender implements JavaElementRender {
   }
 
   @Override
-  public Map<Class<?>, JavaElementRender> getTypeRenders() {
+  public JavaElementRender append(Class<?> classType) {
+    Package elementPackage = classType.getPackage();
+    if (elementPackage == null || LANG_PACKAGE_NAME.equals(elementPackage.getName())) {
+      return append(classType.getSimpleName());
+    }
+    return append(classType.getCanonicalName());
+  }
+
+  @Override
+  public JavaElementRender append(Object value, Class<?> valueType) {
+    if (value != null) {
+      Map<Class<?>, BiConsumer<Object, JavaElementRender>> renders = getTypeRenders();
+      for (Map.Entry<Class<?>, BiConsumer<Object, JavaElementRender>> entry : renders.entrySet()) {
+        Class<?> renderType = entry.getKey();
+        if (renderType.isAssignableFrom(valueType)) {
+          BiConsumer<Object, JavaElementRender> render = entry.getValue();
+          render.accept(value, this);
+
+          return this;
+        }
+      }
+    }
+
+    return append(String.valueOf(value));
+  }
+
+  /**
+   * Returns registered types renderers.
+   *
+   * @return registered types renderers
+   */
+  public Map<Class<?>, BiConsumer<Object, JavaElementRender>> getTypeRenders() {
     return typeRenders;
   }
 
-  // Appends strings
-  private JavaElementRender appendString(JavaElementType type, String... elements) {
-    StringBuilder buffer = new StringBuilder(DOUBLE_QUOTE);
-    for (String element : elements) {
-      buffer.append(element);
+  // Appends string
+  private void appendString(Object value, JavaElementRender target) {
+    if (value != null) {
+      target
+        .append(DOUBLE_QUOTE)
+        .append(String.valueOf(value))
+        .append(DOUBLE_QUOTE);
+    } else {
+      target.append(String.valueOf(value));
     }
-    buffer.append(DOUBLE_QUOTE);
-
-    return append(type, buffer.toString());
   }
 }

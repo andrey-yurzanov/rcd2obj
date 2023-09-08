@@ -16,8 +16,6 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.render;
 
-import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
-
 import java.io.IOException;
 import java.io.Writer;
 
@@ -41,9 +39,8 @@ public class JavaElementWriteRender extends JavaElementTypeRender {
   }
 
   @Override
-  public JavaElementRender append(JavaElementType type, String... elements) {
+  public JavaElementRender append(String... elements) {
     try {
-      writer.write(type.getValue());
       for (String element : elements) {
         writer.write(element);
       }

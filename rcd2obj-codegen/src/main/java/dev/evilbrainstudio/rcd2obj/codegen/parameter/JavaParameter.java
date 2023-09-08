@@ -160,11 +160,15 @@ public class JavaParameter implements JavaElement, Comparable<JavaParameter> {
   public void render(JavaElementRender target) {
     target.append(JavaElementType.PARAMETER_BEGIN);
     if (parameterType != null) {
-      target.append(JavaElementType.PARAMETER_TYPE, parameterType);
+      target
+        .append(JavaElementType.PARAMETER_TYPE)
+        .append(parameterType);
     }
 
     if (parameterName != null) {
-      target.append(JavaElementType.PARAMETER_NAME, parameterName);
+      target
+        .append(JavaElementType.PARAMETER_NAME)
+        .append(parameterName);
     }
     target.append(JavaElementType.PARAMETER_END);
   }

@@ -39,9 +39,10 @@ public class JavaClassPackage implements JavaElement {
   @Override
   public void render(JavaElementRender target) {
     target
-        .append(JavaElementType.PACKAGE_BEGIN)
-        .append(JavaElementType.PACKAGE_KEYWORD)
-        .append(JavaElementType.PACKAGE_NAME, name)
-        .append(JavaElementType.PACKAGE_END);
+      .append(JavaElementType.PACKAGE_BEGIN)
+      .append(JavaElementType.PACKAGE_KEYWORD)
+      .append(JavaElementType.PACKAGE_NAME)
+      .append(name)
+      .append(JavaElementType.PACKAGE_END);
   }
 }

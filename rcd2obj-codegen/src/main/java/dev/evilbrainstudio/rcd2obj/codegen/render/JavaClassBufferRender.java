@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  */
 public class JavaClassBufferRender extends JavaElementTypeRender {
   private final Map<String, Class<?>> imports;
-  private final Collection<JavaClassBufferRenderItem> buffer;
+  private final Collection<JavaElement> buffer;
 
   /**
    * Constructs new instance of renderer.
@@ -73,54 +73,44 @@ public class JavaClassBufferRender extends JavaElementTypeRender {
   }
 
   @Override
-  public JavaElementRender append(JavaElementType type, String... elements) {
-    buffer.add(new JavaClassBufferRenderItem(type, elements));
+  public JavaElementRender append(String... elements) {
+    buffer.add(target -> target.append(elements));
     return this;
   }
 
   @Override
-  public JavaElementRender append(JavaElementType type, Class<?> element) {
+  public JavaElementRender append(JavaElement element) {
+    element.render(this);
+    return this;
+  }
+
+  @Override
+  public JavaElementRender append(JavaElementType type) {
+    buffer.add(type.toElement());
+    return this;
+  }
+
+  @Override
+  public JavaElementRender append(Object value, Class<?> valueType) {
+    buffer.add(target -> target.append(value, valueType));
+    return this;
+  }
+
+  @Override
+  public JavaElementRender append(Class<?> element) {
     Package elementPackage = element.getPackage();
     if (elementPackage != null && !LANG_PACKAGE_NAME.equals(elementPackage.getName())) {
       String name = element.getSimpleName();
       Class<?> importClass = imports.get(name);
       if (importClass != null) {
         if (importClass.equals(element)) {
-          return append(type, name);
+          return append(name);
         }
       } else {
         imports.put(name, element);
-        return append(type, name);
+        return append(name);
       }
     }
-    return super.append(type, element);
-  }
-
-  /**
-   * The item of the buffer.
-   *
-   * @author Andrey_Yurzanov
-   * @since 1.0
-   */
-  protected static class JavaClassBufferRenderItem implements JavaElement {
-    private final JavaElementType type;
-    private final String[] elements;
-
-    /**
-     * Create new instance of the item.
-     *
-     * @param type     item's type
-     * @param elements elements for rendering
-     */
-    public JavaClassBufferRenderItem(JavaElementType type, String... elements) {
-      this.type = type;
-      this.elements = elements;
-    }
-
-
-    @Override
-    public void render(JavaElementRender target) {
-      target.append(type, elements);
-    }
+    return super.append(element);
   }
 }

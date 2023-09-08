@@ -94,7 +94,8 @@ public class JavaInheritableElement implements JavaElement, Comparable<JavaInher
   public void render(JavaElementRender target) {
     target
       .append(JavaElementType.INHERITED_ELEMENT_BEGIN)
-      .append(JavaElementType.INHERITED_ELEMENT_TYPE, type)
+      .append(JavaElementType.INHERITED_ELEMENT_TYPE)
+      .append(type)
       .append(JavaElementType.INHERITED_ELEMENT_END);
   }
 

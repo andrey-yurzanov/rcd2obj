@@ -231,12 +231,7 @@ public enum JavaElementType {
   /**
    * The end of imports.
    */
-  IMPORT_BLOCK_END,
-
-  /**
-   * Empty literal.
-   */
-  EMPTY_LITERAL;
+  IMPORT_BLOCK_END;
 
   private final String value;
 

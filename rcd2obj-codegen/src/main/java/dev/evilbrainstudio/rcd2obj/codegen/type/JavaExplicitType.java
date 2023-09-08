@@ -16,7 +16,6 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.type;
 
-import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 
 /**
@@ -59,6 +58,6 @@ public class JavaExplicitType implements JavaType {
 
   @Override
   public void render(JavaElementRender target) {
-    target.append(JavaElementType.EMPTY_LITERAL, type);
+    target.append(type);
   }
 }
