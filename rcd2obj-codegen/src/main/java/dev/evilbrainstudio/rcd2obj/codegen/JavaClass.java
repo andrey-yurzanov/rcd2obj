@@ -190,7 +190,9 @@ public class JavaClass implements JavaElement {
     // methods
     classRender
       .append(JavaElementType.CLASS_BODY_BEGIN)
-      .append(classMethods)
+      .append(JavaElementType.CLASS_METHODS_BLOCK_BEGIN)
+      .append(classMethods, JavaElementType.CLASS_METHODS_SEPARATOR.toElement())
+      .append(JavaElementType.CLASS_METHODS_BLOCK_END)
       .append(JavaElementType.CLASS_BODY_END)
       .append(JavaElementType.CLASS_DEFINITION_BLOCK_END);
 

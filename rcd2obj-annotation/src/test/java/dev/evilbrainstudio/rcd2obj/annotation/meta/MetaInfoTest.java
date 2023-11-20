@@ -51,8 +51,10 @@ class MetaInfoTest {
     Assertions.assertTrue(built.isPresent());
 
     TableMetaInfo metaInfo = built.get();
+    Assertions.assertEquals(EntityWithFields.class, metaInfo.getType());
+
     TableNameAlias[] aliases = metaInfo.getAliases().toArray(new TableNameAlias[]{});
-    Assertions.assertEquals(aliases.length, 2);
+    Assertions.assertEquals(2, aliases.length);
     Assertions.assertTrue(
         Arrays.asList(aliases[0].getName(), aliases[1].getName()).contains(ENTITY_WITH_FIELDS)
     );
@@ -61,10 +63,10 @@ class MetaInfoTest {
     );
 
     ColumnMetaInfo[] columns = metaInfo.getColumns().toArray(new ColumnMetaInfo[]{});
-    Assertions.assertEquals(columns.length, 2);
+    Assertions.assertEquals(2, columns.length);
 
     ColumnNameAlias[] flagAliases = columns[0].getAliases().toArray(new ColumnNameAlias[]{});
-    Assertions.assertEquals(flagAliases.length, 2);
+    Assertions.assertEquals(2, flagAliases.length);
     Assertions.assertTrue(
         Arrays
             .asList(flagAliases[0].getName(), flagAliases[1].getName())
@@ -77,7 +79,7 @@ class MetaInfoTest {
     );
 
     ColumnNameAlias[] numAliases = columns[1].getAliases().toArray(new ColumnNameAlias[]{});
-    Assertions.assertEquals(numAliases.length, 2);
+    Assertions.assertEquals(2, numAliases.length);
     Assertions.assertTrue(
         Arrays
             .asList(numAliases[0].getName(), numAliases[1].getName())
@@ -97,8 +99,10 @@ class MetaInfoTest {
     Assertions.assertTrue(built.isPresent());
 
     TableMetaInfo metaInfo = built.get();
+    Assertions.assertEquals(EntityWithoutFields.class, metaInfo.getType());
+
     TableNameAlias[] aliases = metaInfo.getAliases().toArray(new TableNameAlias[]{});
-    Assertions.assertEquals(aliases.length, 2);
+    Assertions.assertEquals(2, aliases.length);
     Assertions.assertTrue(
         Arrays.asList(aliases[0].getName(), aliases[1].getName()).contains(ENTITY_WITHOUT_FIELDS)
     );

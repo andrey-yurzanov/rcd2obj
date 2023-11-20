@@ -30,7 +30,7 @@ public enum JavaElementType {
   /**
    * The keyword of the Java package.
    */
-  PACKAGE_KEYWORD("package"),
+  PACKAGE_KEYWORD("package", true),
   /**
    * The name of the package.
    */
@@ -66,7 +66,7 @@ public enum JavaElementType {
   /**
    * The keyword of the public modifier.
    */
-  MODIFIER_PUBLIC_KEYWORD("public"),
+  MODIFIER_PUBLIC_KEYWORD("public", true),
   /**
    * The end of the modifier definition.
    */
@@ -78,7 +78,7 @@ public enum JavaElementType {
   /**
    * The keyword of the throw operator.
    */
-  THROW_KEYWORD("throw"),
+  THROW_KEYWORD("throw", true),
   /**
    * The end of the throw operator.
    */
@@ -90,7 +90,7 @@ public enum JavaElementType {
   /**
    * The keyword of the new operator.
    */
-  NEW_KEYWORD("new"),
+  NEW_KEYWORD("new", true),
   /**
    * The type of new instance.
    */
@@ -162,7 +162,7 @@ public enum JavaElementType {
   /**
    * The implements keyword.
    */
-  IMPLEMENTS_KEYWORD("implements"),
+  IMPLEMENTS_KEYWORD("implements", true),
   /**
    * The separator of interfaces.
    */
@@ -190,7 +190,7 @@ public enum JavaElementType {
   /**
    * The keyword of the class.
    */
-  CLASS_KEYWORD("class"),
+  CLASS_KEYWORD("class", true),
   /**
    * Name of the class.
    */
@@ -207,7 +207,18 @@ public enum JavaElementType {
    * The end of a class definition.
    */
   CLASS_DEFINITION_BLOCK_END,
-
+  /**
+   * The start of methods' logical block.
+   */
+  CLASS_METHODS_BLOCK_BEGIN,
+  /**
+   * The logical separator of the methods.
+   */
+  CLASS_METHODS_SEPARATOR,
+  /**
+   * The end of methods' logical block.
+   */
+  CLASS_METHODS_BLOCK_END,
   /**
    * The start of imports.
    */
@@ -219,7 +230,7 @@ public enum JavaElementType {
   /**
    * The import's keyword.
    */
-  IMPORT_KEYWORD("import"),
+  IMPORT_KEYWORD("import", true),
   /**
    * The type of the import's operator.
    */
@@ -234,13 +245,19 @@ public enum JavaElementType {
   IMPORT_BLOCK_END;
 
   private final String value;
+  private final boolean keyword;
 
   JavaElementType() {
-    this("");
+    this("", false);
   }
 
   JavaElementType(String value) {
+    this(value, false);
+  }
+
+  JavaElementType(String value, boolean keyword) {
     this.value = value;
+    this.keyword = keyword;
   }
 
   /**
@@ -253,9 +270,18 @@ public enum JavaElementType {
   }
 
   /**
-   * Converts type to the renderable element.
+   * Returns true when type is a keyword, otherwise false.
    *
-   * @return renderable element
+   * @return keyword's flag
+   */
+  public boolean isKeyword() {
+    return keyword;
+  }
+
+  /**
+   * Converts type to the element for rendering.
+   *
+   * @return the element for rendering
    */
   public JavaElement toElement() {
     return (target) -> target.append(this);

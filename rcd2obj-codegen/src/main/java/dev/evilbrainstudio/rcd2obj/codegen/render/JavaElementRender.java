@@ -46,6 +46,15 @@ public interface JavaElementRender {
   JavaElementRender append(Class<?> classType);
 
   /**
+   * Appends the typed element to the render.
+   *
+   * @param value     the value for rendering
+   * @param valueType the type of the value
+   * @return current instance
+   */
+  JavaElementRender append(Object value, Class<?> valueType);
+
+  /**
    * Appends the Java element type to the render.
    *
    * @param type element's type {@link JavaElementType}
@@ -100,13 +109,4 @@ public interface JavaElementRender {
   default JavaElementRender append(Collection<? extends JavaElement> elements) {
     return append(elements, (JavaElement) null);
   }
-
-  /**
-   * Appends the typed element to the render.
-   *
-   * @param value     the value for rendering
-   * @param valueType the type of the value
-   * @return current instance
-   */
-  JavaElementRender append(Object value, Class<?> valueType);
 }
