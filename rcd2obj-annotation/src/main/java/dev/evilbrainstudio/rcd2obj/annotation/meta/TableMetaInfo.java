@@ -54,6 +54,15 @@ public class TableMetaInfo {
   }
 
   /**
+   * Returns type of the annotated entity.
+   *
+   * @return type of the annotated entity
+   */
+  public Class<?> getType() {
+    return type;
+  }
+
+  /**
    * Returns the names list of the table.
    *
    * @return the names list of the table
