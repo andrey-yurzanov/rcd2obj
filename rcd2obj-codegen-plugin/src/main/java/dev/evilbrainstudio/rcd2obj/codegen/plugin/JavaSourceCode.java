@@ -52,7 +52,7 @@ public class JavaSourceCode {
     log.info(type.getName().replace("." + type.getSimpleName(), ""));
 
     this.javaClass = new JavaClass(name)
-      .setClassPackage(new JavaClassPackage(type.getName().replace("." + type.getSimpleName(), "")));
+      .setClassImplements(new JavaInheritableElement(Mapper.class));
   }
 
   /**
