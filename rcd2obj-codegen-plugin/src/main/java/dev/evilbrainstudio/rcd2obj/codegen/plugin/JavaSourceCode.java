@@ -23,6 +23,7 @@ import dev.evilbrainstudio.rcd2obj.codegen.JavaClassPackage;
 import dev.evilbrainstudio.rcd2obj.codegen.inherited.JavaInheritableElement;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
 import dev.evilbrainstudio.rcd2obj.codegen.render.format.JavaElementFormatRender;
+import org.apache.maven.plugin.logging.Log;
 
 import java.io.StringWriter;
 
@@ -41,10 +42,15 @@ public class JavaSourceCode {
    *
    * @param info information about annotated entity
    */
-  public JavaSourceCode(TableMetaInfo info) {
+  public JavaSourceCode(Log log, TableMetaInfo info) {
     Class<?> type = info.getType();
     this.name = type.getSimpleName().concat("StubMapper");
     this.writer = new StringWriter();
+
+    log.info(type.getName());
+    log.info(type.getSimpleName());
+    log.info(type.getName().replace("." + type.getSimpleName(), ""));
+
     this.javaClass = new JavaClass(name)
       .setClassPackage(new JavaClassPackage(type.getName().replace("." + type.getSimpleName(), "")))
       .setClassImplements(new JavaInheritableElement(Mapper.class));

@@ -17,6 +17,7 @@
 package dev.evilbrainstudio.rcd2obj.codegen.plugin;
 
 import dev.evilbrainstudio.rcd2obj.annotation.meta.TableMetaInfo;
+import org.apache.maven.plugin.logging.Log;
 
 import javax.inject.Named;
 
@@ -32,7 +33,7 @@ public class JavaSourceCodeGenerator {
    *
    * @param info information about annotated entity
    */
-  public JavaSourceCode generate(TableMetaInfo info) {
-    return new JavaSourceCode(info);
+  public JavaSourceCode generate(Log log, TableMetaInfo info) {
+    return new JavaSourceCode(log, info);
   }
 }
