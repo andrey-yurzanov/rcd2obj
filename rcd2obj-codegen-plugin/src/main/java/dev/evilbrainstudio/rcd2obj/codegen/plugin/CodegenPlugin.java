@@ -110,7 +110,7 @@ public class CodegenPlugin extends AbstractMojo {
             log.info(String.valueOf(info.getType()));
             log.info(String.valueOf(info.getType().getName()));
             log.info(String.valueOf(info.getType().getPackage()));
-            JavaSourceCode sourceCode = generator.generate(log, value.get());
+            JavaSourceCode sourceCode = generator.generate(value.get());
 
             // Step 3. Writing source code
             sourceCodeWriter.write(generatedSources.toPath(), info, sourceCode);

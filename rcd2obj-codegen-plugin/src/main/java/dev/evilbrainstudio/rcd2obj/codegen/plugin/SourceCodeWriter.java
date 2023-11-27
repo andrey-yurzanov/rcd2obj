@@ -49,8 +49,7 @@ public class SourceCodeWriter {
    */
   public void write(Path root, TableMetaInfo info, JavaSourceCode sourceCode) throws IOException {
     Class<?> type = info.getType();
-    Package typePackage = type.getPackage();
-    String packageName = typePackage.getName();
+    String packageName = type.getName().replace("." + type.getSimpleName(), "");
 
     Path directory = Paths.get(root.toString(), packageName.replace(PACKAGE_SEPARATOR, PATH_SEPARATOR));
     if (!Files.exists(directory)) {
