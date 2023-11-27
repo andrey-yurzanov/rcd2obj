@@ -107,6 +107,8 @@ public class CodegenPlugin extends AbstractMojo {
 
             // Step 2. Generating source code
             TableMetaInfo info = value.get();
+            log.info(String.valueOf(info.getType()));
+            log.info(String.valueOf(info.getType().getPackage()));
             JavaSourceCode sourceCode = generator.generate(value.get());
 
             // Step 3. Writing source code
