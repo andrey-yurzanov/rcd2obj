@@ -46,7 +46,7 @@ public class JavaSourceCode {
     this.name = type.getSimpleName().concat("StubMapper");
     this.writer = new StringWriter();
     this.javaClass = new JavaClass(name)
-      .setClassPackage(new JavaClassPackage(type.getCanonicalName().replace("." + type.getSimpleName(), "")))
+      .setClassPackage(new JavaClassPackage(type.getName().replace("." + type.getSimpleName(), "")))
       .setClassImplements(new JavaInheritableElement(Mapper.class));
   }
 
