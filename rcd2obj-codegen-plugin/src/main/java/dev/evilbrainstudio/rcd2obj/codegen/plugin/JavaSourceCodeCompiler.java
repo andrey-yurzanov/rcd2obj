@@ -29,6 +29,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.logging.Logger;
 
 /**
  * Java code compiler, uses standard Java compiler API.
@@ -48,6 +49,8 @@ public class JavaSourceCodeCompiler {
     ArrayList<String> classpath = new ArrayList<>();
     classpath.add("-classpath");
     classpath.add(String.join(";", classpathElements));
+
+    Logger.getLogger("compile").info(String.valueOf(classpath));
 
     JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
     StandardJavaFileManager manager = compiler.getStandardFileManager(null, null, null);
