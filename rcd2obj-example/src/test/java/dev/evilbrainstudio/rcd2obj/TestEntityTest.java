@@ -43,9 +43,11 @@ class TestEntityTest {
    */
   @Test
   void checkGeneratedClassTest() {
-    Logger
-      .getLogger("checkGeneratedClassTest")
-      .info(String.valueOf(Arrays.asList(new File(ROOT_DIRECTORY).listFiles())));
+    Logger logger = Logger
+      .getLogger("checkGeneratedClassTest");
+
+    logger.info(ROOT_DIRECTORY);
+    logger.info(String.valueOf(Arrays.asList(new File(ROOT_DIRECTORY).listFiles())));
 
     Assertions.assertTrue(
       Files.exists(
