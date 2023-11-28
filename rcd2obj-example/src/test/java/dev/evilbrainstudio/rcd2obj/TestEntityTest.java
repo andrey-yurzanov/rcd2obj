@@ -48,6 +48,24 @@ class TestEntityTest {
 
     logger.info(ROOT_DIRECTORY);
     logger.info(String.valueOf(Arrays.asList(new File(ROOT_DIRECTORY).listFiles())));
+    logger.info(
+      String.valueOf(
+        Paths.get(
+          ROOT_DIRECTORY,
+          "target/classes/dev/evilbrainstudio/rcd2obj"
+        )
+      )
+    );
+    logger.info(
+      String.valueOf(
+        Files.exists(
+          Paths.get(
+            ROOT_DIRECTORY,
+            "target/classes/dev/evilbrainstudio/rcd2obj"
+          ))
+      )
+    );
+
 
     Assertions.assertTrue(
       Files.exists(
