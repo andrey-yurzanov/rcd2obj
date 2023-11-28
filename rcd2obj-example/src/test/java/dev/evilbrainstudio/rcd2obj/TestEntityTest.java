@@ -50,19 +50,12 @@ class TestEntityTest {
     logger.info(String.valueOf(Arrays.asList(new File(ROOT_DIRECTORY).listFiles())));
     logger.info(
       String.valueOf(
-        Paths.get(
-          ROOT_DIRECTORY,
-          "target/classes/dev/evilbrainstudio/rcd2obj"
-        )
-      )
-    );
-    logger.info(
-      String.valueOf(
-        Files.exists(
+        Arrays.asList(
           Paths.get(
             ROOT_DIRECTORY,
             "target/classes/dev/evilbrainstudio/rcd2obj"
-          ))
+          ).toFile().listFiles()
+        )
       )
     );
 
