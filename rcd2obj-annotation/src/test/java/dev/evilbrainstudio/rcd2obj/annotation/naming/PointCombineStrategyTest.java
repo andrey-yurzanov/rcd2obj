@@ -28,29 +28,29 @@ import org.junit.jupiter.api.Test;
  * @author Andrey_Yurzanov
  */
 class PointCombineStrategyTest {
-//  private final PointCombineStrategy strategy;
-//  private final Map<String[], String> names;
-//
-//  public PointCombineStrategyTest() {
-//    strategy = new PointCombineStrategy();
-//    names = new HashMap<>();
-//    names.put(new String[]{}, "");
-//    names.put(new String[]{"test_name"}, "test_name");
-//    names.put(new String[]{"TestName", "test"}, "TestName.test");
-//  }
-//
-//  @Test
-//  void resolveTest() {
-//    Assertions.assertThrows(
-//        NullPointerException.class,
-//        () -> strategy.resolve(null)
-//    );
-//
-//    for (Entry<String[], String> entry : names.entrySet()) {
-//      Assertions.assertEquals(
-//          strategy.resolve(entry.getKey()),
-//          entry.getValue()
-//      );
-//    }
-//  }
+  private final PointCombineStrategy strategy;
+  private final Map<String[], String> names;
+
+  public PointCombineStrategyTest() {
+    strategy = new PointCombineStrategy();
+    names = new HashMap<>();
+    names.put(new String[]{}, "");
+    names.put(new String[]{"test_name"}, "test_name");
+    names.put(new String[]{"TestName", "test"}, "TestName.test");
+  }
+
+  @Test
+  void resolveTest() {
+    Assertions.assertThrows(
+        NullPointerException.class,
+        () -> strategy.resolve(null)
+    );
+
+    for (Entry<String[], String> entry : names.entrySet()) {
+      Assertions.assertEquals(
+          strategy.resolve(entry.getKey()),
+          entry.getValue()
+      );
+    }
+  }
 }
