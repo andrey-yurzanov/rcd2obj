@@ -25,7 +25,7 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: '8'
-        distribution: 'temurin'
+        distribution: 'oracle'
         cache: maven
         cache-dependency-path: 'rcd2obj/**'
     - name: Build with Maven
