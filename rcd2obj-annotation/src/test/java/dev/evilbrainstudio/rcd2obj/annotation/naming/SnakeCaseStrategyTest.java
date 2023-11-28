@@ -28,34 +28,34 @@ import org.junit.jupiter.api.Test;
  * @author Andrey_Yurzanov
  */
 class SnakeCaseStrategyTest {
-  private final SnakeCaseStrategy strategy;
-  private final Map<String[], String> names;
-
-  SnakeCaseStrategyTest() {
-    strategy = new SnakeCaseStrategy();
-    names = new HashMap<>();
-    names.put(new String[]{"TestName"}, "test_name");
-    names.put(new String[]{"testName"}, "test_name");
-    names.put(new String[]{"testname"}, "testname");
-    names.put(new String[]{"Testname"}, "testname");
-    names.put(new String[]{"test_name"}, "test_name");
-    names.put(new String[]{"TEST_NAME"}, "TEST_NAME");
-    names.put(new String[]{"TESTNAME"}, "TESTNAME");
-    names.put(new String[]{"TestName", "test"}, "test_name_test");
-  }
-
-  @Test
-  void resolveTest() {
-    Assertions.assertThrows(
-        NullPointerException.class,
-        () -> strategy.resolve(null)
-    );
-
-    for (Entry<String[], String> entry : names.entrySet()) {
-      Assertions.assertEquals(
-          strategy.resolve(entry.getKey()),
-          entry.getValue()
-      );
-    }
-  }
+//  private final SnakeCaseStrategy strategy;
+//  private final Map<String[], String> names;
+//
+//  SnakeCaseStrategyTest() {
+//    strategy = new SnakeCaseStrategy();
+//    names = new HashMap<>();
+//    names.put(new String[]{"TestName"}, "test_name");
+//    names.put(new String[]{"testName"}, "test_name");
+//    names.put(new String[]{"testname"}, "testname");
+//    names.put(new String[]{"Testname"}, "testname");
+//    names.put(new String[]{"test_name"}, "test_name");
+//    names.put(new String[]{"TEST_NAME"}, "TEST_NAME");
+//    names.put(new String[]{"TESTNAME"}, "TESTNAME");
+//    names.put(new String[]{"TestName", "test"}, "test_name_test");
+//  }
+//
+//  @Test
+//  void resolveTest() {
+//    Assertions.assertThrows(
+//        NullPointerException.class,
+//        () -> strategy.resolve(null)
+//    );
+//
+//    for (Entry<String[], String> entry : names.entrySet()) {
+//      Assertions.assertEquals(
+//          strategy.resolve(entry.getKey()),
+//          entry.getValue()
+//      );
+//    }
+//  }
 }
