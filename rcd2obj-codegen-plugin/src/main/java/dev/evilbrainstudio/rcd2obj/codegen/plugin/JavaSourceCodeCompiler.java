@@ -17,6 +17,8 @@
 package dev.evilbrainstudio.rcd2obj.codegen.plugin;
 
 import javax.inject.Named;
+import javax.tools.Diagnostic;
+import javax.tools.DiagnosticListener;
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
@@ -60,13 +62,23 @@ public class JavaSourceCodeCompiler {
     }
 
     JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-    StandardJavaFileManager manager = compiler.getStandardFileManager(null, null, null);
+    StandardJavaFileManager manager = compiler.getStandardFileManager(new DiagnosticListener<JavaFileObject>() {
+      @Override
+      public void report(Diagnostic<? extends JavaFileObject> diagnostic) {
+        logger.info(diagnostic.toString());
+      }
+    }, null, null);
     manager.setLocation(
       StandardLocation.CLASS_OUTPUT,
       Collections.singletonList(root)
     );
 
-    JavaCompiler.CompilationTask task = compiler.getTask(null, manager, null, classpath, null, Collections.singletonList(
+    JavaCompiler.CompilationTask task = compiler.getTask(null, manager, new DiagnosticListener<JavaFileObject>() {
+      @Override
+      public void report(Diagnostic<? extends JavaFileObject> diagnostic) {
+        logger.info(diagnostic.toString());
+      }
+    }, classpath, null, Collections.singletonList(
       new SimpleJavaFileObject(
         URI.create(String.join("", "string:///", sourceCode.getName(), ".java")),
         JavaFileObject.Kind.SOURCE) {
