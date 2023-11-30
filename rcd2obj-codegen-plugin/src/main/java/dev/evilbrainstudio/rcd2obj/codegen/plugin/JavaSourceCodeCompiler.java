@@ -48,7 +48,7 @@ public class JavaSourceCodeCompiler {
   public void compile(File root, Collection<String> classpathElements, JavaSourceCode sourceCode) throws IOException {
     ArrayList<String> classpath = new ArrayList<>();
     classpath.add("-classpath");
-    classpath.add(String.join(":", classpathElements));
+    classpath.add(String.join(File.pathSeparator, classpathElements));
 
     Logger.getLogger("compile").info(String.valueOf(classpath));
 
