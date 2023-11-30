@@ -31,6 +31,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.logging.Logger;
@@ -56,19 +57,14 @@ public class JavaSourceCodeCompiler {
     classpath.add(String.join(File.pathSeparator, classpathElements));
 
     Logger logger = Logger.getLogger("compile");
-    logger.info(String.valueOf(classpath));
+//    logger.info(String.valueOf(classpath));
 
-    for (String classpathElement : classpathElements) {
-      logger.info(Paths.get(classpathElement).toString() + ": " + Files.exists(Paths.get(classpathElement)));
-    }
+//    for (String classpathElement : classpathElements) {
+//      logger.info(Paths.get(classpathElement).toString() + ": " + Files.exists(Paths.get(classpathElement)));
+//    }
 
     JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-    StandardJavaFileManager manager = compiler.getStandardFileManager(new DiagnosticListener<JavaFileObject>() {
-      @Override
-      public void report(Diagnostic<? extends JavaFileObject> diagnostic) {
-        logger.info(diagnostic.toString());
-      }
-    }, null, null);
+    StandardJavaFileManager manager = compiler.getStandardFileManager(null, null, null);
     manager.setLocation(
       StandardLocation.CLASS_OUTPUT,
       Collections.singletonList(root)
@@ -77,17 +73,9 @@ public class JavaSourceCodeCompiler {
       StandardLocation.CLASS_PATH,
       classpathElements.stream().map(File::new).collect(Collectors.toList())
     );
-    manager.setLocation(
-      StandardLocation.PLATFORM_CLASS_PATH,
-      classpathElements.stream().map(File::new).collect(Collectors.toList())
-    );
 
-    JavaCompiler.CompilationTask task = compiler.getTask(null, manager, new DiagnosticListener<JavaFileObject>() {
-      @Override
-      public void report(Diagnostic<? extends JavaFileObject> diagnostic) {
-        logger.info(diagnostic.toString());
-      }
-    }, null, null, Collections.singletonList(
+    JavaCompiler.CompilationTask task = compiler.getTask(null, manager, null
+    , null, null, Collections.singletonList(
       new SimpleJavaFileObject(
         URI.create(String.join("", "string:///", sourceCode.getName(), ".java")),
         JavaFileObject.Kind.SOURCE) {
@@ -99,5 +87,8 @@ public class JavaSourceCodeCompiler {
       }
     ));
     task.call();
+
+
+    logger.info(Arrays.asList(root.listFiles()).toString());
   }
 }
