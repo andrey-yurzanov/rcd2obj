@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Java code compiler, uses standard Java compiler API.
@@ -72,13 +73,21 @@ public class JavaSourceCodeCompiler {
       StandardLocation.CLASS_OUTPUT,
       Collections.singletonList(root)
     );
+    manager.setLocation(
+      StandardLocation.CLASS_PATH,
+      classpathElements.stream().map(File::new).collect(Collectors.toList())
+    );
+    manager.setLocation(
+      StandardLocation.PLATFORM_CLASS_PATH,
+      classpathElements.stream().map(File::new).collect(Collectors.toList())
+    );
 
     JavaCompiler.CompilationTask task = compiler.getTask(null, manager, new DiagnosticListener<JavaFileObject>() {
       @Override
       public void report(Diagnostic<? extends JavaFileObject> diagnostic) {
         logger.info(diagnostic.toString());
       }
-    }, classpath, null, Collections.singletonList(
+    }, null, null, Collections.singletonList(
       new SimpleJavaFileObject(
         URI.create(String.join("", "string:///", sourceCode.getName(), ".java")),
         JavaFileObject.Kind.SOURCE) {
