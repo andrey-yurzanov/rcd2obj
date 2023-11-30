@@ -26,6 +26,8 @@ import javax.tools.ToolProvider;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -50,7 +52,12 @@ public class JavaSourceCodeCompiler {
     classpath.add("-classpath");
     classpath.add(String.join(File.pathSeparator, classpathElements));
 
-    Logger.getLogger("compile").info(String.valueOf(classpath));
+    Logger logger = Logger.getLogger("compile");
+    logger.info(String.valueOf(classpath));
+
+    for (String classpathElement : classpathElements) {
+      logger.info(Paths.get(classpathElement).toString() + ": " + Files.exists(Paths.get(classpathElement)));
+    }
 
     JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
     StandardJavaFileManager manager = compiler.getStandardFileManager(null, null, null);
