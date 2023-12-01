@@ -23,6 +23,8 @@
   <modules>
     <module>rcd2obj-annotation</module>
     <module>rcd2obj-codegen</module>
+    <module>rcd2obj-codegen-plugin</module>
+    <module>rcd2obj-example</module>
   </modules>
   <packaging>pom</packaging>
 
