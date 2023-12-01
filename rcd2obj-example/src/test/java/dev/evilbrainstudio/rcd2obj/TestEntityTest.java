@@ -19,12 +19,9 @@ package dev.evilbrainstudio.rcd2obj;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.logging.Logger;
 
 /**
  * Tests of TestEntity class.
@@ -43,23 +40,6 @@ class TestEntityTest {
    */
   @Test
   void checkGeneratedClassTest() {
-    Logger logger = Logger
-      .getLogger("checkGeneratedClassTest");
-
-    logger.info(ROOT_DIRECTORY);
-    logger.info(String.valueOf(Arrays.asList(new File(ROOT_DIRECTORY).listFiles())));
-    logger.info(
-      String.valueOf(
-        Arrays.asList(
-          Paths.get(
-            ROOT_DIRECTORY,
-            "target/classes/dev/evilbrainstudio/rcd2obj"
-          ).toFile().listFiles()
-        )
-      )
-    );
-
-
     Assertions.assertTrue(
       Files.exists(
         Paths.get(

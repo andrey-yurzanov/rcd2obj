@@ -17,8 +17,6 @@
 package dev.evilbrainstudio.rcd2obj.codegen.plugin;
 
 import javax.inject.Named;
-import javax.tools.Diagnostic;
-import javax.tools.DiagnosticListener;
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
@@ -28,13 +26,8 @@ import javax.tools.ToolProvider;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -52,17 +45,6 @@ public class JavaSourceCodeCompiler {
    * @param sourceCode        code for compiling
    */
   public void compile(File root, Collection<String> classpathElements, JavaSourceCode sourceCode) throws IOException {
-    ArrayList<String> classpath = new ArrayList<>();
-    classpath.add("-classpath");
-    classpath.add(String.join(File.pathSeparator, classpathElements));
-
-    Logger logger = Logger.getLogger("compile");
-//    logger.info(String.valueOf(classpath));
-
-//    for (String classpathElement : classpathElements) {
-//      logger.info(Paths.get(classpathElement).toString() + ": " + Files.exists(Paths.get(classpathElement)));
-//    }
-
     JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
     StandardJavaFileManager manager = compiler.getStandardFileManager(null, null, null);
     manager.setLocation(
@@ -74,8 +56,7 @@ public class JavaSourceCodeCompiler {
       classpathElements.stream().map(File::new).collect(Collectors.toList())
     );
 
-    JavaCompiler.CompilationTask task = compiler.getTask(null, manager, null
-    , null, null, Collections.singletonList(
+    JavaCompiler.CompilationTask task = compiler.getTask(null, manager, null, null, null, Collections.singletonList(
       new SimpleJavaFileObject(
         URI.create(String.join("", "string:///", sourceCode.getName(), ".java")),
         JavaFileObject.Kind.SOURCE) {
@@ -87,8 +68,5 @@ public class JavaSourceCodeCompiler {
       }
     ));
     task.call();
-
-
-    logger.info(Arrays.asList(root.listFiles()).toString());
   }
 }
