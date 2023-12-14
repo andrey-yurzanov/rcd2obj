@@ -16,8 +16,14 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen;
 
+import dev.evilbrainstudio.rcd2obj.codegen.constructor.JavaClassConstructor;
+import dev.evilbrainstudio.rcd2obj.codegen.constructor.JavaConstructorUnsupportedImpl;
 import dev.evilbrainstudio.rcd2obj.codegen.inherited.JavaInheritableElement;
+import dev.evilbrainstudio.rcd2obj.codegen.modifier.JavaPublicModifier;
+import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaParameter;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
+import dev.evilbrainstudio.rcd2obj.codegen.type.JavaExplicitType;
+import dev.evilbrainstudio.rcd2obj.codegen.type.JavaNameType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -31,6 +37,9 @@ import java.io.StringWriter;
  */
 class JavaClassTest {
   private static final String CLASS_NAME = "MyClass";
+  private static final String CLASS_NAME_2 = "MyClass2";
+  private static final String PARAM_NAME_1 = "name";
+  private static final String PARAM_NAME_2 = "age";
   private static final String PACKAGE_NAME = "dev.evilbrainstudio.rcd2obj.codegen";
   private static final String EMPTY_CLASS_EXPECTED = "publicclassMyClass{}";
   private static final String CLASS_PACKAGE_EXPECTED =
@@ -40,6 +49,30 @@ class JavaClassTest {
     "packagedev.evilbrainstudio.rcd2obj.codegen;",
     "importjava.io.Serializable;importjava.util.Iterator;",
     "publicclassMyClassimplementsSerializable,Comparable,Iterable,Runnable{",
+    "publicintcompareTo(Objectarg0){thrownewUnsupportedOperationException();}",
+    "publicIteratoriterator(){thrownewUnsupportedOperationException();}",
+    "publicvoidrun(){thrownewUnsupportedOperationException();}}"
+  );
+  private static final String CLASS_CONSTRUCTORS_EXPECTED = String.join(
+    "",
+    "packagedev.evilbrainstudio.rcd2obj.codegen;",
+    "importjava.io.Serializable;importjava.util.Iterator;",
+    "publicclassMyClassimplementsSerializable,Comparable,Iterable,Runnable{",
+    "MyClass(){thrownewUnsupportedOperationException();}",
+    "publicMyClass(Stringname){thrownewUnsupportedOperationException();}",
+    "publicMyClass(Stringname,Integerage){thrownewUnsupportedOperationException();}",
+    "publicintcompareTo(Objectarg0){thrownewUnsupportedOperationException();}",
+    "publicIteratoriterator(){thrownewUnsupportedOperationException();}",
+    "publicvoidrun(){thrownewUnsupportedOperationException();}}"
+  );
+  private static final String CLASS_2_CONSTRUCTORS_EXPECTED = String.join(
+    "",
+    "packagedev.evilbrainstudio.rcd2obj.codegen;",
+    "importjava.io.Serializable;importjava.util.Iterator;",
+    "publicclassMyClass2implementsSerializable,Comparable,Iterable,Runnable{",
+    "MyClass2(){thrownewUnsupportedOperationException();}",
+    "publicMyClass2(Stringname){thrownewUnsupportedOperationException();}",
+    "publicMyClass2(Stringname,Integerage){thrownewUnsupportedOperationException();}",
     "publicintcompareTo(Objectarg0){thrownewUnsupportedOperationException();}",
     "publicIteratoriterator(){thrownewUnsupportedOperationException();}",
     "publicvoidrun(){thrownewUnsupportedOperationException();}}"
@@ -81,5 +114,54 @@ class JavaClassTest {
 
     javaClass.render(new JavaElementWriteRender(writer));
     Assertions.assertEquals(CLASS_METHODS_EXPECTED, writer.toString());
+  }
+
+  @Test
+  void renderConstructorsTest() {
+    StringWriter writer = new StringWriter();
+
+    JavaClass javaClass = new JavaClass(CLASS_NAME)
+      .setClassPackage(new JavaClassPackage(PACKAGE_NAME))
+      .setClassImplements(
+        new JavaInheritableElement(Comparable.class),
+        new JavaInheritableElement(Runnable.class),
+        new JavaInheritableElement(Iterable.class),
+        new JavaInheritableElement(Serializable.class)
+      )
+      .setClassConstructors(
+        new JavaClassConstructor()
+          .setConstructorType(new JavaNameType(CLASS_NAME))
+          .setConstructorImpl(new JavaConstructorUnsupportedImpl()),
+        new JavaClassConstructor()
+          .setConstructorImpl(new JavaConstructorUnsupportedImpl())
+          .setConstructorAccessModifier(new JavaPublicModifier())
+          .setConstructorParameters(
+            new JavaParameter()
+              .setParameterOrder(1)
+              .setParameterType(new JavaExplicitType(String.class))
+              .setParameterName(PARAM_NAME_1)
+          ),
+        new JavaClassConstructor()
+          .setConstructorImpl(new JavaConstructorUnsupportedImpl())
+          .setConstructorAccessModifier(new JavaPublicModifier())
+          .setConstructorParameters(
+            new JavaParameter()
+              .setParameterOrder(1)
+              .setParameterType(new JavaExplicitType(String.class))
+              .setParameterName(PARAM_NAME_1),
+            new JavaParameter()
+              .setParameterOrder(2)
+              .setParameterType(new JavaExplicitType(Integer.class))
+              .setParameterName(PARAM_NAME_2)
+          )
+      );
+
+    javaClass.render(new JavaElementWriteRender(writer));
+    Assertions.assertEquals(CLASS_CONSTRUCTORS_EXPECTED, writer.toString());
+
+    writer = new StringWriter();
+    javaClass.setClassName(CLASS_NAME_2);
+    javaClass.render(new JavaElementWriteRender(writer));
+    Assertions.assertEquals(CLASS_2_CONSTRUCTORS_EXPECTED, writer.toString());
   }
 }

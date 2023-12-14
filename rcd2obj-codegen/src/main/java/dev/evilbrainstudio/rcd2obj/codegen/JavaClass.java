@@ -16,13 +16,16 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen;
 
+import dev.evilbrainstudio.rcd2obj.codegen.constructor.JavaClassConstructor;
 import dev.evilbrainstudio.rcd2obj.codegen.inherited.JavaInheritableElement;
 import dev.evilbrainstudio.rcd2obj.codegen.method.JavaMethod;
 import dev.evilbrainstudio.rcd2obj.codegen.modifier.JavaModifier;
 import dev.evilbrainstudio.rcd2obj.codegen.modifier.JavaPublicModifier;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaClassBufferRender;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
+import dev.evilbrainstudio.rcd2obj.codegen.type.JavaNameType;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.TreeSet;
 
@@ -37,6 +40,7 @@ public class JavaClass implements JavaElement {
   private JavaClassPackage classPackage;
   private JavaModifier classAccessModifier = new JavaPublicModifier();
   private Collection<JavaInheritableElement> classImplements;
+  private Collection<JavaClassConstructor> classConstructors;
   private Collection<JavaMethod> classMethods;
 
   /**
@@ -56,6 +60,13 @@ public class JavaClass implements JavaElement {
    */
   public JavaClass setClassName(String className) {
     this.className = className;
+
+    if (classConstructors != null && !classConstructors.isEmpty()) {
+      JavaNameType type = new JavaNameType(className);
+      for (JavaClassConstructor classConstructor : classConstructors) {
+        classConstructor.setConstructorType(type);
+      }
+    }
     return this;
   }
 
@@ -144,6 +155,34 @@ public class JavaClass implements JavaElement {
   }
 
   /**
+   * Sets constructors of the class.
+   *
+   * @param classConstructors constructors of the class
+   * @return current instance of renderer
+   */
+  public JavaClass setClassConstructors(JavaClassConstructor... classConstructors) {
+    if (this.classConstructors == null) {
+      this.classConstructors = new TreeSet<>();
+    }
+
+    JavaNameType type = new JavaNameType(className);
+    for (JavaClassConstructor classConstructor : classConstructors) {
+      classConstructor.setConstructorType(type);
+      this.classConstructors.add(classConstructor);
+    }
+    return this;
+  }
+
+  /**
+   * Returns constructors of the class.
+   *
+   * @return constructors of the class
+   */
+  public Collection<JavaClassConstructor> getClassConstructors() {
+    return classConstructors;
+  }
+
+  /**
    * Sets methods of the class.
    *
    * @param classMethods class's methods
@@ -187,9 +226,15 @@ public class JavaClass implements JavaElement {
         .append(JavaElementType.IMPLEMENTS_BLOCK_END);
     }
 
-    // methods
+    // constructors
     classRender
       .append(JavaElementType.CLASS_BODY_BEGIN)
+      .append(JavaElementType.CLASS_CONSTRUCTORS_BLOCK_BEGIN)
+      .append(classConstructors, JavaElementType.CLASS_CONSTRUCTORS_SEPARATOR.toElement())
+      .append(JavaElementType.CLASS_CONSTRUCTORS_BLOCK_END);
+
+    // methods
+    classRender
       .append(JavaElementType.CLASS_METHODS_BLOCK_BEGIN)
       .append(classMethods, JavaElementType.CLASS_METHODS_SEPARATOR.toElement())
       .append(JavaElementType.CLASS_METHODS_BLOCK_END)

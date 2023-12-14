@@ -79,12 +79,6 @@ public class JavaClassBufferRender extends JavaElementTypeRender {
   }
 
   @Override
-  public JavaElementRender append(JavaElement element) {
-    element.render(this);
-    return this;
-  }
-
-  @Override
   public JavaElementRender append(JavaElementType type) {
     buffer.add(type.toElement());
     return this;

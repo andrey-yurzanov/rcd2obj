@@ -14,30 +14,50 @@
  *    limitations under the License.
  */
 
-package dev.evilbrainstudio.rcd2obj.codegen.method;
+package dev.evilbrainstudio.rcd2obj.codegen.type;
 
-import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
-import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaNewOperator;
-import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaOperator;
-import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaThrowOperator;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 
+import java.util.Objects;
+
 /**
- * Implementation of the method, it throws {@link UnsupportedOperationException}.
+ * Simple type of the Java, renders any specified name.
  *
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaMethodUnsupportedImpl implements JavaMethodImpl {
-  private static final JavaOperator UNSUPPORTED = new JavaThrowOperator(
-      new JavaNewOperator(UnsupportedOperationException.class)
-  );
+public class JavaNameType implements JavaType {
+  private final String name;
+
+  /**
+   * Constructs new instance of type.
+   *
+   * @param name type's name
+   */
+  public JavaNameType(String name) {
+    this.name = Objects.requireNonNull(name, "name must be not null");
+  }
+
+  /**
+   * Returns type's name
+   *
+   * @return type's name
+   */
+  public String getName() {
+    return name;
+  }
 
   @Override
   public void render(JavaElementRender target) {
-    target
-        .append(JavaElementType.METHOD_IMPL_BLOCK_BEGIN)
-        .append(UNSUPPORTED)
-        .append(JavaElementType.METHOD_IMPL_BLOCK_END);
+    target.append(name);
+  }
+
+  @Override
+  public int compareTo(JavaType type) {
+    int result = -1;
+    if (type instanceof JavaNameType) {
+      result = name.compareTo(((JavaNameType) type).getName());
+    }
+    return result;
   }
 }
