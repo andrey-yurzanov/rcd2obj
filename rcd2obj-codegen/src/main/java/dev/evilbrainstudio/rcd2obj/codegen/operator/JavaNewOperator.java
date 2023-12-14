@@ -17,6 +17,7 @@
 package dev.evilbrainstudio.rcd2obj.codegen.operator;
 
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
+import dev.evilbrainstudio.rcd2obj.codegen.constructor.JavaClassConstructor;
 import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaValueParameter;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 
@@ -31,31 +32,24 @@ import java.util.TreeSet;
  * @since 1.0
  */
 public class JavaNewOperator implements JavaOperator {
-  private Collection<JavaValueParameter> newParameters;
-  private final Class<?> newType;
+  private final JavaClassConstructor newConstructor;
 
   /**
    * Constructs new instance of operator.
    *
-   * @param newType type of instance
+   * @param newConstructor constructor for instance creation
    */
-  public JavaNewOperator(Class<?> newType) {
-    this.newType = newType;
+  public JavaNewOperator(JavaClassConstructor newConstructor) {
+    this.newConstructor = newConstructor;
   }
 
   /**
-   * Sets parameters of new operator.
+   * Returns constructor for new instance creation.
    *
-   * @param newParameters parameters of new operator
-   * @return current instance
+   * @return constructor for new instance creation
    */
-  public JavaNewOperator setNewParameters(JavaValueParameter... newParameters) {
-    if (this.newParameters == null) {
-      this.newParameters = new TreeSet<>();
-    }
-    this.newParameters.addAll(Arrays.asList(newParameters));
-
-    return this;
+  public JavaClassConstructor getNewConstructor() {
+    return newConstructor;
   }
 
   @Override
@@ -63,11 +57,7 @@ public class JavaNewOperator implements JavaOperator {
     target
       .append(JavaElementType.NEW_BEGIN)
       .append(JavaElementType.NEW_KEYWORD)
-      .append(JavaElementType.NEW_TYPE)
-      .append(newType)
-      .append(JavaElementType.NEW_TYPE_PARAMS_BLOCK_BEGIN)
-      .append(newParameters, JavaElementType.NEW_TYPE_PARAMS_SEPARATOR.toElement())
-      .append(JavaElementType.NEW_TYPE_PARAMS_BLOCK_END)
+      .append(newConstructor)
       .append(JavaElementType.NEW_END);
   }
 }
