@@ -92,22 +92,6 @@ public enum JavaElementType {
    */
   NEW_KEYWORD("new", true),
   /**
-   * The type of new instance.
-   */
-  NEW_TYPE,
-  /**
-   * The start of type's constructor.
-   */
-  NEW_TYPE_PARAMS_BLOCK_BEGIN("("),
-  /**
-   * The separator of type's constructor parameters.
-   */
-  NEW_TYPE_PARAMS_SEPARATOR(","),
-  /**
-   * The end of type's constructor.
-   */
-  NEW_TYPE_PARAMS_BLOCK_END(")"),
-  /**
    * The end of the new operator.
    */
   NEW_END(";"),
