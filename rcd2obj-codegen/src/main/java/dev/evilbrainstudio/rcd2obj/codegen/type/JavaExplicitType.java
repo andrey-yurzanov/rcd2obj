@@ -18,6 +18,8 @@ package dev.evilbrainstudio.rcd2obj.codegen.type;
 
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 
+import java.util.Objects;
+
 /**
  * Explicit type of Java. Renders name of the class.
  *
@@ -33,7 +35,7 @@ public class JavaExplicitType implements JavaType {
    * @param type a class for rendering
    */
   public JavaExplicitType(Class<?> type) {
-    this.type = type;
+    this.type = Objects.requireNonNull(type);
   }
 
   /**
@@ -48,10 +50,10 @@ public class JavaExplicitType implements JavaType {
   @Override
   public int compareTo(JavaType other) {
     int result = -1;
-    if (JavaExplicitType.class.isAssignableFrom(other.getClass())) {
+    if (other instanceof JavaExplicitType) {
       String name = type.getCanonicalName();
       Class<?> otherType = ((JavaExplicitType) other).getType();
-      return name.compareTo(otherType.getCanonicalName());
+      result = name.compareTo(otherType.getCanonicalName());
     }
     return result;
   }

@@ -156,6 +156,42 @@ public enum JavaElementType {
    */
   METHOD_END,
   /**
+   * The start of the constructor's definition.
+   */
+  CONSTRUCTOR_BEGIN,
+  /**
+   * The start of the constructor's access modifier definition.
+   */
+  CONSTRUCTOR_ACCESS_MODIFIER_BEGIN,
+  /**
+   * The end of the constructor's access modifier definition.
+   */
+  CONSTRUCTOR_ACCESS_MODIFIER_END,
+  /**
+   * The start of the constructor's parameters.
+   */
+  CONSTRUCTOR_PARAMS_BLOCK_BEGIN("("),
+  /**
+   * Separator of the constructor's parameters.
+   */
+  CONSTRUCTOR_PARAMS_SEPARATOR(","),
+  /**
+   * The end of the constructor's parameters.
+   */
+  CONSTRUCTOR_PARAMS_BLOCK_END(")"),
+  /**
+   * The start of the constructor's implementation.
+   */
+  CONSTRUCTOR_IMPL_BLOCK_BEGIN("{"),
+  /**
+   * The end of the constructor's implementation.
+   */
+  CONSTRUCTOR_IMPL_BLOCK_END("}"),
+  /**
+   * The end of the constructor's definition.
+   */
+  CONSTRUCTOR_END,
+  /**
    * The start of the implements block.
    */
   IMPLEMENTS_BLOCK_BEGIN,
@@ -219,6 +255,18 @@ public enum JavaElementType {
    * The end of methods' logical block.
    */
   CLASS_METHODS_BLOCK_END,
+  /**
+   * The start of constructors' logical block.
+   */
+  CLASS_CONSTRUCTORS_BLOCK_BEGIN,
+  /**
+   * The logical separator of the constructors.
+   */
+  CLASS_CONSTRUCTORS_SEPARATOR,
+  /**
+   * The end of constructors' logical block.
+   */
+  CLASS_CONSTRUCTORS_BLOCK_END,
   /**
    * The start of imports.
    */

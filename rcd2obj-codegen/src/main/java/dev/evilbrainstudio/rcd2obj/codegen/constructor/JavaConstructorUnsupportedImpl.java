@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package dev.evilbrainstudio.rcd2obj.codegen.method;
+package dev.evilbrainstudio.rcd2obj.codegen.constructor;
 
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
 import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaNewOperator;
@@ -23,21 +23,21 @@ import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaThrowOperator;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 
 /**
- * Implementation of the method, it throws {@link UnsupportedOperationException}.
+ * Implementation of the constructor, it throws {@link UnsupportedOperationException}.
  *
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaMethodUnsupportedImpl implements JavaMethodImpl {
+public class JavaConstructorUnsupportedImpl implements JavaConstructorImpl {
   private static final JavaOperator UNSUPPORTED = new JavaThrowOperator(
-      new JavaNewOperator(UnsupportedOperationException.class)
+    new JavaNewOperator(UnsupportedOperationException.class)
   );
 
   @Override
   public void render(JavaElementRender target) {
     target
-        .append(JavaElementType.METHOD_IMPL_BLOCK_BEGIN)
-        .append(UNSUPPORTED)
-        .append(JavaElementType.METHOD_IMPL_BLOCK_END);
+      .append(JavaElementType.CONSTRUCTOR_IMPL_BLOCK_BEGIN)
+      .append(UNSUPPORTED)
+      .append(JavaElementType.CONSTRUCTOR_IMPL_BLOCK_END);
   }
 }
