@@ -274,7 +274,23 @@ public enum JavaElementType {
   /**
    * The end of imports.
    */
-  IMPORT_BLOCK_END;
+  IMPORT_BLOCK_END,
+  /**
+   * The start of variable definition.
+   */
+  VARIABLE_DEFINITION_BEGIN,
+  /**
+   * Type of the variable.
+   */
+  VARIABLE_DEFINITION_TYPE,
+  /**
+   * Name of the variable.
+   */
+  VARIABLE_DEFINITION_NAME,
+  /**
+   * The end of variable definition.
+   */
+  VARIABLE_DEFINITION_END(";");
 
   private final String value;
   private final boolean keyword;
