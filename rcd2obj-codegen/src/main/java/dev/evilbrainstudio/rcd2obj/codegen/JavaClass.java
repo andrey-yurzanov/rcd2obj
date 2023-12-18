@@ -16,7 +16,7 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen;
 
-import dev.evilbrainstudio.rcd2obj.codegen.constructor.JavaClassConstructor;
+import dev.evilbrainstudio.rcd2obj.codegen.constructor.JavaClassConstructorDefinition;
 import dev.evilbrainstudio.rcd2obj.codegen.inherited.JavaInheritableElement;
 import dev.evilbrainstudio.rcd2obj.codegen.method.JavaMethod;
 import dev.evilbrainstudio.rcd2obj.codegen.modifier.JavaModifier;
@@ -25,7 +25,6 @@ import dev.evilbrainstudio.rcd2obj.codegen.render.JavaClassBufferRender;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 import dev.evilbrainstudio.rcd2obj.codegen.type.JavaNameType;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.TreeSet;
 
@@ -40,7 +39,7 @@ public class JavaClass implements JavaElement {
   private JavaClassPackage classPackage;
   private JavaModifier classAccessModifier = new JavaPublicModifier();
   private Collection<JavaInheritableElement> classImplements;
-  private Collection<JavaClassConstructor> classConstructors;
+  private Collection<JavaClassConstructorDefinition> classConstructors;
   private Collection<JavaMethod> classMethods;
 
   /**
@@ -63,7 +62,7 @@ public class JavaClass implements JavaElement {
 
     if (classConstructors != null && !classConstructors.isEmpty()) {
       JavaNameType type = new JavaNameType(className);
-      for (JavaClassConstructor classConstructor : classConstructors) {
+      for (JavaClassConstructorDefinition classConstructor : classConstructors) {
         classConstructor.setConstructorType(type);
       }
     }
@@ -160,13 +159,13 @@ public class JavaClass implements JavaElement {
    * @param classConstructors constructors of the class
    * @return current instance of renderer
    */
-  public JavaClass setClassConstructors(JavaClassConstructor... classConstructors) {
+  public JavaClass setClassConstructors(JavaClassConstructorDefinition... classConstructors) {
     if (this.classConstructors == null) {
       this.classConstructors = new TreeSet<>();
     }
 
     JavaNameType type = new JavaNameType(className);
-    for (JavaClassConstructor classConstructor : classConstructors) {
+    for (JavaClassConstructorDefinition classConstructor : classConstructors) {
       classConstructor.setConstructorType(type);
       this.classConstructors.add(classConstructor);
     }
@@ -178,7 +177,7 @@ public class JavaClass implements JavaElement {
    *
    * @return constructors of the class
    */
-  public Collection<JavaClassConstructor> getClassConstructors() {
+  public Collection<JavaClassConstructorDefinition> getClassConstructors() {
     return classConstructors;
   }
 

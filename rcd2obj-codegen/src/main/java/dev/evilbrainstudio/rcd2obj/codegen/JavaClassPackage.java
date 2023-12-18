@@ -43,6 +43,7 @@ public class JavaClassPackage implements JavaElement {
       .append(JavaElementType.PACKAGE_KEYWORD)
       .append(JavaElementType.PACKAGE_NAME)
       .append(name)
+      .append(JavaElementType.END_EXPRESSION_OPERATOR)
       .append(JavaElementType.PACKAGE_END);
   }
 }

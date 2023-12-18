@@ -17,42 +17,47 @@
 package dev.evilbrainstudio.rcd2obj.codegen.operator;
 
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
-import dev.evilbrainstudio.rcd2obj.codegen.constructor.JavaClassConstructorInvokeOperator;
+import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaArgument;
+import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaOperator;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 
+import java.util.Objects;
+
 /**
- * New operator of Java.
+ * Java's assign operator.
  *
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaNewOperator implements JavaOperator {
-  private final JavaClassConstructorInvokeOperator newConstructor;
+public class JavaAssignOperator implements JavaOperator {
+  private final JavaArgument assignArgument;
 
   /**
-   * Constructs new instance of operator.
+   * Constructs new instance of assign operator.
    *
-   * @param newConstructor constructor for instance creation
+   * @param assignArgument argument of operator
    */
-  public JavaNewOperator(JavaClassConstructorInvokeOperator newConstructor) {
-    this.newConstructor = newConstructor;
+  public JavaAssignOperator(JavaArgument assignArgument) {
+    this.assignArgument = Objects.requireNonNull(assignArgument);
   }
 
   /**
-   * Returns constructor for new instance creation.
+   * Returns argument of operator.
    *
-   * @return constructor for new instance creation
+   * @return argument of operator
    */
-  public JavaClassConstructorInvokeOperator getNewConstructor() {
-    return newConstructor;
+  public JavaArgument getAssignArgument() {
+    return assignArgument;
   }
 
   @Override
   public void render(JavaElementRender target) {
     target
-      .append(JavaElementType.NEW_BEGIN)
-      .append(JavaElementType.NEW_KEYWORD)
-      .append(newConstructor)
-      .append(JavaElementType.NEW_END);
+      .append(JavaElementType.ASSIGN_BEGIN)
+      .append(JavaElementType.ASSIGN_KEYWORD)
+      .append(JavaElementType.ASSIGN_VALUE)
+      .append(assignArgument)
+      .append(JavaElementType.END_EXPRESSION_OPERATOR)
+      .append(JavaElementType.ASSIGN_END);
   }
 }

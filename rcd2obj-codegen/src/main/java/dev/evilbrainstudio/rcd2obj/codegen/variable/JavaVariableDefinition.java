@@ -14,10 +14,11 @@
  *    limitations under the License.
  */
 
-package dev.evilbrainstudio.rcd2obj.codegen.operator.variable;
+package dev.evilbrainstudio.rcd2obj.codegen.variable;
 
+import dev.evilbrainstudio.rcd2obj.codegen.JavaElement;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
-import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaOperator;
+import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaAssignOperator;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 import dev.evilbrainstudio.rcd2obj.codegen.type.JavaType;
 
@@ -27,7 +28,8 @@ import dev.evilbrainstudio.rcd2obj.codegen.type.JavaType;
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaVariableDefinition implements JavaOperator {
+public class JavaVariableDefinition implements JavaElement {
+  private JavaAssignOperator variableAssign;
   private final JavaType variableType;
   private final String variableName;
 
@@ -60,6 +62,36 @@ public class JavaVariableDefinition implements JavaOperator {
     return variableName;
   }
 
+  /**
+   * Returns assign operator of the variable.
+   *
+   * @return assign operator of the variable
+   */
+  public JavaAssignOperator getVariableAssign() {
+    return variableAssign;
+  }
+
+  /**
+   * Sets assign operator of the variable.
+   *
+   * @param variableAssign assign operator of the variable.
+   * @return current instance of the variable
+   */
+  public JavaVariableDefinition setVariableAssign(JavaAssignOperator variableAssign) {
+    this.variableAssign = variableAssign;
+    return this;
+  }
+
+  /**
+   * Returns operator for assignment new value to current variable.
+   *
+   * @param variableAssign assignment
+   * @return operator for assignment new value to current variable
+   */
+  public JavaVariableAssignOperator getVariable(JavaAssignOperator variableAssign) {
+    return new JavaVariableAssignOperator(this, variableAssign);
+  }
+
   @Override
   public void render(JavaElementRender target) {
     target
@@ -67,7 +99,14 @@ public class JavaVariableDefinition implements JavaOperator {
       .append(JavaElementType.VARIABLE_DEFINITION_TYPE)
       .append(variableType)
       .append(JavaElementType.VARIABLE_DEFINITION_NAME)
-      .append(variableName)
-      .append(JavaElementType.VARIABLE_DEFINITION_END);
+      .append(variableName);
+
+    // assign value
+    if (variableAssign != null) {
+      target.append(variableAssign);
+    } else {
+      target.append(JavaElementType.END_EXPRESSION_OPERATOR);
+    }
+    target.append(JavaElementType.VARIABLE_DEFINITION_END);
   }
 }

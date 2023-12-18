@@ -38,7 +38,7 @@ public enum JavaElementType {
   /**
    * The end of the package definition.
    */
-  PACKAGE_END(";"),
+  PACKAGE_END,
   /**
    * The start of the parameter definition.
    */
@@ -94,7 +94,7 @@ public enum JavaElementType {
   /**
    * The end of the new operator.
    */
-  NEW_END(";"),
+  NEW_END,
   /**
    * The start of the method definition.
    */
@@ -142,39 +142,59 @@ public enum JavaElementType {
   /**
    * The start of the constructor's definition.
    */
-  CONSTRUCTOR_BEGIN,
+  CONSTRUCTOR_DEFINITION_BEGIN,
   /**
    * The start of the constructor's access modifier definition.
    */
-  CONSTRUCTOR_ACCESS_MODIFIER_BEGIN,
+  CONSTRUCTOR_DEFINITION_ACCESS_MODIFIER_BEGIN,
   /**
    * The end of the constructor's access modifier definition.
    */
-  CONSTRUCTOR_ACCESS_MODIFIER_END,
+  CONSTRUCTOR_DEFINITION_ACCESS_MODIFIER_END,
   /**
    * The start of the constructor's parameters.
    */
-  CONSTRUCTOR_PARAMS_BLOCK_BEGIN("("),
+  CONSTRUCTOR_DEFINITION_PARAMS_BLOCK_BEGIN("("),
   /**
    * Separator of the constructor's parameters.
    */
-  CONSTRUCTOR_PARAMS_SEPARATOR(","),
+  CONSTRUCTOR_DEFINITION_PARAMS_SEPARATOR(","),
   /**
    * The end of the constructor's parameters.
    */
-  CONSTRUCTOR_PARAMS_BLOCK_END(")"),
+  CONSTRUCTOR_DEFINITION_PARAMS_BLOCK_END(")"),
   /**
    * The start of the constructor's implementation.
    */
-  CONSTRUCTOR_IMPL_BLOCK_BEGIN("{"),
+  CONSTRUCTOR_DEFINITION_IMPL_BLOCK_BEGIN("{"),
   /**
    * The end of the constructor's implementation.
    */
-  CONSTRUCTOR_IMPL_BLOCK_END("}"),
+  CONSTRUCTOR_DEFINITION_IMPL_BLOCK_END("}"),
   /**
    * The end of the constructor's definition.
    */
-  CONSTRUCTOR_END,
+  CONSTRUCTOR_DEFINITION_END,
+  /**
+   * The start of a constructor invoking.
+   */
+  CONSTRUCTOR_INVOKE_BEGIN,
+  /**
+   * The start of the constructor's parameters.
+   */
+  CONSTRUCTOR_INVOKE_PARAMS_BLOCK_BEGIN("("),
+  /**
+   * Separator of the constructor's arguments.
+   */
+  CONSTRUCTOR_INVOKE_ARGS_SEPARATOR(","),
+  /**
+   * The end of the constructor's parameters.
+   */
+  CONSTRUCTOR_INVOKE_PARAMS_BLOCK_END(")"),
+  /**
+   * The end of a constructor invoking.
+   */
+  CONSTRUCTOR_INVOKE_END,
   /**
    * The start of the implements block.
    */
@@ -270,7 +290,7 @@ public enum JavaElementType {
   /**
    * The end of import's operator.
    */
-  IMPORT_END(";"),
+  IMPORT_END,
   /**
    * The end of imports.
    */
@@ -290,7 +310,39 @@ public enum JavaElementType {
   /**
    * The end of variable definition.
    */
-  VARIABLE_DEFINITION_END(";");
+  VARIABLE_DEFINITION_END,
+  /**
+   * The start of variable assignment.
+   */
+  VARIABLE_ASSIGN_BEGIN,
+  /**
+   * Name of the variable.
+   */
+  VARIABLE_ASSIGN_NAME,
+  /**
+   * The end of variable assignment.
+   */
+  VARIABLE_ASSIGN_END,
+  /**
+   * The start of assign operator.
+   */
+  ASSIGN_BEGIN,
+  /**
+   * The keyword of assign operator.
+   */
+  ASSIGN_KEYWORD("=", true),
+  /**
+   * A value of assign operator.
+   */
+  ASSIGN_VALUE,
+  /**
+   * The end of assign operator.
+   */
+  ASSIGN_END,
+  /**
+   * Java's end of expression.
+   */
+  END_EXPRESSION_OPERATOR(";");
 
   private final String value;
   private final boolean keyword;

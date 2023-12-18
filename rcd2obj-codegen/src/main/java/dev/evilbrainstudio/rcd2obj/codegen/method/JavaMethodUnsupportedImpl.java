@@ -17,7 +17,7 @@
 package dev.evilbrainstudio.rcd2obj.codegen.method;
 
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
-import dev.evilbrainstudio.rcd2obj.codegen.constructor.JavaClassConstructor;
+import dev.evilbrainstudio.rcd2obj.codegen.constructor.JavaClassConstructorDefinition;
 import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaNewOperator;
 import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaOperator;
 import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaThrowOperator;
@@ -33,8 +33,9 @@ import dev.evilbrainstudio.rcd2obj.codegen.type.JavaExplicitType;
 public class JavaMethodUnsupportedImpl implements JavaMethodImpl {
   private static final JavaOperator UNSUPPORTED = new JavaThrowOperator(
     new JavaNewOperator(
-      new JavaClassConstructor()
+      new JavaClassConstructorDefinition()
         .setConstructorType(new JavaExplicitType(UnsupportedOperationException.class))
+        .getConstructor()
     )
   );
 

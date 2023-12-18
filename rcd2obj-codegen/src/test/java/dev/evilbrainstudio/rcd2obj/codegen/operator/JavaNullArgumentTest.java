@@ -23,22 +23,19 @@ import org.junit.jupiter.api.Test;
 import java.io.StringWriter;
 
 /**
- * Tests for {@link JavaThrowOperator}.
+ * Tests of {@link JavaNullArgument}.
  *
  * @author Andrey_Yurzanov
  */
-class JavaThrowOperatorTest {
-  private static final String RESULT = "throwX;";
-  private static final String TYPE = "X";
+class JavaNullArgumentTest {
+  private static final String EXPECTED = "null";
 
   @Test
-  void renderTestTest() {
-    JavaThrowOperator operator = new JavaThrowOperator(
-      (target) -> target.append(TYPE)
-    );
-
+  void renderTest() {
     StringWriter writer = new StringWriter();
-    operator.render(new JavaElementWriteRender(writer));
-    Assertions.assertEquals(writer.toString(), RESULT);
+    JavaNullArgument argument = new JavaNullArgument();
+    argument.render(new JavaElementWriteRender(writer));
+
+    Assertions.assertEquals(EXPECTED, writer.toString());
   }
 }

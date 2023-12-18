@@ -19,13 +19,16 @@ package dev.evilbrainstudio.rcd2obj.codegen.constructor;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElement;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
 import dev.evilbrainstudio.rcd2obj.codegen.modifier.JavaModifier;
+import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaArgument;
 import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaParameter;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 import dev.evilbrainstudio.rcd2obj.codegen.type.JavaType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.TreeSet;
 
 /**
@@ -34,7 +37,7 @@ import java.util.TreeSet;
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaClassConstructor implements JavaElement, Comparable<JavaClassConstructor> {
+public class JavaClassConstructorDefinition implements JavaElement, Comparable<JavaClassConstructorDefinition> {
   private JavaType constructorType;
   private Collection<JavaParameter> constructorParameters;
   private JavaModifier constructorAccessModifier;
@@ -54,7 +57,7 @@ public class JavaClassConstructor implements JavaElement, Comparable<JavaClassCo
    *
    * @param constructorType type of constructor's owner
    */
-  public JavaClassConstructor setConstructorType(JavaType constructorType) {
+  public JavaClassConstructorDefinition setConstructorType(JavaType constructorType) {
     this.constructorType = constructorType;
     return this;
   }
@@ -73,7 +76,7 @@ public class JavaClassConstructor implements JavaElement, Comparable<JavaClassCo
    *
    * @param constructorParameters constructor's parameters
    */
-  public JavaClassConstructor setConstructorParameters(JavaParameter... constructorParameters) {
+  public JavaClassConstructorDefinition setConstructorParameters(JavaParameter... constructorParameters) {
     if (this.constructorParameters == null) {
       this.constructorParameters = new TreeSet<>();
     }
@@ -96,7 +99,7 @@ public class JavaClassConstructor implements JavaElement, Comparable<JavaClassCo
    *
    * @param constructorAccessModifier constructor's access modifier.
    */
-  public JavaClassConstructor setConstructorAccessModifier(JavaModifier constructorAccessModifier) {
+  public JavaClassConstructorDefinition setConstructorAccessModifier(JavaModifier constructorAccessModifier) {
     this.constructorAccessModifier = constructorAccessModifier;
     return this;
   }
@@ -115,26 +118,53 @@ public class JavaClassConstructor implements JavaElement, Comparable<JavaClassCo
    *
    * @param constructorImpl constructor's implementation.
    */
-  public JavaClassConstructor setConstructorImpl(JavaConstructorImpl constructorImpl) {
+  public JavaClassConstructorDefinition setConstructorImpl(JavaConstructorImpl constructorImpl) {
     this.constructorImpl = constructorImpl;
     return this;
   }
 
-  @Override
-  public void render(JavaElementRender target) {
-    target
-      .append(JavaElementType.CONSTRUCTOR_BEGIN)
-      .append(constructorAccessModifier)
-      .append(constructorType)
-      .append(JavaElementType.CONSTRUCTOR_PARAMS_BLOCK_BEGIN)
-      .append(constructorParameters, JavaElementType.CONSTRUCTOR_PARAMS_SEPARATOR.toElement())
-      .append(JavaElementType.CONSTRUCTOR_PARAMS_BLOCK_END)
-      .append(constructorImpl)
-      .append(JavaElementType.CONSTRUCTOR_END);
+  /**
+   * Returns new instance for invocation of the constructor.
+   *
+   * @param constructorArguments constructor's invocation arguments
+   * @return new instance for invocation of the constructor
+   */
+  public JavaClassConstructorInvokeOperator getConstructor(JavaArgument... constructorArguments) {
+    int size = 0;
+    if (constructorParameters != null) {
+      size = constructorParameters.size();
+    }
+
+    Collection<JavaArgument> arguments = new ArrayList<>();
+    if (constructorArguments != null) {
+      arguments.addAll(Arrays.asList(constructorArguments));
+    }
+
+    if (size == arguments.size()) {
+      return new JavaClassConstructorInvokeOperator(this, constructorArguments);
+    }
+    throw new IllegalArgumentException("The number of arguments does not match the number of parameters!");
   }
 
   @Override
-  public int compareTo(JavaClassConstructor other) {
+  public void render(JavaElementRender target) {
+    if (constructorImpl == null) {
+      constructorImpl = new JavaConstructorUnsupportedImpl();
+    }
+
+    target
+      .append(JavaElementType.CONSTRUCTOR_DEFINITION_BEGIN)
+      .append(constructorAccessModifier)
+      .append(Objects.requireNonNull(constructorType, "[constructorType] is required for definition!"))
+      .append(JavaElementType.CONSTRUCTOR_DEFINITION_PARAMS_BLOCK_BEGIN)
+      .append(constructorParameters, JavaElementType.CONSTRUCTOR_DEFINITION_PARAMS_SEPARATOR.toElement())
+      .append(JavaElementType.CONSTRUCTOR_DEFINITION_PARAMS_BLOCK_END)
+      .append(constructorImpl)
+      .append(JavaElementType.CONSTRUCTOR_DEFINITION_END);
+  }
+
+  @Override
+  public int compareTo(JavaClassConstructorDefinition other) {
     int result = constructorType.compareTo(other.getConstructorType());
     if (result == 0) {
       int size = 0;
