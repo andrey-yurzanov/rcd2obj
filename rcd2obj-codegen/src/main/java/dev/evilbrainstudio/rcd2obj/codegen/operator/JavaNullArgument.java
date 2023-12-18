@@ -16,34 +16,19 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.operator;
 
-import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 
 /**
- * Throw operator of Java.
+ * Java's null literal.
  *
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaThrowOperator implements JavaOperator {
-  private final JavaOperator operator;
-
-  /**
-   * Constructs new instance of the throw operator.
-   *
-   * @param operator returns an instance for throws
-   */
-  public JavaThrowOperator(JavaOperator operator) {
-    this.operator = operator;
-  }
+public class JavaNullArgument implements JavaArgument {
+  private static final String VALUE = "null";
 
   @Override
   public void render(JavaElementRender target) {
-    target
-      .append(JavaElementType.THROW_BEGIN)
-      .append(JavaElementType.THROW_KEYWORD)
-      .append(operator)
-      .append(JavaElementType.END_EXPRESSION_OPERATOR)
-      .append(JavaElementType.THROW_END);
+    target.append(VALUE);
   }
 }

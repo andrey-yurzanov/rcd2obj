@@ -32,16 +32,17 @@ import dev.evilbrainstudio.rcd2obj.codegen.type.JavaExplicitType;
 public class JavaConstructorUnsupportedImpl implements JavaConstructorImpl {
   private static final JavaOperator UNSUPPORTED = new JavaThrowOperator(
     new JavaNewOperator(
-      new JavaClassConstructor()
+      new JavaClassConstructorDefinition()
         .setConstructorType(new JavaExplicitType(UnsupportedOperationException.class))
+        .getConstructor()
     )
   );
 
   @Override
   public void render(JavaElementRender target) {
     target
-      .append(JavaElementType.CONSTRUCTOR_IMPL_BLOCK_BEGIN)
+      .append(JavaElementType.CONSTRUCTOR_DEFINITION_IMPL_BLOCK_BEGIN)
       .append(UNSUPPORTED)
-      .append(JavaElementType.CONSTRUCTOR_IMPL_BLOCK_END);
+      .append(JavaElementType.CONSTRUCTOR_DEFINITION_IMPL_BLOCK_END);
   }
 }

@@ -60,6 +60,7 @@ public class JavaImport implements JavaElement, Comparable<JavaImport> {
       .append(JavaElementType.IMPORT_KEYWORD)
       .append(JavaElementType.IMPORT_TYPE)
       .append(type)
+      .append(JavaElementType.END_EXPRESSION_OPERATOR)
       .append(JavaElementType.IMPORT_END);
   }
 }

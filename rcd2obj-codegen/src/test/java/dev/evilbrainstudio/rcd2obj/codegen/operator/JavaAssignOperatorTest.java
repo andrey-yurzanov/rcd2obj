@@ -16,29 +16,32 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.operator;
 
+import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaNullArgument;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
+import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaAssignOperator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
 
 /**
- * Tests for {@link JavaThrowOperator}.
+ * Tests of {@link JavaAssignOperator}.
  *
  * @author Andrey_Yurzanov
  */
-class JavaThrowOperatorTest {
-  private static final String RESULT = "throwX;";
-  private static final String TYPE = "X";
+class JavaAssignOperatorTest {
+  private static final String EXPECTED = "=null;";
 
   @Test
-  void renderTestTest() {
-    JavaThrowOperator operator = new JavaThrowOperator(
-      (target) -> target.append(TYPE)
-    );
+  void renderTest() {
+    Assertions.assertThrows(NullPointerException.class, () -> new JavaAssignOperator(null));
 
     StringWriter writer = new StringWriter();
-    operator.render(new JavaElementWriteRender(writer));
-    Assertions.assertEquals(writer.toString(), RESULT);
+    JavaAssignOperator assign = new JavaAssignOperator(
+      new JavaNullArgument()
+    );
+    assign.render(new JavaElementWriteRender(writer));
+
+    Assertions.assertEquals(EXPECTED, writer.toString());
   }
 }

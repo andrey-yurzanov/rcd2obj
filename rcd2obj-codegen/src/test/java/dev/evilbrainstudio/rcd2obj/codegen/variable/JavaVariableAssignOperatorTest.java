@@ -14,49 +14,37 @@
  *    limitations under the License.
  */
 
-package dev.evilbrainstudio.rcd2obj.codegen.operator.variable;
+package dev.evilbrainstudio.rcd2obj.codegen.variable;
 
+import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaAssignOperator;
+import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaNullArgument;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
 import dev.evilbrainstudio.rcd2obj.codegen.type.JavaExplicitType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
-import java.util.Map;
 
 /**
- * Tests of {@link JavaVariableDefinition}.
- *
- * @author Andrey_Yurzanov
+ * Tests of {@link JavaVariableAssignOperator}.
  */
-class JavaVariableDefinitionTest {
+class JavaVariableAssignOperatorTest {
   private static final String NAME = "myVariable";
-  private static final String RENDER_LANG_EXPECTED = "StringmyVariable;";
-  private static final String RENDER_UTIL_EXPECTED = "java.util.MapmyVariable;";
+  private static final String RENDER_ASSIGN_EXPECTED = "myVariable=null;";
 
   @Test
-  void renderLangTest() {
+  void renderTest() {
     StringWriter writer = new StringWriter();
 
     JavaVariableDefinition definition = new JavaVariableDefinition(
       new JavaExplicitType(String.class),
       NAME
     );
-    definition.render(new JavaElementWriteRender(writer));
 
-    Assertions.assertEquals(RENDER_LANG_EXPECTED, writer.toString());
-  }
+    JavaVariableAssignOperator variable = definition.getVariable(new JavaAssignOperator(new JavaNullArgument()));
+    variable.render(new JavaElementWriteRender(writer));
 
-  @Test
-  void renderUtilTest() {
-    StringWriter writer = new StringWriter();
-
-    JavaVariableDefinition definition = new JavaVariableDefinition(
-      new JavaExplicitType(Map.class),
-      NAME
-    );
-    definition.render(new JavaElementWriteRender(writer));
-
-    Assertions.assertEquals(RENDER_UTIL_EXPECTED, writer.toString());
+    Assertions.assertEquals(RENDER_ASSIGN_EXPECTED, writer.toString());
+    Assertions.assertThrows(NullPointerException.class, () -> definition.getVariable(null));
   }
 }

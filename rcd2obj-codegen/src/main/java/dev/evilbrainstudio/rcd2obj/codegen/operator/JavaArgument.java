@@ -16,29 +16,11 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.operator;
 
-import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import java.io.StringWriter;
-
 /**
- * Tests for {@link JavaThrowOperator}.
+ * An abstraction of any Java's value, such as literals, method's return value etc.
  *
  * @author Andrey_Yurzanov
+ * @since 1.0
  */
-class JavaThrowOperatorTest {
-  private static final String RESULT = "throwX;";
-  private static final String TYPE = "X";
-
-  @Test
-  void renderTestTest() {
-    JavaThrowOperator operator = new JavaThrowOperator(
-      (target) -> target.append(TYPE)
-    );
-
-    StringWriter writer = new StringWriter();
-    operator.render(new JavaElementWriteRender(writer));
-    Assertions.assertEquals(writer.toString(), RESULT);
-  }
+public interface JavaArgument extends JavaOperator {
 }

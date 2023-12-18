@@ -16,7 +16,7 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.operator;
 
-import dev.evilbrainstudio.rcd2obj.codegen.constructor.JavaClassConstructor;
+import dev.evilbrainstudio.rcd2obj.codegen.constructor.JavaClassConstructorDefinition;
 import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaValueParameter;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
 
@@ -32,15 +32,16 @@ import org.junit.jupiter.api.Test;
  * @author Andrey_Yurzanov
  */
 class JavaNewOperatorTest {
-  private static final String RESULT = "newUnsupportedOperationException();";
+  private static final String RESULT = "newUnsupportedOperationException()";
   private static final String RESULT_WITH_PARAMS =
-    "newUnsupportedOperationException(\"message\");";
+    "newUnsupportedOperationException(null)";
 
   @Test
   void renderTest() {
     JavaNewOperator operator = new JavaNewOperator(
-      new JavaClassConstructor()
+      new JavaClassConstructorDefinition()
         .setConstructorType(new JavaExplicitType(UnsupportedOperationException.class))
+        .getConstructor()
     );
 
     StringWriter writer = new StringWriter();
@@ -51,7 +52,7 @@ class JavaNewOperatorTest {
   @Test
   void renderTestWithParams() {
     JavaNewOperator operator = new JavaNewOperator(
-      new JavaClassConstructor()
+      new JavaClassConstructorDefinition()
         .setConstructorType(new JavaExplicitType(UnsupportedOperationException.class))
         .setConstructorParameters(
           new JavaValueParameter()
@@ -59,6 +60,7 @@ class JavaNewOperatorTest {
             .setParameterType(new JavaExplicitType(String.class))
             .setParameterValue("message")
         )
+        .getConstructor(new JavaNullArgument())
     );
 
     StringWriter writer = new StringWriter();

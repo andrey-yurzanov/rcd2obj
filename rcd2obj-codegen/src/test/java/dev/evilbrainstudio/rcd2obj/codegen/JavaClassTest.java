@@ -16,7 +16,7 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen;
 
-import dev.evilbrainstudio.rcd2obj.codegen.constructor.JavaClassConstructor;
+import dev.evilbrainstudio.rcd2obj.codegen.constructor.JavaClassConstructorDefinition;
 import dev.evilbrainstudio.rcd2obj.codegen.constructor.JavaConstructorUnsupportedImpl;
 import dev.evilbrainstudio.rcd2obj.codegen.inherited.JavaInheritableElement;
 import dev.evilbrainstudio.rcd2obj.codegen.modifier.JavaPublicModifier;
@@ -129,10 +129,10 @@ class JavaClassTest {
         new JavaInheritableElement(Serializable.class)
       )
       .setClassConstructors(
-        new JavaClassConstructor()
+        new JavaClassConstructorDefinition()
           .setConstructorType(new JavaNameType(CLASS_NAME))
           .setConstructorImpl(new JavaConstructorUnsupportedImpl()),
-        new JavaClassConstructor()
+        new JavaClassConstructorDefinition()
           .setConstructorImpl(new JavaConstructorUnsupportedImpl())
           .setConstructorAccessModifier(new JavaPublicModifier())
           .setConstructorParameters(
@@ -141,7 +141,7 @@ class JavaClassTest {
               .setParameterType(new JavaExplicitType(String.class))
               .setParameterName(PARAM_NAME_1)
           ),
-        new JavaClassConstructor()
+        new JavaClassConstructorDefinition()
           .setConstructorImpl(new JavaConstructorUnsupportedImpl())
           .setConstructorAccessModifier(new JavaPublicModifier())
           .setConstructorParameters(
