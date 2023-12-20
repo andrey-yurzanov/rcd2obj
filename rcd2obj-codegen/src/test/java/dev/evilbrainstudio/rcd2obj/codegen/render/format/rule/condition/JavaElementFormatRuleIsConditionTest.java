@@ -29,12 +29,12 @@ class JavaElementFormatRuleIsConditionTest {
   @Test
   void matchTest() {
     JavaElementFormatRuleIsCondition condition = new JavaElementFormatRuleIsCondition(
-      JavaElementType.METHOD_RETURN_TYPE,
-      JavaElementType.METHOD_BEGIN
+      JavaElementType.METHOD_DEFINITION_RETURN_TYPE,
+      JavaElementType.METHOD_DEFINITION_BEGIN
     );
 
-    Assertions.assertTrue(condition.match(JavaElementType.METHOD_RETURN_TYPE));
-    Assertions.assertTrue(condition.match(JavaElementType.METHOD_BEGIN));
+    Assertions.assertTrue(condition.match(JavaElementType.METHOD_DEFINITION_RETURN_TYPE));
+    Assertions.assertTrue(condition.match(JavaElementType.METHOD_DEFINITION_BEGIN));
 
     Assertions.assertFalse(condition.match(JavaElementType.IMPORT_BEGIN));
     Assertions.assertFalse(condition.match(JavaElementType.CLASS_BODY_BEGIN));

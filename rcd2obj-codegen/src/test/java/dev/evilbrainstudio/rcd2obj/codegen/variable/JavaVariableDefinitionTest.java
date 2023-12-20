@@ -16,8 +16,11 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.variable;
 
+import dev.evilbrainstudio.rcd2obj.codegen.method.JavaClassMethodDefinition;
+import dev.evilbrainstudio.rcd2obj.codegen.method.JavaClassMethodInvokeOperator;
 import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaAssignOperator;
 import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaNullArgument;
+import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaParameter;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
 import dev.evilbrainstudio.rcd2obj.codegen.type.JavaExplicitType;
 import org.junit.jupiter.api.Assertions;
@@ -33,6 +36,7 @@ import java.util.Map;
  */
 class JavaVariableDefinitionTest {
   private static final String NAME = "myVariable";
+  private static final String METHOD_NAME = "setMyVariable";
   private static final String RENDER_LANG_EXPECTED = "StringmyVariable;";
   private static final String RENDER_UTIL_EXPECTED = "java.util.MapmyVariable;";
 
@@ -79,15 +83,36 @@ class JavaVariableDefinitionTest {
   }
 
   @Test
-  void getVariableTest() {
+  void assignTest() {
     JavaVariableDefinition definition = new JavaVariableDefinition(
       new JavaExplicitType(String.class),
       NAME
     );
 
     JavaAssignOperator assignOperator = new JavaAssignOperator(new JavaNullArgument());
-    JavaVariableAssignOperator variable = definition.getVariable(assignOperator);
+    JavaVariableAssignOperator variable = definition.assign(assignOperator);
     Assertions.assertEquals(definition, variable.getVariableDefinition());
     Assertions.assertEquals(assignOperator, variable.getVariableAssign());
+  }
+
+  @Test
+  void invokeTest() {
+    JavaClassMethodInvokeOperator method = new JavaClassMethodDefinition()
+      .setMethodName(METHOD_NAME)
+      .setMethodParameters(
+        new JavaParameter()
+          .setParameterOrder(1)
+          .setParameterName(NAME)
+          .setParameterType(new JavaExplicitType(String.class))
+      ).getMethod(new JavaNullArgument());
+
+    JavaVariableDefinition definition = new JavaVariableDefinition(
+      new JavaExplicitType(String.class),
+      NAME
+    );
+    JavaVariableInvokeMethodOperator invoke = definition.invoke(method);
+
+    Assertions.assertEquals(method, invoke.getMethodInvoke());
+    Assertions.assertEquals(definition, invoke.getVariableDefinition());
   }
 }

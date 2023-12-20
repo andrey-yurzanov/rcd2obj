@@ -41,10 +41,10 @@ class JavaVariableAssignOperatorTest {
       NAME
     );
 
-    JavaVariableAssignOperator variable = definition.getVariable(new JavaAssignOperator(new JavaNullArgument()));
+    JavaVariableAssignOperator variable = definition.assign(new JavaAssignOperator(new JavaNullArgument()));
     variable.render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(RENDER_ASSIGN_EXPECTED, writer.toString());
-    Assertions.assertThrows(NullPointerException.class, () -> definition.getVariable(null));
+    Assertions.assertThrows(NullPointerException.class, () -> definition.assign(null));
   }
 }

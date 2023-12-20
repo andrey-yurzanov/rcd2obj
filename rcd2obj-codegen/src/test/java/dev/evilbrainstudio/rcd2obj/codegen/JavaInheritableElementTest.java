@@ -17,7 +17,7 @@
 package dev.evilbrainstudio.rcd2obj.codegen;
 
 import dev.evilbrainstudio.rcd2obj.codegen.inherited.JavaInheritableElement;
-import dev.evilbrainstudio.rcd2obj.codegen.method.JavaMethod;
+import dev.evilbrainstudio.rcd2obj.codegen.method.JavaClassMethodDefinition;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -63,7 +63,7 @@ class JavaInheritableElementTest {
   void renderMethodsTest() {
     JavaInheritableElement element = new JavaInheritableElement(Comparator.class);
 
-    Collection<JavaMethod> methods = element.getInheritedMethods();
+    Collection<JavaClassMethodDefinition> methods = element.getInheritedMethods();
     Assertions.assertEquals(INHERITED_METHODS_SIZE_EXPECTED, methods.size());
 
     StringWriter writer = new StringWriter();
@@ -80,7 +80,7 @@ class JavaInheritableElementTest {
   void renderEmptyMethodsTest() {
     JavaInheritableElement element = new JavaInheritableElement(Serializable.class);
 
-    Collection<JavaMethod> methods = element.getInheritedMethods();
+    Collection<JavaClassMethodDefinition> methods = element.getInheritedMethods();
     Assertions.assertTrue(methods.isEmpty());
   }
 }

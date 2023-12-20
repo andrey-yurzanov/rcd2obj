@@ -18,7 +18,7 @@ package dev.evilbrainstudio.rcd2obj.codegen;
 
 import dev.evilbrainstudio.rcd2obj.codegen.constructor.JavaClassConstructorDefinition;
 import dev.evilbrainstudio.rcd2obj.codegen.inherited.JavaInheritableElement;
-import dev.evilbrainstudio.rcd2obj.codegen.method.JavaMethod;
+import dev.evilbrainstudio.rcd2obj.codegen.method.JavaClassMethodDefinition;
 import dev.evilbrainstudio.rcd2obj.codegen.modifier.JavaModifier;
 import dev.evilbrainstudio.rcd2obj.codegen.modifier.JavaPublicModifier;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaClassBufferRender;
@@ -40,7 +40,7 @@ public class JavaClass implements JavaElement {
   private JavaModifier classAccessModifier = new JavaPublicModifier();
   private Collection<JavaInheritableElement> classImplements;
   private Collection<JavaClassConstructorDefinition> classConstructors;
-  private Collection<JavaMethod> classMethods;
+  private Collection<JavaClassMethodDefinition> classMethods;
 
   /**
    * Constructs new instance of the renderer by class's name.
@@ -187,7 +187,7 @@ public class JavaClass implements JavaElement {
    * @param classMethods class's methods
    * @return current instance of renderer
    */
-  public JavaClass setClassMethods(Collection<JavaMethod> classMethods) {
+  public JavaClass setClassMethods(Collection<JavaClassMethodDefinition> classMethods) {
     if (this.classMethods == null) {
       this.classMethods = new TreeSet<>();
     }
@@ -201,7 +201,7 @@ public class JavaClass implements JavaElement {
    *
    * @return methods of the class
    */
-  public Collection<JavaMethod> getClassMethods() {
+  public Collection<JavaClassMethodDefinition> getClassMethods() {
     return classMethods;
   }
 

@@ -141,7 +141,7 @@ public class JavaClassConstructorDefinition implements JavaElement, Comparable<J
     }
 
     if (size == arguments.size()) {
-      return new JavaClassConstructorInvokeOperator(this, constructorArguments);
+      return new JavaClassConstructorInvokeOperator(this, arguments);
     }
     throw new IllegalArgumentException("The number of arguments does not match the number of parameters!");
   }

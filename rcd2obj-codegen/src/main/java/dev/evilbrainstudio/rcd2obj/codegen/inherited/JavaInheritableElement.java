@@ -18,7 +18,7 @@ package dev.evilbrainstudio.rcd2obj.codegen.inherited;
 
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElement;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
-import dev.evilbrainstudio.rcd2obj.codegen.method.JavaMethod;
+import dev.evilbrainstudio.rcd2obj.codegen.method.JavaClassMethodDefinition;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 
 import java.lang.reflect.Method;
@@ -70,13 +70,13 @@ public class JavaInheritableElement implements JavaElement, Comparable<JavaInher
    *
    * @return inherited methods
    */
-  public Collection<JavaMethod> getInheritedMethods() {
+  public Collection<JavaClassMethodDefinition> getInheritedMethods() {
     Method[] typeMethods = type.getMethods();
     if (typeMethods.length > 0) {
-      List<JavaMethod> methods = new ArrayList<>();
+      List<JavaClassMethodDefinition> methods = new ArrayList<>();
       for (Method method : type.getMethods()) {
         if (!isDefinedInObject(method) && canOverride(method)) {
-          methods.add(new JavaMethod(method));
+          methods.add(new JavaClassMethodDefinition(method));
         }
       }
       return methods;
