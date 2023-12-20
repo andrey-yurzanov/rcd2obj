@@ -183,8 +183,8 @@ public class JavaElementFormatRender implements JavaElementRender {
           anyRule,
           new JavaElementFormatRuleIsCondition(
             JavaElementType.IMPLEMENTS_SEPARATOR,
-            JavaElementType.METHOD_PARAMS_SEPARATOR,
-            JavaElementType.METHOD_RETURN_TYPE
+            JavaElementType.METHOD_DEFINITION_PARAMS_SEPARATOR,
+            JavaElementType.METHOD_DEFINITION_RETURN_TYPE
           ),
           anyRule
         )

@@ -18,6 +18,7 @@ package dev.evilbrainstudio.rcd2obj.codegen.variable;
 
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElement;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
+import dev.evilbrainstudio.rcd2obj.codegen.method.JavaClassMethodInvokeOperator;
 import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaAssignOperator;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 import dev.evilbrainstudio.rcd2obj.codegen.type.JavaType;
@@ -83,13 +84,23 @@ public class JavaVariableDefinition implements JavaElement {
   }
 
   /**
-   * Returns operator for assignment new value to current variable.
+   * Returns operator for code generating assignment new value to a variable.
    *
    * @param variableAssign assignment
-   * @return operator for assignment new value to current variable
+   * @return operator for code generating assignment new value to a variable
    */
-  public JavaVariableAssignOperator getVariable(JavaAssignOperator variableAssign) {
+  public JavaVariableAssignOperator assign(JavaAssignOperator variableAssign) {
     return new JavaVariableAssignOperator(this, variableAssign);
+  }
+
+  /**
+   * Returns operator for code generating variable's method invocation.
+   *
+   * @param methodInvoke variable's method
+   * @return operator for generating variable's method invocation
+   */
+  public JavaVariableInvokeMethodOperator invoke(JavaClassMethodInvokeOperator methodInvoke) {
+    return new JavaVariableInvokeMethodOperator(this, methodInvoke);
   }
 
   @Override

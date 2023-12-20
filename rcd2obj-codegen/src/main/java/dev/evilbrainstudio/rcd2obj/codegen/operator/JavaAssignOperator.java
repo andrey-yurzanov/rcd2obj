@@ -17,8 +17,6 @@
 package dev.evilbrainstudio.rcd2obj.codegen.operator;
 
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
-import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaArgument;
-import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaOperator;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
 
 import java.util.Objects;
@@ -54,7 +52,7 @@ public class JavaAssignOperator implements JavaOperator {
   public void render(JavaElementRender target) {
     target
       .append(JavaElementType.ASSIGN_BEGIN)
-      .append(JavaElementType.ASSIGN_KEYWORD)
+      .append(JavaElementType.ASSIGN_OPERATOR)
       .append(JavaElementType.ASSIGN_VALUE)
       .append(assignArgument)
       .append(JavaElementType.END_EXPRESSION_OPERATOR)

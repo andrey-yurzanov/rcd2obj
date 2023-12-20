@@ -43,10 +43,10 @@ public class JavaClassConstructorInvokeOperator implements JavaArgument {
    */
   protected JavaClassConstructorInvokeOperator(
     JavaClassConstructorDefinition constructorDefinition,
-    JavaArgument... constructorArguments
+    Collection<JavaArgument> constructorArguments
   ) {
     this.constructorDefinition = constructorDefinition;
-    this.constructorArguments = Arrays.asList(constructorArguments);
+    this.constructorArguments = constructorArguments;
   }
 
   /**

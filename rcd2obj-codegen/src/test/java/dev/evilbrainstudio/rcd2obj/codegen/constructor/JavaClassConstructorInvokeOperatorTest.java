@@ -25,6 +25,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Tests of {@link JavaClassConstructorInvokeOperator}.
@@ -43,7 +45,8 @@ class JavaClassConstructorInvokeOperatorTest {
     StringWriter writer = new StringWriter();
     JavaClassConstructorInvokeOperator operator = new JavaClassConstructorInvokeOperator(
       new JavaClassConstructorDefinition()
-        .setConstructorType(new JavaNameType(NAME))
+        .setConstructorType(new JavaNameType(NAME)),
+      Collections.emptyList()
     );
     operator.render(new JavaElementWriteRender(writer));
 
@@ -66,8 +69,10 @@ class JavaClassConstructorInvokeOperatorTest {
             .setParameterType(new JavaExplicitType(Integer.class))
             .setParameterName(PARAM_NAME_2)
         ),
-      new JavaNullArgument(),
-      new JavaNullArgument()
+      Arrays.asList(
+        new JavaNullArgument(),
+        new JavaNullArgument()
+      )
     );
     operator.render(new JavaElementWriteRender(writer));
 
@@ -78,7 +83,8 @@ class JavaClassConstructorInvokeOperatorTest {
   void renderThrowsTest() {
     StringWriter writer = new StringWriter();
     JavaClassConstructorInvokeOperator operator = new JavaClassConstructorInvokeOperator(
-      new JavaClassConstructorDefinition()
+      new JavaClassConstructorDefinition(),
+      Collections.emptyList()
     );
     Assertions.assertThrows(NullPointerException.class, () -> operator.render(new JavaElementWriteRender(writer)));
   }

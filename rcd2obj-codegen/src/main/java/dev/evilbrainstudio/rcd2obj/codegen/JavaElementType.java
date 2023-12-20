@@ -98,35 +98,35 @@ public enum JavaElementType {
   /**
    * The start of the method definition.
    */
-  METHOD_BEGIN,
+  METHOD_DEFINITION_BEGIN,
   /**
    * The start of the method's access modifier definition.
    */
-  METHOD_ACCESS_MODIFIER_BEGIN,
+  METHOD_DEFINITION_ACCESS_MODIFIER_BEGIN,
   /**
    * The end of the method's access modifier definition.
    */
-  METHOD_ACCESS_MODIFIER_END,
+  METHOD_DEFINITION_ACCESS_MODIFIER_END,
   /**
    * Return type of the method.
    */
-  METHOD_RETURN_TYPE,
+  METHOD_DEFINITION_RETURN_TYPE,
   /**
    * Name of the method.
    */
-  METHOD_NAME,
+  METHOD_DEFINITION_NAME,
   /**
    * The start of the method parameters.
    */
-  METHOD_PARAMS_BLOCK_BEGIN("("),
+  METHOD_DEFINITION_PARAMS_BLOCK_BEGIN("("),
   /**
    * Separator of the method parameters.
    */
-  METHOD_PARAMS_SEPARATOR(","),
+  METHOD_DEFINITION_PARAMS_SEPARATOR(","),
   /**
    * The end of the method parameters.
    */
-  METHOD_PARAMS_BLOCK_END(")"),
+  METHOD_DEFINITION_PARAMS_BLOCK_END(")"),
   /**
    * The start of the method implementation.
    */
@@ -138,7 +138,31 @@ public enum JavaElementType {
   /**
    * The end of the method definition.
    */
-  METHOD_END,
+  METHOD_DEFINITION_END,
+  /**
+   * The start of the method invocation.
+   */
+  METHOD_INVOKE_BEGIN,
+  /**
+   * Name of the method.
+   */
+  METHOD_INVOKE_NAME,
+  /**
+   * The start of the method's arguments.
+   */
+  METHOD_INVOKE_ARGS_BLOCK_BEGIN("("),
+  /**
+   * Separator of the method's arguments.
+   */
+  METHOD_INVOKE_ARGS_SEPARATOR(","),
+  /**
+   * The end of the method's arguments.
+   */
+  METHOD_INVOKE_ARGS_BLOCK_END(")"),
+  /**
+   * The end of the method invocation.
+   */
+  METHOD_INVOKE_END,
   /**
    * The start of the constructor's definition.
    */
@@ -324,13 +348,29 @@ public enum JavaElementType {
    */
   VARIABLE_ASSIGN_END,
   /**
+   * The start of variable's method invocation.
+   */
+  VARIABLE_METHOD_INVOKE_BEGIN,
+  /**
+   * A name of the variable.
+   */
+  VARIABLE_METHOD_INVOKE_NAME,
+  /**
+   * A separator between variable's name and invokable method.
+   */
+  VARIABLE_METHOD_INVOKE_SEPARATOR("."),
+  /**
+   * The end of variable's method invocation.
+   */
+  VARIABLE_METHOD_INVOKE_END,
+  /**
    * The start of assign operator.
    */
   ASSIGN_BEGIN,
   /**
    * The keyword of assign operator.
    */
-  ASSIGN_KEYWORD("=", true),
+  ASSIGN_OPERATOR("="),
   /**
    * A value of assign operator.
    */

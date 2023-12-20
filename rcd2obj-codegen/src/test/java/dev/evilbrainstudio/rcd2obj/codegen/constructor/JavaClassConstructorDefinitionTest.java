@@ -87,7 +87,7 @@ class JavaClassConstructorDefinitionTest {
   }
 
   @Test
-  void getConstructorInvokableTest() {
+  void getConstructorTest() {
     JavaClassConstructorDefinition constructor = new JavaClassConstructorDefinition();
     constructor.setConstructorType(new JavaNameType(NAME));
     constructor.setConstructorAccessModifier(new JavaPublicModifier());
