@@ -17,7 +17,7 @@
 package dev.evilbrainstudio.rcd2obj.codegen.operator;
 
 import dev.evilbrainstudio.rcd2obj.codegen.constructor.JavaClassConstructorDefinition;
-import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaValueParameter;
+import dev.evilbrainstudio.rcd2obj.codegen.parameter.JavaParameter;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
 
 import java.io.StringWriter;
@@ -55,10 +55,9 @@ class JavaNewOperatorTest {
       new JavaClassConstructorDefinition()
         .setConstructorType(new JavaExplicitType(UnsupportedOperationException.class))
         .setConstructorParameters(
-          new JavaValueParameter()
+          new JavaParameter()
             .setParameterOrder(1)
             .setParameterType(new JavaExplicitType(String.class))
-            .setParameterValue("message")
         )
         .getConstructor(new JavaNullArgument())
     );
