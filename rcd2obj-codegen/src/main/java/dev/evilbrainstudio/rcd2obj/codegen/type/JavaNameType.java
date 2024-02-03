@@ -16,9 +16,8 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.type;
 
+import dev.evilbrainstudio.rcd2obj.codegen.JavaElementRenderingException;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
-
-import java.util.Objects;
 
 /**
  * Simple type of the Java, renders any specified name.
@@ -35,7 +34,7 @@ public class JavaNameType implements JavaType {
    * @param name type's name
    */
   public JavaNameType(String name) {
-    this.name = Objects.requireNonNull(name, "name must be not null");
+    this.name = name;
   }
 
   /**
@@ -48,7 +47,11 @@ public class JavaNameType implements JavaType {
   }
 
   @Override
-  public void render(JavaElementRender target) {
+  public void render(JavaElementRender target) throws JavaElementRenderingException {
+    if (name == null || name.trim().isEmpty()) {
+      throw new JavaElementRenderingException("Type name has incorrect value: [$]!", name);
+    }
+
     target.append(name);
   }
 

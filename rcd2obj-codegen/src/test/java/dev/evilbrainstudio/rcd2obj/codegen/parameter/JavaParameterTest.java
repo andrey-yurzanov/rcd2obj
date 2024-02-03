@@ -16,6 +16,7 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.parameter;
 
+import dev.evilbrainstudio.rcd2obj.codegen.JavaElementRenderingException;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
 import java.io.StringWriter;
 
@@ -31,21 +32,35 @@ import org.junit.jupiter.api.Test;
 class JavaParameterTest {
   private static final int ORDER = 1;
   private static final String NAME = "testParameter";
-  private static final String EXPECTED_WITHOUT_TYPE = "ObjecttestParameter";
-  private static final String EXPECTED_WITH_TYPE = "StringtestParameter";
+  private static final String PARAMETER_EXPECTED = "StringtestParameter";
 
   @Test
-  void render() {
-    JavaParameter parameter = new JavaParameter()
-        .setParameterName(NAME)
-        .setParameterOrder(ORDER);
+  void renderTest() {
+    JavaParameter parameter = new JavaParameter(ORDER, NAME, new JavaExplicitType(String.class));
 
     StringWriter writer = new StringWriter();
     parameter.render(new JavaElementWriteRender(writer));
-    Assertions.assertEquals(EXPECTED_WITHOUT_TYPE, writer.toString());
+    Assertions.assertEquals(PARAMETER_EXPECTED, writer.toString());
+  }
 
-    writer = new StringWriter();
-    parameter.setParameterType(new JavaExplicitType(String.class)).render(new JavaElementWriteRender(writer));
-    Assertions.assertEquals(EXPECTED_WITH_TYPE, writer.toString());
+  @Test
+  void renderExceptionTest() {
+    JavaElementWriteRender render = new JavaElementWriteRender(new StringWriter());
+
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaParameter(ORDER, null, null).render(render)
+    );
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaParameter(ORDER, "", null).render(render)
+    );
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaParameter(ORDER, NAME, null).render(render)
+    );
+    Assertions.assertDoesNotThrow(
+      () -> new JavaParameter(ORDER, NAME, new JavaExplicitType(String.class)).render(render)
+    );
   }
 }

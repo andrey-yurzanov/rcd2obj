@@ -16,9 +16,8 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.type;
 
+import dev.evilbrainstudio.rcd2obj.codegen.JavaElementRenderingException;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
-
-import java.util.Objects;
 
 /**
  * Explicit type of Java. Renders name of the class.
@@ -35,7 +34,7 @@ public class JavaExplicitType implements JavaType {
    * @param type a class for rendering
    */
   public JavaExplicitType(Class<?> type) {
-    this.type = Objects.requireNonNull(type);
+    this.type = type;
   }
 
   /**
@@ -59,7 +58,11 @@ public class JavaExplicitType implements JavaType {
   }
 
   @Override
-  public void render(JavaElementRender target) {
+  public void render(JavaElementRender target) throws JavaElementRenderingException {
+    if (type == null) {
+      throw new JavaElementRenderingException("Type has incorrect value: [$]!", type);
+    }
+
     target.append(type);
   }
 }

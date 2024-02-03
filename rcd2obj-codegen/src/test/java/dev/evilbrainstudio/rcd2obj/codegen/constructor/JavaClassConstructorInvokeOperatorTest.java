@@ -60,14 +60,8 @@ class JavaClassConstructorInvokeOperatorTest {
       new JavaClassConstructorDefinition()
         .setConstructorType(new JavaNameType(NAME))
         .setConstructorParameters(
-          new JavaParameter()
-            .setParameterOrder(2)
-            .setParameterType(new JavaExplicitType(String.class))
-            .setParameterName(PARAM_NAME_1),
-          new JavaParameter()
-            .setParameterOrder(1)
-            .setParameterType(new JavaExplicitType(Integer.class))
-            .setParameterName(PARAM_NAME_2)
+          new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
+          new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
         ),
       Arrays.asList(
         new JavaNullArgument(),

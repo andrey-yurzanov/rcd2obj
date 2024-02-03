@@ -32,8 +32,9 @@ import org.junit.jupiter.api.Test;
  * @author Andrey_Yurzanov
  */
 class JavaNewOperatorTest {
-  private static final String RESULT = "newUnsupportedOperationException()";
-  private static final String RESULT_WITH_PARAMS =
+  private static final String NAME = "testParameter";
+  private static final String NEW_EXPECTED = "newUnsupportedOperationException()";
+  private static final String NEW_WITH_PARAMS_EXPECTED =
     "newUnsupportedOperationException(null)";
 
   @Test
@@ -46,7 +47,7 @@ class JavaNewOperatorTest {
 
     StringWriter writer = new StringWriter();
     operator.render(new JavaElementWriteRender(writer));
-    Assertions.assertEquals(writer.toString(), RESULT);
+    Assertions.assertEquals(writer.toString(), NEW_EXPECTED);
   }
 
   @Test
@@ -55,15 +56,13 @@ class JavaNewOperatorTest {
       new JavaClassConstructorDefinition()
         .setConstructorType(new JavaExplicitType(UnsupportedOperationException.class))
         .setConstructorParameters(
-          new JavaParameter()
-            .setParameterOrder(1)
-            .setParameterType(new JavaExplicitType(String.class))
+          new JavaParameter(1, NAME, new JavaExplicitType(String.class))
         )
         .getConstructor(new JavaNullArgument())
     );
 
     StringWriter writer = new StringWriter();
     operator.render(new JavaElementWriteRender(writer));
-    Assertions.assertEquals(writer.toString(), RESULT_WITH_PARAMS);
+    Assertions.assertEquals(writer.toString(), NEW_WITH_PARAMS_EXPECTED);
   }
 }

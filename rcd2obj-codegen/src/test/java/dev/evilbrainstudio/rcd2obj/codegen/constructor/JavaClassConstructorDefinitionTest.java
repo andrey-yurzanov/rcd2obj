@@ -72,14 +72,8 @@ class JavaClassConstructorDefinitionTest {
     constructor.setConstructorType(new JavaNameType(NAME));
     constructor.setConstructorAccessModifier(new JavaPublicModifier());
     constructor.setConstructorParameters(
-      new JavaParameter()
-        .setParameterOrder(2)
-        .setParameterType(new JavaExplicitType(String.class))
-        .setParameterName(PARAM_NAME_1),
-      new JavaParameter()
-        .setParameterOrder(1)
-        .setParameterType(new JavaExplicitType(Integer.class))
-        .setParameterName(PARAM_NAME_2)
+      new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
+      new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
     );
     constructor.render(new JavaElementWriteRender(writer));
 
@@ -98,14 +92,8 @@ class JavaClassConstructorDefinitionTest {
     );
 
     constructor.setConstructorParameters(
-      new JavaParameter()
-        .setParameterOrder(2)
-        .setParameterType(new JavaExplicitType(String.class))
-        .setParameterName(PARAM_NAME_1),
-      new JavaParameter()
-        .setParameterOrder(1)
-        .setParameterType(new JavaExplicitType(Integer.class))
-        .setParameterName(PARAM_NAME_2)
+      new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
+      new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
     );
 
     Assertions.assertThrows(IllegalArgumentException.class, constructor::getConstructor);
@@ -130,14 +118,8 @@ class JavaClassConstructorDefinitionTest {
     JavaClassConstructorDefinition constructor = new JavaClassConstructorDefinition();
     constructor.setConstructorType(new JavaNameType(NAME));
     constructor.setConstructorParameters(
-      new JavaParameter()
-        .setParameterOrder(2)
-        .setParameterType(new JavaExplicitType(String.class))
-        .setParameterName(PARAM_NAME_1),
-      new JavaParameter()
-        .setParameterOrder(1)
-        .setParameterType(new JavaExplicitType(Integer.class))
-        .setParameterName(PARAM_NAME_2)
+      new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
+      new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
     );
 
     Assertions.assertNotEquals(
@@ -160,10 +142,7 @@ class JavaClassConstructorDefinitionTest {
         new JavaClassConstructorDefinition()
           .setConstructorType(new JavaNameType(NAME))
           .setConstructorParameters(
-            new JavaParameter()
-              .setParameterOrder(1)
-              .setParameterType(new JavaExplicitType(Integer.class))
-              .setParameterName(PARAM_NAME_2)
+            new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
           )
       )
     );
@@ -173,14 +152,8 @@ class JavaClassConstructorDefinitionTest {
         new JavaClassConstructorDefinition()
           .setConstructorType(new JavaNameType(NAME))
           .setConstructorParameters(
-            new JavaParameter()
-              .setParameterOrder(1)
-              .setParameterType(new JavaExplicitType(String.class))
-              .setParameterName(PARAM_NAME_1),
-            new JavaParameter()
-              .setParameterOrder(2)
-              .setParameterType(new JavaExplicitType(Integer.class))
-              .setParameterName(PARAM_NAME_2)
+            new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class)),
+            new JavaParameter(2, PARAM_NAME_2, new JavaExplicitType(Integer.class))
           )
       )
     );
@@ -201,14 +174,8 @@ class JavaClassConstructorDefinitionTest {
         new JavaClassConstructorDefinition()
           .setConstructorType(new JavaNameType(NAME))
           .setConstructorParameters(
-            new JavaParameter()
-              .setParameterOrder(1)
-              .setParameterType(new JavaExplicitType(Integer.class))
-              .setParameterName(PARAM_NAME_2),
-            new JavaParameter()
-              .setParameterOrder(2)
-              .setParameterType(new JavaExplicitType(String.class))
-              .setParameterName(PARAM_NAME_1)
+            new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class)),
+            new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class))
           )
       )
     );

@@ -16,6 +16,7 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.type;
 
+import dev.evilbrainstudio.rcd2obj.codegen.JavaElementRenderingException;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,14 +34,26 @@ class JavaNameTypeTest {
 
   @Test
   void renderTest() {
-    Assertions.assertThrows(NullPointerException.class, () -> new JavaNameType(null));
-
     StringWriter writer = new StringWriter();
     JavaNameType type = new JavaNameType(NAME);
     type.render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(NAME, writer.toString());
     Assertions.assertEquals(NAME, type.getName());
+  }
+
+  @Test
+  void renderExceptionTest() {
+    JavaElementWriteRender render = new JavaElementWriteRender(new StringWriter());
+
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaNameType(null).render(render)
+    );
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaNameType("").render(render)
+    );
   }
 
   @Test

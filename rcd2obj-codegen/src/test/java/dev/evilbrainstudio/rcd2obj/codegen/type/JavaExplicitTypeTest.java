@@ -16,6 +16,7 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.type;
 
+import dev.evilbrainstudio.rcd2obj.codegen.JavaElementRenderingException;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -31,8 +32,6 @@ import java.util.Map;
 class JavaExplicitTypeTest {
   @Test
   void renderLangTest() {
-    Assertions.assertThrows(NullPointerException.class, () -> new JavaExplicitType(null));
-
     StringWriter writer = new StringWriter();
     JavaExplicitType type = new JavaExplicitType(String.class);
     type.render(new JavaElementWriteRender(writer));
@@ -42,13 +41,19 @@ class JavaExplicitTypeTest {
 
   @Test
   void renderUtilTest() {
-    Assertions.assertThrows(NullPointerException.class, () -> new JavaExplicitType(null));
-
     StringWriter writer = new StringWriter();
     JavaExplicitType type = new JavaExplicitType(Map.class);
     type.render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(Map.class.getCanonicalName(), writer.toString());
+  }
+
+  @Test
+  void renderExceptionTest() {
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaExplicitType(null).render(new JavaElementWriteRender(new StringWriter()))
+    );
   }
 
   @Test

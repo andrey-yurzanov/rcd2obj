@@ -72,7 +72,13 @@ public class JavaClassMethodDefinition implements JavaElement, Comparable<JavaCl
     if (parameters.length > 0) {
       this.methodParameters = new TreeSet<>();
       for (int i = 0; i < parameters.length; i++) {
-        this.methodParameters.add(new JavaParameter(i + 1, parameters[i]));
+        this.methodParameters.add(
+          new JavaParameter(
+            i + 1,
+            parameters[i].getName(),
+            new JavaExplicitType(parameters[i].getType())
+          )
+        );
       }
     }
   }

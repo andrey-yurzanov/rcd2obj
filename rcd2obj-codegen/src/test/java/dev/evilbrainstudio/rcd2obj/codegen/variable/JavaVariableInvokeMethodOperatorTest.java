@@ -43,10 +43,7 @@ class JavaVariableInvokeMethodOperatorTest {
     JavaClassMethodInvokeOperator method = new JavaClassMethodDefinition()
       .setMethodName(METHOD_NAME)
       .setMethodParameters(
-        new JavaParameter()
-          .setParameterOrder(1)
-          .setParameterName(VARIABLE_NAME)
-          .setParameterType(new JavaExplicitType(String.class))
+        new JavaParameter(1, VARIABLE_NAME, new JavaExplicitType(String.class))
       ).getMethod(new JavaNullArgument());
 
     StringWriter writer = new StringWriter();
@@ -82,10 +79,7 @@ class JavaVariableInvokeMethodOperatorTest {
         new JavaClassMethodDefinition()
           .setMethodName(METHOD_NAME)
           .setMethodParameters(
-            new JavaParameter()
-              .setParameterOrder(1)
-              .setParameterName(VARIABLE_NAME)
-              .setParameterType(new JavaExplicitType(String.class))
+            new JavaParameter(1, VARIABLE_NAME, new JavaExplicitType(String.class))
           ).getMethod(new JavaNullArgument())
       ).render(render)
     );

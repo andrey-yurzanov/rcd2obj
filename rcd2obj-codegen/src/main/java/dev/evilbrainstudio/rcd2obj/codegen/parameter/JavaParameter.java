@@ -17,12 +17,10 @@
 package dev.evilbrainstudio.rcd2obj.codegen.parameter;
 
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElement;
+import dev.evilbrainstudio.rcd2obj.codegen.JavaElementRenderingException;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
-import dev.evilbrainstudio.rcd2obj.codegen.type.JavaExplicitType;
 import dev.evilbrainstudio.rcd2obj.codegen.type.JavaType;
-
-import java.lang.reflect.Parameter;
 
 /**
  * Parameter of constructor, method and something else.
@@ -31,44 +29,9 @@ import java.lang.reflect.Parameter;
  * @since 1.0
  */
 public class JavaParameter implements JavaElement, Comparable<JavaParameter> {
-  protected Integer parameterOrder;
-  protected String parameterName;
-  protected JavaType parameterType;
-
-  /**
-   * Constructs new instance of the parameter.
-   */
-  public JavaParameter() {
-    this(null, null, new JavaExplicitType(Object.class));
-  }
-
-  /**
-   * Constructs new instance of the parameter.
-   *
-   * @param parameterOrder order of the parameter
-   * @param parameter      parameter's meta information
-   */
-  public JavaParameter(Integer parameterOrder, Parameter parameter) {
-    this(
-      parameterOrder,
-      parameter.getName(),
-      new JavaExplicitType(parameter.getType())
-    );
-  }
-
-  /**
-   * Constructs new instance of the parameter.
-   *
-   * @param parameterOrder order of the parameter
-   * @param parameterName  name of the parameter
-   */
-  public JavaParameter(Integer parameterOrder, String parameterName) {
-    this(
-      parameterOrder,
-      parameterName,
-      new JavaExplicitType(Object.class)
-    );
-  }
+  private final int parameterOrder;
+  private final String parameterName;
+  private final JavaType parameterType;
 
   /**
    * Constructs new instance of the parameter.
@@ -78,24 +41,13 @@ public class JavaParameter implements JavaElement, Comparable<JavaParameter> {
    * @param parameterType  type of the parameter
    */
   public JavaParameter(
-    Integer parameterOrder,
+    int parameterOrder,
     String parameterName,
     JavaType parameterType
   ) {
     this.parameterOrder = parameterOrder;
     this.parameterName = parameterName;
     this.parameterType = parameterType;
-  }
-
-  /**
-   * Sets order of the parameter.
-   *
-   * @param parameterOrder new order of the parameter
-   * @return current instance
-   */
-  public JavaParameter setParameterOrder(Integer parameterOrder) {
-    this.parameterOrder = parameterOrder;
-    return this;
   }
 
   /**
@@ -108,34 +60,12 @@ public class JavaParameter implements JavaElement, Comparable<JavaParameter> {
   }
 
   /**
-   * Sets name of the parameter.
-   *
-   * @param parameterName new name of the parameter
-   * @return current instance
-   */
-  public JavaParameter setParameterName(String parameterName) {
-    this.parameterName = parameterName;
-    return this;
-  }
-
-  /**
    * Returns name of the parameter.
    *
    * @return name of the parameter
    */
   public String getParameterName() {
     return parameterName;
-  }
-
-  /**
-   * Sets type of the parameter.
-   *
-   * @param parameterType new type of the parameter
-   * @return current instance
-   */
-  public JavaParameter setParameterType(JavaType parameterType) {
-    this.parameterType = parameterType;
-    return this;
   }
 
   /**
@@ -157,19 +87,21 @@ public class JavaParameter implements JavaElement, Comparable<JavaParameter> {
   }
 
   @Override
-  public void render(JavaElementRender target) {
-    target.append(JavaElementType.PARAMETER_BEGIN);
-    if (parameterType != null) {
-      target
-        .append(JavaElementType.PARAMETER_TYPE)
-        .append(parameterType);
+  public void render(JavaElementRender target) throws JavaElementRenderingException {
+    if (parameterType == null) {
+      throw new JavaElementRenderingException("Parameter type has incorrect value: [$]!", parameterType);
     }
 
-    if (parameterName != null) {
-      target
-        .append(JavaElementType.PARAMETER_NAME)
-        .append(parameterName);
+    if (parameterName == null || parameterName.trim().isEmpty()) {
+      throw new JavaElementRenderingException("Parameter name has incorrect value: [$]!", parameterName);
     }
-    target.append(JavaElementType.PARAMETER_END);
+
+    target
+      .append(JavaElementType.PARAMETER_BEGIN)
+      .append(JavaElementType.PARAMETER_TYPE)
+      .append(parameterType)
+      .append(JavaElementType.PARAMETER_NAME)
+      .append(parameterName)
+      .append(JavaElementType.PARAMETER_END);
   }
 }

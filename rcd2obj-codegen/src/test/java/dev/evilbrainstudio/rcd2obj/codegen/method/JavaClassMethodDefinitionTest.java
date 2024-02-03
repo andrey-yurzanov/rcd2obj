@@ -108,14 +108,8 @@ class JavaClassMethodDefinitionTest {
     );
 
     methodDefinition.setMethodParameters(
-      new JavaParameter()
-        .setParameterOrder(2)
-        .setParameterType(new JavaExplicitType(String.class))
-        .setParameterName(PARAM_NAME_1),
-      new JavaParameter()
-        .setParameterOrder(1)
-        .setParameterType(new JavaExplicitType(Integer.class))
-        .setParameterName(PARAM_NAME_2)
+      new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
+      new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
     );
     Assertions.assertThrows(IllegalArgumentException.class, methodDefinition::getMethod);
     Assertions.assertThrows(
@@ -147,10 +141,7 @@ class JavaClassMethodDefinitionTest {
       new JavaClassMethodDefinition()
         .setMethodName(METHOD_NAME)
         .setMethodParameters(
-          new JavaParameter()
-            .setParameterOrder(1)
-            .setParameterType(new JavaExplicitType(String.class))
-            .setParameterName(PARAM_NAME_1)
+          new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
         )
         .compareTo(
           new JavaClassMethodDefinition()
@@ -162,27 +153,15 @@ class JavaClassMethodDefinitionTest {
       new JavaClassMethodDefinition()
         .setMethodName(METHOD_NAME)
         .setMethodParameters(
-          new JavaParameter()
-            .setParameterOrder(1)
-            .setParameterType(new JavaExplicitType(String.class))
-            .setParameterName(PARAM_NAME_1),
-          new JavaParameter()
-            .setParameterOrder(2)
-            .setParameterType(new JavaExplicitType(Integer.class))
-            .setParameterName(PARAM_NAME_2)
+          new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class)),
+          new JavaParameter(2, PARAM_NAME_2, new JavaExplicitType(Integer.class))
         )
         .compareTo(
           new JavaClassMethodDefinition()
             .setMethodName(METHOD_NAME)
             .setMethodParameters(
-              new JavaParameter()
-                .setParameterOrder(2)
-                .setParameterType(new JavaExplicitType(String.class))
-                .setParameterName(PARAM_NAME_1),
-              new JavaParameter()
-                .setParameterOrder(1)
-                .setParameterType(new JavaExplicitType(Integer.class))
-                .setParameterName(PARAM_NAME_2)
+              new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
+              new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
             )
         )
     );
@@ -197,19 +176,13 @@ class JavaClassMethodDefinitionTest {
     ));
 
     methodDefinition.setMethodParameters(
-      new JavaParameter()
-        .setParameterOrder(1)
-        .setParameterType(new JavaExplicitType(String.class))
-        .setParameterName(PARAM_NAME_1)
+      new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
     );
     Assertions.assertEquals(0, methodDefinition.compareTo(
       new JavaClassMethodDefinition()
         .setMethodName(METHOD_NAME)
         .setMethodParameters(
-          new JavaParameter()
-            .setParameterOrder(1)
-            .setParameterType(new JavaExplicitType(String.class))
-            .setParameterName(PARAM_NAME_1)
+          new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
         )
     ));
   }
