@@ -16,12 +16,11 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.variable;
 
+import dev.evilbrainstudio.rcd2obj.codegen.JavaElementRenderingException;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
 import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaArgument;
 import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaAssignOperator;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
-
-import java.util.Objects;
 
 /**
  * An operator for assignment new value to defined variable.
@@ -39,9 +38,12 @@ public class JavaVariableAssignOperator implements JavaArgument {
    * @param variableDefinition defined variable
    * @param variableAssign     assignment
    */
-  protected JavaVariableAssignOperator(JavaVariableDefinition variableDefinition, JavaAssignOperator variableAssign) {
+  protected JavaVariableAssignOperator(
+    JavaVariableDefinition variableDefinition,
+    JavaAssignOperator variableAssign
+  ) {
     this.variableDefinition = variableDefinition;
-    this.variableAssign = Objects.requireNonNull(variableAssign);
+    this.variableAssign = variableAssign;
   }
 
   /**
@@ -63,7 +65,15 @@ public class JavaVariableAssignOperator implements JavaArgument {
   }
 
   @Override
-  public void render(JavaElementRender target) {
+  public void render(JavaElementRender target) throws JavaElementRenderingException {
+    if (variableDefinition == null) {
+      throw new JavaElementRenderingException("Variable definition has incorrect value: [$]!", variableDefinition);
+    }
+
+    if (variableAssign == null) {
+      throw new JavaElementRenderingException("Variable assignment has incorrect value: [$]!", variableAssign);
+    }
+
     target
       .append(JavaElementType.VARIABLE_ASSIGN_BEGIN)
       .append(JavaElementType.VARIABLE_ASSIGN_NAME)

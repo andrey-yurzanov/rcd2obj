@@ -48,4 +48,12 @@ class JavaImportTest {
 
     Assertions.assertEquals(IMPORT_EXPECTED, writer.toString());
   }
+
+  @Test
+  void renderExceptionTest() {
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaImport(null).render(new JavaElementWriteRender(new StringWriter()))
+    );
+  }
 }

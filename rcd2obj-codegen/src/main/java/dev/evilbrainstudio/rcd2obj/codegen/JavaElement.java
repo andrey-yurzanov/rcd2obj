@@ -29,6 +29,7 @@ public interface JavaElement {
    * Renders element of the Java language.
    *
    * @param target render of current element
+   * @throws JavaElementRenderingException it throws when method has rendering problems
    */
-  void render(JavaElementRender target);
+  void render(JavaElementRender target) throws JavaElementRenderingException;
 }

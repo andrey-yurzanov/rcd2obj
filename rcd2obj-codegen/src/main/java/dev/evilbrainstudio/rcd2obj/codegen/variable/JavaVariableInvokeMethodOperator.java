@@ -16,12 +16,11 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.variable;
 
+import dev.evilbrainstudio.rcd2obj.codegen.JavaElementRenderingException;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
 import dev.evilbrainstudio.rcd2obj.codegen.method.JavaClassMethodInvokeOperator;
 import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaArgument;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementRender;
-
-import java.util.Objects;
 
 /**
  * An operator for code generating of variable's method invocation.
@@ -66,12 +65,24 @@ public class JavaVariableInvokeMethodOperator implements JavaArgument {
   }
 
   @Override
-  public void render(JavaElementRender target) {
+  public void render(JavaElementRender target) throws JavaElementRenderingException {
+    if (variableDefinition == null) {
+      throw new JavaElementRenderingException("Variable definition has incorrect value: [$]", variableDefinition);
+    }
+
     String variableName = variableDefinition.getVariableName();
+    if (variableName == null || variableName.trim().isEmpty()) {
+      throw new JavaElementRenderingException("Variable name has incorrect value: [$]!", variableName);
+    }
+
+    if (methodInvoke == null) {
+      throw new JavaElementRenderingException("Invocable method has incorrect value: [$]!", methodInvoke);
+    }
+
     target
       .append(JavaElementType.VARIABLE_METHOD_INVOKE_BEGIN)
       .append(JavaElementType.VARIABLE_METHOD_INVOKE_NAME)
-      .append(Objects.requireNonNull(variableName, "[variableName] is required for invocation!"))
+      .append(variableName)
       .append(JavaElementType.VARIABLE_METHOD_INVOKE_SEPARATOR)
       .append(methodInvoke)
       .append(JavaElementType.VARIABLE_METHOD_INVOKE_END);

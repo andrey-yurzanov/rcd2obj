@@ -38,6 +38,10 @@ public class JavaClassPackage implements JavaElement {
 
   @Override
   public void render(JavaElementRender target) {
+    if (name == null || name.trim().isEmpty()) {
+      throw new JavaElementRenderingException("The package name has incorrect value: [$]!", name);
+    }
+
     target
       .append(JavaElementType.PACKAGE_BEGIN)
       .append(JavaElementType.PACKAGE_KEYWORD)

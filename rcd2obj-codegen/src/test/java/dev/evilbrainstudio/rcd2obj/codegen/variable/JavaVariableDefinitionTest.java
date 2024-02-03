@@ -16,6 +16,7 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.variable;
 
+import dev.evilbrainstudio.rcd2obj.codegen.JavaElementRenderingException;
 import dev.evilbrainstudio.rcd2obj.codegen.method.JavaClassMethodDefinition;
 import dev.evilbrainstudio.rcd2obj.codegen.method.JavaClassMethodInvokeOperator;
 import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaAssignOperator;
@@ -74,12 +75,33 @@ class JavaVariableDefinitionTest {
 
     JavaVariableDefinition definition = new JavaVariableDefinition(
       new JavaExplicitType(String.class),
-      NAME
-    );
-    definition.setVariableAssign(new JavaAssignOperator(new JavaNullArgument()));
+      NAME,
+      new JavaAssignOperator(new JavaNullArgument())
+    );;
     definition.render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(RENDER_ASSIGN_EXPECTED, writer.toString());
+  }
+
+  @Test
+  void renderExceptionTest() {
+    JavaElementWriteRender render = new JavaElementWriteRender(new StringWriter());
+
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaVariableDefinition(null, null, null).render(render)
+    );
+
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaVariableDefinition(new JavaExplicitType(String.class), null, null).render(render)
+    );
+
+    Assertions.assertDoesNotThrow(
+      () -> new JavaVariableDefinition(
+        new JavaExplicitType(String.class), NAME, null
+      ).render(render)
+    );
   }
 
   @Test

@@ -17,6 +17,7 @@
 package dev.evilbrainstudio.rcd2obj.codegen.variable;
 
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElement;
+import dev.evilbrainstudio.rcd2obj.codegen.JavaElementRenderingException;
 import dev.evilbrainstudio.rcd2obj.codegen.JavaElementType;
 import dev.evilbrainstudio.rcd2obj.codegen.method.JavaClassMethodInvokeOperator;
 import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaAssignOperator;
@@ -30,9 +31,9 @@ import dev.evilbrainstudio.rcd2obj.codegen.type.JavaType;
  * @since 1.0
  */
 public class JavaVariableDefinition implements JavaElement {
-  private JavaAssignOperator variableAssign;
   private final JavaType variableType;
   private final String variableName;
+  private final JavaAssignOperator variableAssign;
 
   /**
    * Constructs new instance of variable definition renderer.
@@ -41,8 +42,19 @@ public class JavaVariableDefinition implements JavaElement {
    * @param variableName name of the variable
    */
   public JavaVariableDefinition(JavaType variableType, String variableName) {
+    this(variableType, variableName, null);
+  }
+
+  /**
+   * Constructs new instance of variable definition renderer.
+   *
+   * @param variableType type of the variable
+   * @param variableName name of the variable
+   */
+  public JavaVariableDefinition(JavaType variableType, String variableName, JavaAssignOperator variableAssign) {
     this.variableType = variableType;
     this.variableName = variableName;
+    this.variableAssign = variableAssign;
   }
 
   /**
@@ -73,17 +85,6 @@ public class JavaVariableDefinition implements JavaElement {
   }
 
   /**
-   * Sets assign operator of the variable.
-   *
-   * @param variableAssign assign operator of the variable.
-   * @return current instance of the variable
-   */
-  public JavaVariableDefinition setVariableAssign(JavaAssignOperator variableAssign) {
-    this.variableAssign = variableAssign;
-    return this;
-  }
-
-  /**
    * Returns operator for code generating assignment new value to a variable.
    *
    * @param variableAssign assignment
@@ -104,7 +105,15 @@ public class JavaVariableDefinition implements JavaElement {
   }
 
   @Override
-  public void render(JavaElementRender target) {
+  public void render(JavaElementRender target) throws JavaElementRenderingException {
+    if (variableType == null) {
+      throw new JavaElementRenderingException("Variable type has incorrect value: [$]!", variableType);
+    }
+
+    if (variableName == null || variableName.trim().isEmpty()) {
+      throw new JavaElementRenderingException("Variable name has incorrect value: [$]!", variableName);
+    }
+
     target
       .append(JavaElementType.VARIABLE_DEFINITION_BEGIN)
       .append(JavaElementType.VARIABLE_DEFINITION_TYPE)

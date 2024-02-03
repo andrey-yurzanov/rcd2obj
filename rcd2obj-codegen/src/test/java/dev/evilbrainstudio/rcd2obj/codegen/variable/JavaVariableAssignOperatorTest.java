@@ -16,6 +16,7 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.variable;
 
+import dev.evilbrainstudio.rcd2obj.codegen.JavaElementRenderingException;
 import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaAssignOperator;
 import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaNullArgument;
 import dev.evilbrainstudio.rcd2obj.codegen.render.JavaElementWriteRender;
@@ -27,6 +28,8 @@ import java.io.StringWriter;
 
 /**
  * Tests of {@link JavaVariableAssignOperator}.
+ *
+ * @author Andrey_Yurzanov
  */
 class JavaVariableAssignOperatorTest {
   private static final String NAME = "myVariable";
@@ -45,6 +48,47 @@ class JavaVariableAssignOperatorTest {
     variable.render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(RENDER_ASSIGN_EXPECTED, writer.toString());
-    Assertions.assertThrows(NullPointerException.class, () -> definition.assign(null));
+  }
+
+  @Test
+  void renderExceptionTest() {
+    JavaElementWriteRender render = new JavaElementWriteRender(new StringWriter());
+
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaVariableAssignOperator(null, null).render(render)
+    );
+
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaVariableAssignOperator(
+        new JavaVariableDefinition(
+          new JavaExplicitType(String.class),
+          null
+        ),
+        null
+      ).render(render)
+    );
+
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaVariableAssignOperator(
+        new JavaVariableDefinition(
+          new JavaExplicitType(String.class),
+          NAME
+        ),
+        null
+      ).render(render)
+    );
+
+    Assertions.assertDoesNotThrow(
+      () -> new JavaVariableAssignOperator(
+        new JavaVariableDefinition(
+          new JavaExplicitType(String.class),
+          NAME
+        ),
+        new JavaAssignOperator(new JavaNullArgument())
+      ).render(render)
+    );
   }
 }

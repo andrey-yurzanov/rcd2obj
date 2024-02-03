@@ -16,6 +16,7 @@
 
 package dev.evilbrainstudio.rcd2obj.codegen.variable;
 
+import dev.evilbrainstudio.rcd2obj.codegen.JavaElementRenderingException;
 import dev.evilbrainstudio.rcd2obj.codegen.method.JavaClassMethodDefinition;
 import dev.evilbrainstudio.rcd2obj.codegen.method.JavaClassMethodInvokeOperator;
 import dev.evilbrainstudio.rcd2obj.codegen.operator.JavaNullArgument;
@@ -59,24 +60,34 @@ class JavaVariableInvokeMethodOperatorTest {
   }
 
   @Test
-  void renderFailureTest() {
-    JavaClassMethodInvokeOperator method = new JavaClassMethodDefinition()
-      .setMethodName(METHOD_NAME)
-      .setMethodParameters(
-        new JavaParameter()
-          .setParameterOrder(1)
-          .setParameterName(VARIABLE_NAME)
-          .setParameterType(new JavaExplicitType(String.class))
-      ).getMethod(new JavaNullArgument());
+  void renderExceptionTest() {
+    JavaElementWriteRender render = new JavaElementWriteRender(new StringWriter());
 
-    StringWriter writer = new StringWriter();
-    JavaVariableInvokeMethodOperator operator = new JavaVariableInvokeMethodOperator(
-      new JavaVariableDefinition(new JavaExplicitType(String.class), null),
-      method
-    );
     Assertions.assertThrows(
-      NullPointerException.class,
-      () -> operator.render(new JavaElementWriteRender(writer))
+      JavaElementRenderingException.class,
+      () -> new JavaVariableInvokeMethodOperator(null, null).render(render)
+    );
+
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaVariableInvokeMethodOperator(
+        new JavaVariableDefinition(new JavaExplicitType(String.class), VARIABLE_NAME),
+        null
+      ).render(render)
+    );
+
+    Assertions.assertDoesNotThrow(
+      () -> new JavaVariableInvokeMethodOperator(
+        new JavaVariableDefinition(new JavaExplicitType(String.class), VARIABLE_NAME),
+        new JavaClassMethodDefinition()
+          .setMethodName(METHOD_NAME)
+          .setMethodParameters(
+            new JavaParameter()
+              .setParameterOrder(1)
+              .setParameterName(VARIABLE_NAME)
+              .setParameterType(new JavaExplicitType(String.class))
+          ).getMethod(new JavaNullArgument())
+      ).render(render)
     );
   }
 }

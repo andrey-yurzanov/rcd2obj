@@ -54,7 +54,11 @@ public class JavaImport implements JavaElement, Comparable<JavaImport> {
   }
 
   @Override
-  public void render(JavaElementRender target) {
+  public void render(JavaElementRender target) throws JavaElementRenderingException {
+    if (type == null) {
+      throw new JavaElementRenderingException("Import type has incorrect value: [$]!", type);
+    }
+
     target
       .append(JavaElementType.IMPORT_BEGIN)
       .append(JavaElementType.IMPORT_KEYWORD)
