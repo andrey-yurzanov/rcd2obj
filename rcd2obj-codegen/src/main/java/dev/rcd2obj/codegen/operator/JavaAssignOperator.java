@@ -16,6 +16,7 @@
 
 package dev.rcd2obj.codegen.operator;
 
+import dev.rcd2obj.codegen.JavaElementRenderingException;
 import dev.rcd2obj.codegen.JavaElementType;
 import dev.rcd2obj.codegen.render.JavaElementRender;
 
@@ -36,7 +37,7 @@ public class JavaAssignOperator implements JavaOperator {
    * @param assignArgument argument of operator
    */
   public JavaAssignOperator(JavaArgument assignArgument) {
-    this.assignArgument = Objects.requireNonNull(assignArgument);
+    this.assignArgument = assignArgument;
   }
 
   /**
@@ -49,7 +50,11 @@ public class JavaAssignOperator implements JavaOperator {
   }
 
   @Override
-  public void render(JavaElementRender target) {
+  public void render(JavaElementRender target) throws JavaElementRenderingException {
+    if (assignArgument == null) {
+      throw new JavaElementRenderingException("Assignment has incorrect value: [$]!", assignArgument);
+    }
+
     target
       .append(JavaElementType.ASSIGN_BEGIN)
       .append(JavaElementType.ASSIGN_OPERATOR)

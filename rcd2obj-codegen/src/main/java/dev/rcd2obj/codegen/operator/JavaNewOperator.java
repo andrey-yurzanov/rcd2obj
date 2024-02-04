@@ -16,6 +16,7 @@
 
 package dev.rcd2obj.codegen.operator;
 
+import dev.rcd2obj.codegen.JavaElementRenderingException;
 import dev.rcd2obj.codegen.JavaElementType;
 import dev.rcd2obj.codegen.constructor.JavaClassConstructorInvokeOperator;
 import dev.rcd2obj.codegen.render.JavaElementRender;
@@ -48,7 +49,11 @@ public class JavaNewOperator implements JavaOperator {
   }
 
   @Override
-  public void render(JavaElementRender target) {
+  public void render(JavaElementRender target) throws JavaElementRenderingException {
+    if (newConstructor == null) {
+      throw new JavaElementRenderingException("Constructor invocation has incorrect value: [$]!", newConstructor);
+    }
+
     target
       .append(JavaElementType.NEW_BEGIN)
       .append(JavaElementType.NEW_KEYWORD)

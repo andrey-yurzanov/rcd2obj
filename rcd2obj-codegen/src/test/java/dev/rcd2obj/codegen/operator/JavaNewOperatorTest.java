@@ -16,6 +16,7 @@
 
 package dev.rcd2obj.codegen.operator;
 
+import dev.rcd2obj.codegen.JavaElementRenderingException;
 import dev.rcd2obj.codegen.constructor.JavaClassConstructorDefinition;
 import dev.rcd2obj.codegen.parameter.JavaParameter;
 import dev.rcd2obj.codegen.render.JavaElementWriteRender;
@@ -64,5 +65,14 @@ class JavaNewOperatorTest {
     StringWriter writer = new StringWriter();
     operator.render(new JavaElementWriteRender(writer));
     Assertions.assertEquals(writer.toString(), NEW_WITH_PARAMS_EXPECTED);
+  }
+
+  @Test
+  void renderExceptionTest() {
+    JavaElementWriteRender render = new JavaElementWriteRender(new StringWriter());
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaNewOperator(null).render(render)
+    );
   }
 }

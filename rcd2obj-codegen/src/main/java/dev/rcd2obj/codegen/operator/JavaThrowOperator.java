@@ -16,6 +16,7 @@
 
 package dev.rcd2obj.codegen.operator;
 
+import dev.rcd2obj.codegen.JavaElementRenderingException;
 import dev.rcd2obj.codegen.JavaElementType;
 import dev.rcd2obj.codegen.render.JavaElementRender;
 
@@ -38,7 +39,11 @@ public class JavaThrowOperator implements JavaOperator {
   }
 
   @Override
-  public void render(JavaElementRender target) {
+  public void render(JavaElementRender target) throws JavaElementRenderingException {
+    if (operator == null) {
+      throw new JavaElementRenderingException("Exception instance has incorrect value: [$]!", operator);
+    }
+
     target
       .append(JavaElementType.THROW_BEGIN)
       .append(JavaElementType.THROW_KEYWORD)

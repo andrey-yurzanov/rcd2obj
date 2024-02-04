@@ -16,6 +16,7 @@
 
 package dev.rcd2obj.codegen.operator;
 
+import dev.rcd2obj.codegen.JavaElementRenderingException;
 import dev.rcd2obj.codegen.render.JavaElementWriteRender;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,8 +33,6 @@ class JavaAssignOperatorTest {
 
   @Test
   void renderTest() {
-    Assertions.assertThrows(NullPointerException.class, () -> new JavaAssignOperator(null));
-
     StringWriter writer = new StringWriter();
     JavaAssignOperator assign = new JavaAssignOperator(
       new JavaNullArgument()
@@ -41,5 +40,15 @@ class JavaAssignOperatorTest {
     assign.render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(EXPECTED, writer.toString());
+  }
+
+  @Test
+  void renderExceptionTest() {
+    JavaElementWriteRender render = new JavaElementWriteRender(new StringWriter());
+
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaAssignOperator(null).render(render)
+    );
   }
 }

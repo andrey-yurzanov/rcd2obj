@@ -16,6 +16,7 @@
 
 package dev.rcd2obj.codegen.operator;
 
+import dev.rcd2obj.codegen.JavaElementRenderingException;
 import dev.rcd2obj.codegen.render.JavaElementWriteRender;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ class JavaThrowOperatorTest {
   private static final String TYPE = "X";
 
   @Test
-  void renderTestTest() {
+  void renderTest() {
     JavaThrowOperator operator = new JavaThrowOperator(
       (target) -> target.append(TYPE)
     );
@@ -40,5 +41,14 @@ class JavaThrowOperatorTest {
     StringWriter writer = new StringWriter();
     operator.render(new JavaElementWriteRender(writer));
     Assertions.assertEquals(writer.toString(), RESULT);
+  }
+
+  @Test
+  void renderExceptionTest() {
+    JavaElementWriteRender render = new JavaElementWriteRender(new StringWriter());
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaThrowOperator(null).render(render)
+    );
   }
 }
