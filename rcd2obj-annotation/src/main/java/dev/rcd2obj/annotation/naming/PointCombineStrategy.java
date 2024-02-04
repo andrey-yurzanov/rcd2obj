@@ -1,0 +1,33 @@
+/*
+ *    Copyright 2024 Andrey Yurzanov
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
+package dev.rcd2obj.annotation.naming;
+
+/**
+ * Implementation of {@link NamingStrategy} for a data extraction. The name represents in the form
+ * of name1.name2.
+ *
+ * @author Andrey_Yurzanov
+ * @since 1.0
+ */
+public class PointCombineStrategy implements NamingStrategy {
+  private static final String SEPARATOR = ".";
+
+  @Override
+  public String resolve(String... original) {
+    return String.join(SEPARATOR, original);
+  }
+}
