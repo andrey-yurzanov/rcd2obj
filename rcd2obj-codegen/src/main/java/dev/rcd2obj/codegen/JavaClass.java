@@ -63,7 +63,8 @@ public class JavaClass implements JavaElement {
     if (classConstructors != null && !classConstructors.isEmpty()) {
       JavaNameType type = new JavaNameType(className);
       for (JavaClassConstructorDefinition classConstructor : classConstructors) {
-        classConstructor.setConstructorType(type);
+        // TODO. Need fix
+//        classConstructor.setConstructorType(type);
       }
     }
     return this;
@@ -166,7 +167,8 @@ public class JavaClass implements JavaElement {
 
     JavaNameType type = new JavaNameType(className);
     for (JavaClassConstructorDefinition classConstructor : classConstructors) {
-      classConstructor.setConstructorType(type);
+//      classConstructor.setConstructorType(type);
+      // TODO. Need fix
       this.classConstructors.add(classConstructor);
     }
     return this;

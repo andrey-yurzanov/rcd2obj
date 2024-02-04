@@ -33,17 +33,17 @@ import dev.rcd2obj.codegen.type.JavaExplicitType;
 public class JavaMethodUnsupportedImpl implements JavaMethodImpl {
   private static final JavaOperator UNSUPPORTED = new JavaThrowOperator(
     new JavaNewOperator(
-      new JavaClassConstructorDefinition()
-        .setConstructorType(new JavaExplicitType(UnsupportedOperationException.class))
-        .getConstructor()
+      new JavaClassConstructorDefinition(
+        new JavaExplicitType(UnsupportedOperationException.class)
+      ).getConstructor()
     )
   );
 
   @Override
   public void render(JavaElementRender target) {
     target
-        .append(JavaElementType.METHOD_IMPL_BLOCK_BEGIN)
-        .append(UNSUPPORTED)
-        .append(JavaElementType.METHOD_IMPL_BLOCK_END);
+      .append(JavaElementType.METHOD_IMPL_BLOCK_BEGIN)
+      .append(UNSUPPORTED)
+      .append(JavaElementType.METHOD_IMPL_BLOCK_END);
   }
 }

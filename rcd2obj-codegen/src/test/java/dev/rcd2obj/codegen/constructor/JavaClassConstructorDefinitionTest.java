@@ -16,6 +16,7 @@
 
 package dev.rcd2obj.codegen.constructor;
 
+import dev.rcd2obj.codegen.JavaElementRenderingException;
 import dev.rcd2obj.codegen.modifier.JavaPublicModifier;
 import dev.rcd2obj.codegen.operator.JavaNullArgument;
 import dev.rcd2obj.codegen.parameter.JavaParameter;
@@ -26,6 +27,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
+import java.util.Arrays;
 
 /**
  * Tests of the constructor's code generator.
@@ -45,8 +47,7 @@ class JavaClassConstructorDefinitionTest {
   void renderEmptyTest() {
     StringWriter writer = new StringWriter();
 
-    JavaClassConstructorDefinition constructor = new JavaClassConstructorDefinition();
-    constructor.setConstructorType(new JavaNameType(NAME));
+    JavaClassConstructorDefinition constructor = new JavaClassConstructorDefinition(new JavaNameType(NAME));
     constructor.render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(EMPTY_EXPECTED, writer.toString());
@@ -56,9 +57,12 @@ class JavaClassConstructorDefinitionTest {
   void renderWithModifierTest() {
     StringWriter writer = new StringWriter();
 
-    JavaClassConstructorDefinition constructor = new JavaClassConstructorDefinition();
-    constructor.setConstructorType(new JavaNameType(NAME));
-    constructor.setConstructorAccessModifier(new JavaPublicModifier());
+    JavaClassConstructorDefinition constructor = new JavaClassConstructorDefinition(
+      new JavaNameType(NAME),
+      null,
+      new JavaPublicModifier(),
+      null
+    );
     constructor.render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(WITH_MODIFIER_EXPECTED, writer.toString());
@@ -68,12 +72,14 @@ class JavaClassConstructorDefinitionTest {
   void renderWithParamsTest() {
     StringWriter writer = new StringWriter();
 
-    JavaClassConstructorDefinition constructor = new JavaClassConstructorDefinition();
-    constructor.setConstructorType(new JavaNameType(NAME));
-    constructor.setConstructorAccessModifier(new JavaPublicModifier());
-    constructor.setConstructorParameters(
-      new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
-      new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
+    JavaClassConstructorDefinition constructor = new JavaClassConstructorDefinition(
+      new JavaNameType(NAME),
+      Arrays.asList(
+        new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
+        new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
+      ),
+      new JavaPublicModifier(),
+      null
     );
     constructor.render(new JavaElementWriteRender(writer));
 
@@ -81,102 +87,94 @@ class JavaClassConstructorDefinitionTest {
   }
 
   @Test
-  void getConstructorTest() {
-    JavaClassConstructorDefinition constructor = new JavaClassConstructorDefinition();
-    constructor.setConstructorType(new JavaNameType(NAME));
-    constructor.setConstructorAccessModifier(new JavaPublicModifier());
+  void renderExceptionTest() {
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaClassConstructorDefinition(null).render(new JavaElementWriteRender(new StringWriter()))
+    );
+  }
 
+  @Test
+  void getConstructorTest() {
+    JavaClassConstructorDefinition constructor = new JavaClassConstructorDefinition(new JavaNameType(NAME));
     Assertions.assertThrows(
       IllegalArgumentException.class,
       () -> constructor.getConstructor(new JavaNullArgument())
     );
 
-    constructor.setConstructorParameters(
+    JavaClassConstructorDefinition newConstructor = new JavaClassConstructorDefinition(
+      new JavaNameType(NAME),
       new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
       new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
     );
 
-    Assertions.assertThrows(IllegalArgumentException.class, constructor::getConstructor);
+    Assertions.assertThrows(IllegalArgumentException.class, newConstructor::getConstructor);
     Assertions.assertThrows(
       IllegalArgumentException.class,
-      () -> constructor.getConstructor(new JavaNullArgument())
+      () -> newConstructor.getConstructor(new JavaNullArgument())
     );
 
-    JavaClassConstructorInvokeOperator invokable = constructor.getConstructor(
+    JavaClassConstructorInvokeOperator invokable = newConstructor.getConstructor(
       new JavaNullArgument(),
       new JavaNullArgument()
     );
-    Assertions.assertEquals(constructor, invokable.getConstructorDefinition());
+    Assertions.assertEquals(newConstructor, invokable.getConstructorDefinition());
     Assertions.assertEquals(
-      constructor.getConstructorParameters().size(),
+      newConstructor.getConstructorParameters().size(),
       invokable.getConstructorArguments().size()
     );
   }
 
   @Test
   void compareToTest() {
-    JavaClassConstructorDefinition constructor = new JavaClassConstructorDefinition();
-    constructor.setConstructorType(new JavaNameType(NAME));
-    constructor.setConstructorParameters(
+    JavaClassConstructorDefinition constructor = new JavaClassConstructorDefinition(
+      new JavaNameType(NAME),
       new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
       new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
     );
 
     Assertions.assertNotEquals(
       0,
+      constructor.compareTo(new JavaClassConstructorDefinition(new JavaExplicitType(String.class)))
+    );
+    Assertions.assertNotEquals(
+      0,
+      constructor.compareTo(new JavaClassConstructorDefinition(new JavaNameType(NAME)))
+    );
+    Assertions.assertNotEquals(
+      0,
       constructor.compareTo(
-        new JavaClassConstructorDefinition()
-          .setConstructorType(new JavaExplicitType(String.class))
+        new JavaClassConstructorDefinition(
+          new JavaNameType(NAME),
+          new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
+        )
       )
     );
     Assertions.assertNotEquals(
       0,
       constructor.compareTo(
-        new JavaClassConstructorDefinition()
-          .setConstructorType(new JavaNameType(NAME))
-      )
-    );
-    Assertions.assertNotEquals(
-      0,
-      constructor.compareTo(
-        new JavaClassConstructorDefinition()
-          .setConstructorType(new JavaNameType(NAME))
-          .setConstructorParameters(
-            new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
-          )
-      )
-    );
-    Assertions.assertNotEquals(
-      0,
-      constructor.compareTo(
-        new JavaClassConstructorDefinition()
-          .setConstructorType(new JavaNameType(NAME))
-          .setConstructorParameters(
-            new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class)),
-            new JavaParameter(2, PARAM_NAME_2, new JavaExplicitType(Integer.class))
-          )
+        new JavaClassConstructorDefinition(
+          new JavaNameType(NAME),
+          new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class)),
+          new JavaParameter(2, PARAM_NAME_2, new JavaExplicitType(Integer.class))
+        )
       )
     );
 
     Assertions.assertEquals(0, constructor.compareTo(constructor));
     Assertions.assertEquals(
       0,
-      new JavaClassConstructorDefinition()
-        .setConstructorType(new JavaNameType(NAME))
-        .compareTo(
-          new JavaClassConstructorDefinition()
-            .setConstructorType(new JavaNameType(NAME))
-        )
+      new JavaClassConstructorDefinition(new JavaNameType(NAME))
+        .compareTo(new JavaClassConstructorDefinition(new JavaNameType(NAME)))
     );
     Assertions.assertEquals(
       0,
       constructor.compareTo(
-        new JavaClassConstructorDefinition()
-          .setConstructorType(new JavaNameType(NAME))
-          .setConstructorParameters(
-            new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class)),
-            new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class))
-          )
+        new JavaClassConstructorDefinition(
+          new JavaNameType(NAME),
+          new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class)),
+          new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class))
+        )
       )
     );
   }

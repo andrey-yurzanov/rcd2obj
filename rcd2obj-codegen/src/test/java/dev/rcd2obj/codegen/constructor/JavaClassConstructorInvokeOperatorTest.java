@@ -16,6 +16,7 @@
 
 package dev.rcd2obj.codegen.constructor;
 
+import dev.rcd2obj.codegen.JavaElementRenderingException;
 import dev.rcd2obj.codegen.operator.JavaNullArgument;
 import dev.rcd2obj.codegen.parameter.JavaParameter;
 import dev.rcd2obj.codegen.render.JavaElementWriteRender;
@@ -44,8 +45,7 @@ class JavaClassConstructorInvokeOperatorTest {
   void renderTest() {
     StringWriter writer = new StringWriter();
     JavaClassConstructorInvokeOperator operator = new JavaClassConstructorInvokeOperator(
-      new JavaClassConstructorDefinition()
-        .setConstructorType(new JavaNameType(NAME)),
+      new JavaClassConstructorDefinition(new JavaNameType(NAME)),
       Collections.emptyList()
     );
     operator.render(new JavaElementWriteRender(writer));
@@ -57,12 +57,11 @@ class JavaClassConstructorInvokeOperatorTest {
   void renderArgsTest() {
     StringWriter writer = new StringWriter();
     JavaClassConstructorInvokeOperator operator = new JavaClassConstructorInvokeOperator(
-      new JavaClassConstructorDefinition()
-        .setConstructorType(new JavaNameType(NAME))
-        .setConstructorParameters(
-          new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
-          new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
-        ),
+      new JavaClassConstructorDefinition(
+        new JavaNameType(NAME),
+        new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
+        new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
+      ),
       Arrays.asList(
         new JavaNullArgument(),
         new JavaNullArgument()
@@ -74,12 +73,15 @@ class JavaClassConstructorInvokeOperatorTest {
   }
 
   @Test
-  void renderThrowsTest() {
-    StringWriter writer = new StringWriter();
-    JavaClassConstructorInvokeOperator operator = new JavaClassConstructorInvokeOperator(
-      new JavaClassConstructorDefinition(),
-      Collections.emptyList()
+  void renderExceptionTest() {
+    JavaElementWriteRender render = new JavaElementWriteRender(new StringWriter());
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaClassConstructorInvokeOperator(null, null).render(render)
     );
-    Assertions.assertThrows(NullPointerException.class, () -> operator.render(new JavaElementWriteRender(writer)));
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaClassConstructorInvokeOperator(new JavaClassConstructorDefinition(null), null).render(render)
+    );
   }
 }

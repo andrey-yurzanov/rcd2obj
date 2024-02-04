@@ -17,6 +17,7 @@
 package dev.rcd2obj.codegen.constructor;
 
 import dev.rcd2obj.codegen.JavaElement;
+import dev.rcd2obj.codegen.JavaElementRenderingException;
 import dev.rcd2obj.codegen.JavaElementType;
 import dev.rcd2obj.codegen.modifier.JavaModifier;
 import dev.rcd2obj.codegen.operator.JavaArgument;
@@ -28,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.TreeSet;
 
 /**
@@ -38,10 +38,56 @@ import java.util.TreeSet;
  * @since 1.0
  */
 public class JavaClassConstructorDefinition implements JavaElement, Comparable<JavaClassConstructorDefinition> {
-  private JavaType constructorType;
-  private Collection<JavaParameter> constructorParameters;
-  private JavaModifier constructorAccessModifier;
-  private JavaConstructorImpl constructorImpl;
+  private final JavaType constructorType;
+  private final Collection<JavaParameter> constructorParameters;
+  private final JavaModifier constructorAccessModifier;
+  private final JavaConstructorImpl constructorImpl;
+
+  /**
+   * It creates new instance of Java constructor. Constructor will be without an access modifier,
+   * it will have {@link JavaConstructorUnsupportedImpl} implementation.
+   *
+   * @param constructorType       type of constructor
+   * @param constructorParameters constructor parameters
+   */
+  public JavaClassConstructorDefinition(JavaType constructorType, JavaParameter... constructorParameters) {
+    this(
+      constructorType,
+      Arrays.asList(constructorParameters),
+      null,
+      new JavaConstructorUnsupportedImpl()
+    );
+  }
+
+  /**
+   * It creates new instance of Java constructor.
+   *
+   * @param constructorType           type of constructor
+   * @param constructorParameters     constructor parameters
+   * @param constructorAccessModifier access modifier of constructor
+   * @param constructorImpl           implementation of the constructor, if it has null-value, then {@link JavaConstructorUnsupportedImpl} will be used
+   */
+  public JavaClassConstructorDefinition(
+    JavaType constructorType,
+    Collection<JavaParameter> constructorParameters,
+    JavaModifier constructorAccessModifier,
+    JavaConstructorImpl constructorImpl
+  ) {
+    this.constructorType = constructorType;
+    this.constructorAccessModifier = constructorAccessModifier;
+
+    this.constructorParameters = new TreeSet<>();
+    if (constructorParameters != null) {
+      this.constructorParameters.addAll(constructorParameters);
+    }
+
+    if (constructorImpl == null) {
+      this.constructorImpl = new JavaConstructorUnsupportedImpl();
+    } else {
+      this.constructorImpl = constructorImpl;
+    }
+
+  }
 
   /**
    * Returns type of constructor's owner.
@@ -50,16 +96,6 @@ public class JavaClassConstructorDefinition implements JavaElement, Comparable<J
    */
   public JavaType getConstructorType() {
     return constructorType;
-  }
-
-  /**
-   * Sets type of constructor's owner.
-   *
-   * @param constructorType type of constructor's owner
-   */
-  public JavaClassConstructorDefinition setConstructorType(JavaType constructorType) {
-    this.constructorType = constructorType;
-    return this;
   }
 
   /**
@@ -72,20 +108,6 @@ public class JavaClassConstructorDefinition implements JavaElement, Comparable<J
   }
 
   /**
-   * Sets constructor's parameters.
-   *
-   * @param constructorParameters constructor's parameters
-   */
-  public JavaClassConstructorDefinition setConstructorParameters(JavaParameter... constructorParameters) {
-    if (this.constructorParameters == null) {
-      this.constructorParameters = new TreeSet<>();
-    }
-    this.constructorParameters.addAll(Arrays.asList(constructorParameters));
-
-    return this;
-  }
-
-  /**
    * Returns constructor's access modifier.
    *
    * @return constructor's access modifier
@@ -95,32 +117,12 @@ public class JavaClassConstructorDefinition implements JavaElement, Comparable<J
   }
 
   /**
-   * Sets constructor's access modifier.
-   *
-   * @param constructorAccessModifier constructor's access modifier.
-   */
-  public JavaClassConstructorDefinition setConstructorAccessModifier(JavaModifier constructorAccessModifier) {
-    this.constructorAccessModifier = constructorAccessModifier;
-    return this;
-  }
-
-  /**
    * Returns constructor's implementation.
    *
    * @return constructor's implementation
    */
   public JavaConstructorImpl getConstructorImpl() {
     return constructorImpl;
-  }
-
-  /**
-   * Sets constructor's implementation.
-   *
-   * @param constructorImpl constructor's implementation.
-   */
-  public JavaClassConstructorDefinition setConstructorImpl(JavaConstructorImpl constructorImpl) {
-    this.constructorImpl = constructorImpl;
-    return this;
   }
 
   /**
@@ -147,15 +149,15 @@ public class JavaClassConstructorDefinition implements JavaElement, Comparable<J
   }
 
   @Override
-  public void render(JavaElementRender target) {
-    if (constructorImpl == null) {
-      constructorImpl = new JavaConstructorUnsupportedImpl();
+  public void render(JavaElementRender target) throws JavaElementRenderingException {
+    if (constructorType == null) {
+      throw new JavaElementRenderingException("Constructor type has incorrect value: [$]!", constructorType);
     }
 
     target
       .append(JavaElementType.CONSTRUCTOR_DEFINITION_BEGIN)
       .append(constructorAccessModifier)
-      .append(Objects.requireNonNull(constructorType, "[constructorType] is required for definition!"))
+      .append(constructorType)
       .append(JavaElementType.CONSTRUCTOR_DEFINITION_PARAMS_BLOCK_BEGIN)
       .append(constructorParameters, JavaElementType.CONSTRUCTOR_DEFINITION_PARAMS_SEPARATOR.toElement())
       .append(JavaElementType.CONSTRUCTOR_DEFINITION_PARAMS_BLOCK_END)
@@ -167,18 +169,10 @@ public class JavaClassConstructorDefinition implements JavaElement, Comparable<J
   public int compareTo(JavaClassConstructorDefinition other) {
     int result = constructorType.compareTo(other.getConstructorType());
     if (result == 0) {
-      int size = 0;
-      if (constructorParameters != null) {
-        size = constructorParameters.size();
-      }
-
-      int otherSize = 0;
       Collection<JavaParameter> otherParameters = other.getConstructorParameters();
-      if (otherParameters != null) {
-        otherSize = otherParameters.size();
-      }
+      int otherSize = otherParameters.size();
 
-      result = Integer.compare(size, otherSize);
+      result = Integer.compare(constructorParameters.size(), otherSize);
       if (result == 0 && otherSize > 0) {
         Iterator<JavaParameter> iterator = otherParameters.iterator();
         for (JavaParameter parameter : constructorParameters) {

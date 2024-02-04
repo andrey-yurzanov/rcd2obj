@@ -17,9 +17,7 @@
 package dev.rcd2obj.codegen;
 
 import dev.rcd2obj.codegen.constructor.JavaClassConstructorDefinition;
-import dev.rcd2obj.codegen.constructor.JavaConstructorUnsupportedImpl;
 import dev.rcd2obj.codegen.inherited.JavaInheritableElement;
-import dev.rcd2obj.codegen.modifier.JavaPublicModifier;
 import dev.rcd2obj.codegen.parameter.JavaParameter;
 import dev.rcd2obj.codegen.render.JavaElementWriteRender;
 import dev.rcd2obj.codegen.type.JavaExplicitType;
@@ -129,22 +127,16 @@ class JavaClassTest {
         new JavaInheritableElement(Serializable.class)
       )
       .setClassConstructors(
-        new JavaClassConstructorDefinition()
-          .setConstructorType(new JavaNameType(CLASS_NAME))
-          .setConstructorImpl(new JavaConstructorUnsupportedImpl()),
-        new JavaClassConstructorDefinition()
-          .setConstructorImpl(new JavaConstructorUnsupportedImpl())
-          .setConstructorAccessModifier(new JavaPublicModifier())
-          .setConstructorParameters(
-            new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
-          ),
-        new JavaClassConstructorDefinition()
-          .setConstructorImpl(new JavaConstructorUnsupportedImpl())
-          .setConstructorAccessModifier(new JavaPublicModifier())
-          .setConstructorParameters(
-            new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class)),
-            new JavaParameter(2, PARAM_NAME_2, new JavaExplicitType(Integer.class))
-          )
+        new JavaClassConstructorDefinition(new JavaNameType(CLASS_NAME)),
+        new JavaClassConstructorDefinition(
+          new JavaNameType(CLASS_NAME),
+          new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
+        ),
+        new JavaClassConstructorDefinition(
+          new JavaNameType(CLASS_NAME),
+          new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class)),
+          new JavaParameter(2, PARAM_NAME_2, new JavaExplicitType(Integer.class))
+        )
       );
 
     javaClass.render(new JavaElementWriteRender(writer));

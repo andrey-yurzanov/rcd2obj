@@ -16,13 +16,13 @@
 
 package dev.rcd2obj.codegen.constructor;
 
+import dev.rcd2obj.codegen.JavaElementRenderingException;
 import dev.rcd2obj.codegen.JavaElementType;
 import dev.rcd2obj.codegen.operator.JavaArgument;
 import dev.rcd2obj.codegen.render.JavaElementRender;
 import dev.rcd2obj.codegen.type.JavaType;
 
 import java.util.Collection;
-import java.util.Objects;
 
 /**
  * Code generator for invocation of a Java's constructor.
@@ -67,11 +67,19 @@ public class JavaClassConstructorInvokeOperator implements JavaArgument {
   }
 
   @Override
-  public void render(JavaElementRender target) {
+  public void render(JavaElementRender target) throws JavaElementRenderingException {
+    if (constructorDefinition == null) {
+      throw new JavaElementRenderingException("Constructor has incorrect value: [$]!", constructorDefinition);
+    }
+
     JavaType constructorType = constructorDefinition.getConstructorType();
+    if (constructorType == null) {
+      throw new JavaElementRenderingException("Constructor type has incorrect value: [$]!", constructorType);
+    }
+
     target
       .append(JavaElementType.CONSTRUCTOR_INVOKE_BEGIN)
-      .append(Objects.requireNonNull(constructorType, "[constructorType] is required for invocation!"))
+      .append(constructorType)
       .append(JavaElementType.CONSTRUCTOR_INVOKE_PARAMS_BLOCK_BEGIN)
       .append(constructorArguments, JavaElementType.CONSTRUCTOR_INVOKE_ARGS_SEPARATOR.toElement())
       .append(JavaElementType.CONSTRUCTOR_INVOKE_PARAMS_BLOCK_END)

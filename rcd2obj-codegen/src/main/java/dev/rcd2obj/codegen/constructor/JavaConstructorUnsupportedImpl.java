@@ -32,9 +32,9 @@ import dev.rcd2obj.codegen.type.JavaExplicitType;
 public class JavaConstructorUnsupportedImpl implements JavaConstructorImpl {
   private static final JavaOperator UNSUPPORTED = new JavaThrowOperator(
     new JavaNewOperator(
-      new JavaClassConstructorDefinition()
-        .setConstructorType(new JavaExplicitType(UnsupportedOperationException.class))
-        .getConstructor()
+      new JavaClassConstructorDefinition(
+        new JavaExplicitType(UnsupportedOperationException.class)
+      ).getConstructor()
     )
   );
 

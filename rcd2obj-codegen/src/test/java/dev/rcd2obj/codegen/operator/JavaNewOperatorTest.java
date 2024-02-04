@@ -41,9 +41,9 @@ class JavaNewOperatorTest {
   @Test
   void renderTest() {
     JavaNewOperator operator = new JavaNewOperator(
-      new JavaClassConstructorDefinition()
-        .setConstructorType(new JavaExplicitType(UnsupportedOperationException.class))
-        .getConstructor()
+      new JavaClassConstructorDefinition(
+        new JavaExplicitType(UnsupportedOperationException.class)
+      ).getConstructor()
     );
 
     StringWriter writer = new StringWriter();
@@ -54,12 +54,10 @@ class JavaNewOperatorTest {
   @Test
   void renderTestWithParams() {
     JavaNewOperator operator = new JavaNewOperator(
-      new JavaClassConstructorDefinition()
-        .setConstructorType(new JavaExplicitType(UnsupportedOperationException.class))
-        .setConstructorParameters(
-          new JavaParameter(1, NAME, new JavaExplicitType(String.class))
-        )
-        .getConstructor(new JavaNullArgument())
+      new JavaClassConstructorDefinition(
+        new JavaExplicitType(UnsupportedOperationException.class),
+        new JavaParameter(1, NAME, new JavaExplicitType(String.class))
+      ).getConstructor(new JavaNullArgument())
     );
 
     StringWriter writer = new StringWriter();
