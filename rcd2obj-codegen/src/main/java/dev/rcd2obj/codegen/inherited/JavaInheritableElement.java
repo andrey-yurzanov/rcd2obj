@@ -17,6 +17,7 @@
 package dev.rcd2obj.codegen.inherited;
 
 import dev.rcd2obj.codegen.JavaElement;
+import dev.rcd2obj.codegen.JavaElementRenderingException;
 import dev.rcd2obj.codegen.JavaElementType;
 import dev.rcd2obj.codegen.method.JavaClassMethodDefinition;
 import dev.rcd2obj.codegen.render.JavaElementRender;
@@ -91,7 +92,11 @@ public class JavaInheritableElement implements JavaElement, Comparable<JavaInher
   }
 
   @Override
-  public void render(JavaElementRender target) {
+  public void render(JavaElementRender target) throws JavaElementRenderingException {
+    if (type == null) {
+      throw new JavaElementRenderingException("Inherited type has incorrect value: [$]!", type);
+    }
+
     target
       .append(JavaElementType.INHERITED_ELEMENT_BEGIN)
       .append(JavaElementType.INHERITED_ELEMENT_TYPE)
