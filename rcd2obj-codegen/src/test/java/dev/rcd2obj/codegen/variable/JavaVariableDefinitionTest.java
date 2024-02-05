@@ -119,11 +119,10 @@ class JavaVariableDefinitionTest {
 
   @Test
   void invokeTest() {
-    JavaClassMethodInvokeOperator method = new JavaClassMethodDefinition()
-      .setMethodName(METHOD_NAME)
-      .setMethodParameters(
-        new JavaParameter(1, NAME, new JavaExplicitType(String.class))
-      ).getMethod(new JavaNullArgument());
+    JavaClassMethodInvokeOperator method = new JavaClassMethodDefinition(
+      METHOD_NAME,
+      new JavaParameter(1, NAME, new JavaExplicitType(String.class))
+    ).invoke(new JavaNullArgument());
 
     JavaVariableDefinition definition = new JavaVariableDefinition(
       new JavaExplicitType(String.class),

@@ -16,12 +16,12 @@
 
 package dev.rcd2obj.codegen.method;
 
+import dev.rcd2obj.codegen.JavaElementRenderingException;
 import dev.rcd2obj.codegen.JavaElementType;
 import dev.rcd2obj.codegen.operator.JavaArgument;
 import dev.rcd2obj.codegen.render.JavaElementRender;
 
 import java.util.Collection;
-import java.util.Objects;
 
 /**
  * A code generator for generating of class' method invocation.
@@ -66,12 +66,20 @@ public class JavaClassMethodInvokeOperator implements JavaArgument {
   }
 
   @Override
-  public void render(JavaElementRender target) {
+  public void render(JavaElementRender target) throws JavaElementRenderingException {
+    if (methodDefinition == null) {
+      throw new JavaElementRenderingException("Method definition has incorrect value: [$]", methodDefinition);
+    }
+
     String methodName = methodDefinition.getMethodName();
+    if (methodName == null || methodName.trim().isEmpty()) {
+      throw new JavaElementRenderingException("Method name has incorrect value: [$]", methodName);
+    }
+
     target
       .append(JavaElementType.METHOD_INVOKE_BEGIN)
       .append(JavaElementType.METHOD_INVOKE_NAME)
-      .append(Objects.requireNonNull(methodName, "[methodName] is required for invocation!"))
+      .append(methodName)
       .append(JavaElementType.METHOD_INVOKE_ARGS_BLOCK_BEGIN)
       .append(methodArguments, JavaElementType.METHOD_INVOKE_ARGS_SEPARATOR.toElement())
       .append(JavaElementType.METHOD_INVOKE_ARGS_BLOCK_END)

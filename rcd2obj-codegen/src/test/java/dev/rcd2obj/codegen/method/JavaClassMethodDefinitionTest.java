@@ -16,6 +16,7 @@
 
 package dev.rcd2obj.codegen.method;
 
+import dev.rcd2obj.codegen.JavaElementRenderingException;
 import dev.rcd2obj.codegen.modifier.JavaPublicModifier;
 import dev.rcd2obj.codegen.operator.JavaNullArgument;
 import dev.rcd2obj.codegen.parameter.JavaParameter;
@@ -51,11 +52,8 @@ class JavaClassMethodDefinitionTest {
   void renderTest() {
     StringWriter writer = new StringWriter();
 
-    new JavaClassMethodDefinition()
-      .setMethodName(METHOD_NAME)
-      .setMethodReturnType(new JavaExplicitType(void.class))
-      .setMethodImpl(new JavaMethodUnsupportedImpl())
-      .render(new JavaElementWriteRender(writer));
+    JavaClassMethodDefinition definition = new JavaClassMethodDefinition(METHOD_NAME);
+    definition.render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(EXPECTED_VALUE, writer.toString());
   }
@@ -64,11 +62,14 @@ class JavaClassMethodDefinitionTest {
   void renderWithReturnTest() {
     StringWriter writer = new StringWriter();
 
-    new JavaClassMethodDefinition()
-      .setMethodName(METHOD_NAME)
-      .setMethodReturnType(new JavaExplicitType(String.class))
-      .setMethodImpl(new JavaMethodUnsupportedImpl())
-      .render(new JavaElementWriteRender(writer));
+    JavaClassMethodDefinition definition = new JavaClassMethodDefinition(
+      METHOD_NAME,
+      null,
+      new JavaExplicitType(String.class),
+      null,
+      null
+    );
+    definition.render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(EXPECTED_VALUE_WITH_RETURN, writer.toString());
   }
@@ -77,113 +78,105 @@ class JavaClassMethodDefinitionTest {
   void renderWithAccessModifierTest() {
     StringWriter writer = new StringWriter();
 
-    new JavaClassMethodDefinition()
-      .setMethodName(METHOD_NAME)
-      .setMethodReturnType(new JavaExplicitType(String.class))
-      .setMethodAccessModifier(new JavaPublicModifier())
-      .setMethodImpl(new JavaMethodUnsupportedImpl())
-      .render(new JavaElementWriteRender(writer));
+    JavaClassMethodDefinition definition = new JavaClassMethodDefinition(
+      METHOD_NAME,
+      new JavaPublicModifier(),
+      new JavaExplicitType(String.class),
+      null,
+      null
+    );
+    definition.render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(EXPECTED_VALUE_WITH_ACCESS_MODIFIER, writer.toString());
   }
 
   @Test
-  void renderByMethodTest() {
-    StringWriter writer = new StringWriter();
-
-    new JavaClassMethodDefinition(Comparable.class.getDeclaredMethods()[0])
-      .render(new JavaElementWriteRender(writer));
-
-    Assertions.assertEquals(EXPECTED_VALUE_BY_METHOD, writer.toString());
+  void renderExceptionTest() {
+    JavaClassMethodDefinition definition = new JavaClassMethodDefinition(
+      null,
+      null,
+      null,
+      null,
+      null
+    );
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> definition.render(new JavaElementWriteRender(new StringWriter()))
+    );
   }
 
   @Test
-  void getMethodTest() {
-    JavaClassMethodDefinition methodDefinition = new JavaClassMethodDefinition();
-    methodDefinition.setMethodName(METHOD_NAME);
-
+  void invokeTest() {
+    JavaClassMethodDefinition definition = new JavaClassMethodDefinition(METHOD_NAME);
     Assertions.assertThrows(
       IllegalArgumentException.class,
-      () -> methodDefinition.getMethod(new JavaNullArgument())
+      () -> definition.invoke(new JavaNullArgument())
     );
+  }
 
-    methodDefinition.setMethodParameters(
+  @Test
+  void invokeWithParamsTest() {
+    JavaClassMethodDefinition definition = new JavaClassMethodDefinition(
+      METHOD_NAME,
       new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
       new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
     );
-    Assertions.assertThrows(IllegalArgumentException.class, methodDefinition::getMethod);
+    Assertions.assertThrows(IllegalArgumentException.class, definition::invoke);
     Assertions.assertThrows(
       IllegalArgumentException.class,
-      () -> methodDefinition.getMethod(new JavaNullArgument())
+      () -> definition.invoke(new JavaNullArgument())
     );
 
-    JavaClassMethodInvokeOperator method = methodDefinition.getMethod(new JavaNullArgument(), new JavaNullArgument());
+    JavaClassMethodInvokeOperator method = definition.invoke(new JavaNullArgument(), new JavaNullArgument());
     Assertions.assertEquals(
-      methodDefinition.getMethodParameters().size(),
+      definition.getMethodParameters().size(),
       method.getMethodArguments().size()
     );
-    Assertions.assertEquals(methodDefinition, method.getMethodDefinition());
+    Assertions.assertEquals(definition, method.getMethodDefinition());
   }
 
   @Test
   void compareToTest() {
     Assertions.assertNotEquals(
       0,
-      new JavaClassMethodDefinition()
-        .setMethodName(METHOD_NAME)
-        .compareTo(
-          new JavaClassMethodDefinition()
-            .setMethodName(WRONG_METHOD_NAME)
-        )
+      new JavaClassMethodDefinition(METHOD_NAME)
+        .compareTo(new JavaClassMethodDefinition(WRONG_METHOD_NAME))
     );
     Assertions.assertNotEquals(
       0,
-      new JavaClassMethodDefinition()
-        .setMethodName(METHOD_NAME)
-        .setMethodParameters(
-          new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
-        )
-        .compareTo(
-          new JavaClassMethodDefinition()
-            .setMethodName(METHOD_NAME)
-        )
+      new JavaClassMethodDefinition(
+        METHOD_NAME,
+        new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
+      ).compareTo(new JavaClassMethodDefinition(METHOD_NAME))
     );
     Assertions.assertNotEquals(
       0,
-      new JavaClassMethodDefinition()
-        .setMethodName(METHOD_NAME)
-        .setMethodParameters(
-          new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class)),
-          new JavaParameter(2, PARAM_NAME_2, new JavaExplicitType(Integer.class))
+      new JavaClassMethodDefinition(
+        METHOD_NAME,
+        new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class)),
+        new JavaParameter(2, PARAM_NAME_2, new JavaExplicitType(Integer.class))
+      ).compareTo(
+        new JavaClassMethodDefinition(
+          METHOD_NAME,
+          new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
+          new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
         )
-        .compareTo(
-          new JavaClassMethodDefinition()
-            .setMethodName(METHOD_NAME)
-            .setMethodParameters(
-              new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
-              new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
-            )
-        )
+      )
     );
 
-    JavaClassMethodDefinition methodDefinition = new JavaClassMethodDefinition()
-      .setMethodName(METHOD_NAME);
+    JavaClassMethodDefinition methodDefinition = new JavaClassMethodDefinition(METHOD_NAME);
 
     Assertions.assertEquals(0, methodDefinition.compareTo(methodDefinition));
-    Assertions.assertEquals(0, methodDefinition.compareTo(
-      new JavaClassMethodDefinition()
-        .setMethodName(METHOD_NAME)
-    ));
+    Assertions.assertEquals(0, methodDefinition.compareTo(new JavaClassMethodDefinition(METHOD_NAME)));
 
-    methodDefinition.setMethodParameters(
+    methodDefinition = new JavaClassMethodDefinition(
+      METHOD_NAME,
       new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
     );
     Assertions.assertEquals(0, methodDefinition.compareTo(
-      new JavaClassMethodDefinition()
-        .setMethodName(METHOD_NAME)
-        .setMethodParameters(
-          new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
-        )
-    ));
+      new JavaClassMethodDefinition(
+        METHOD_NAME,
+        new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
+      )));
   }
 }

@@ -16,6 +16,7 @@
 
 package dev.rcd2obj.codegen.method;
 
+import dev.rcd2obj.codegen.JavaElementRenderingException;
 import dev.rcd2obj.codegen.operator.JavaNullArgument;
 import dev.rcd2obj.codegen.parameter.JavaParameter;
 import dev.rcd2obj.codegen.render.JavaElementWriteRender;
@@ -41,20 +42,25 @@ class JavaClassMethodInvokeOperatorTest {
   private static final String MULTI_PARAMS_EXPECTED = "renderTest(null,null)";
 
   @Test
-  void renderFailureTest() {
-    JavaClassMethodInvokeOperator operator = new JavaClassMethodInvokeOperator(
-      new JavaClassMethodDefinition(),
-      Collections.emptyList()
+  void renderExceptionTest() {
+    JavaElementWriteRender render = new JavaElementWriteRender(new StringWriter());
+
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaClassMethodInvokeOperator(new JavaClassMethodDefinition(null), Collections.emptyList())
+        .render(render)
     );
 
-    StringWriter writer = new StringWriter();
-    Assertions.assertThrows(NullPointerException.class, () -> operator.render(new JavaElementWriteRender(writer)));
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> new JavaClassMethodInvokeOperator(null, Collections.emptyList()).render(render)
+    );
   }
 
   @Test
   void renderWithoutParamsTest() {
     JavaClassMethodInvokeOperator operator = new JavaClassMethodInvokeOperator(
-      new JavaClassMethodDefinition().setMethodName(METHOD_NAME),
+      new JavaClassMethodDefinition(METHOD_NAME),
       Collections.emptyList()
     );
 
@@ -67,11 +73,10 @@ class JavaClassMethodInvokeOperatorTest {
   @Test
   void renderSingleParamTest() {
     JavaClassMethodInvokeOperator operator = new JavaClassMethodInvokeOperator(
-      new JavaClassMethodDefinition()
-        .setMethodName(METHOD_NAME)
-        .setMethodParameters(
-          new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
-        ),
+      new JavaClassMethodDefinition(
+        METHOD_NAME,
+        new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
+      ),
       Collections.singletonList(new JavaNullArgument())
     );
 
@@ -84,12 +89,11 @@ class JavaClassMethodInvokeOperatorTest {
   @Test
   void renderMultiParamTest() {
     JavaClassMethodInvokeOperator operator = new JavaClassMethodInvokeOperator(
-      new JavaClassMethodDefinition()
-        .setMethodName(METHOD_NAME)
-        .setMethodParameters(
-          new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class)),
-          new JavaParameter(2, PARAM_NAME_2, new JavaExplicitType(Integer.class))
-        ),
+      new JavaClassMethodDefinition(
+        METHOD_NAME,
+        new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class)),
+        new JavaParameter(2, PARAM_NAME_2, new JavaExplicitType(Integer.class))
+      ),
       Arrays.asList(new JavaNullArgument(), new JavaNullArgument())
     );
 

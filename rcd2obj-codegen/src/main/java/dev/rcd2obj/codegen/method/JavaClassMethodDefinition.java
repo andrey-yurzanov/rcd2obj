@@ -17,17 +17,15 @@
 package dev.rcd2obj.codegen.method;
 
 import dev.rcd2obj.codegen.JavaElement;
+import dev.rcd2obj.codegen.JavaElementRenderingException;
 import dev.rcd2obj.codegen.JavaElementType;
 import dev.rcd2obj.codegen.modifier.JavaModifier;
-import dev.rcd2obj.codegen.modifier.JavaPublicModifier;
 import dev.rcd2obj.codegen.operator.JavaArgument;
 import dev.rcd2obj.codegen.parameter.JavaParameter;
 import dev.rcd2obj.codegen.render.JavaElementRender;
 import dev.rcd2obj.codegen.type.JavaExplicitType;
 import dev.rcd2obj.codegen.type.JavaType;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,55 +40,32 @@ import java.util.TreeSet;
  * @since 1.0
  */
 public class JavaClassMethodDefinition implements JavaElement, Comparable<JavaClassMethodDefinition> {
-  private String methodName;
-  private JavaModifier methodAccessModifier;
-  private JavaType methodReturnType;
-  private Collection<JavaParameter> methodParameters;
-  private JavaMethodImpl methodImpl;
+  private final String methodName;
+  private final JavaModifier methodAccessModifier;
+  private final JavaType methodReturnType;
+  private final Collection<JavaParameter> methodParameters;
+  private final JavaMethodImpl methodImpl;
 
   /**
-   * Constructs new instance of a method's code generator.
+   * It creates new instance of method's generator. It generates method with void return type and without an access
+   * modifier. The generated method will have {@link JavaMethodUnsupportedImpl} implementation.
+   *
+   * @param methodName       name of the method
+   * @param methodParameters parameters of the method
    */
-  public JavaClassMethodDefinition() {
+  public JavaClassMethodDefinition(String methodName, JavaParameter... methodParameters) {
+    this(methodName, null, null, Arrays.asList(methodParameters), null);
   }
 
   /**
-   * Constructs new instance of a method's generator.
+   * It creates new instance of method's generator.
    *
-   * @param method method's meta information
-   */
-  public JavaClassMethodDefinition(Method method) {
-    this(
-      method.getName(),
-      new JavaPublicModifier(),
-      new JavaExplicitType(method.getReturnType()),
-      null,
-      new JavaMethodUnsupportedImpl()
-    );
-
-    Parameter[] parameters = method.getParameters();
-    if (parameters.length > 0) {
-      this.methodParameters = new TreeSet<>();
-      for (int i = 0; i < parameters.length; i++) {
-        this.methodParameters.add(
-          new JavaParameter(
-            i + 1,
-            parameters[i].getName(),
-            new JavaExplicitType(parameters[i].getType())
-          )
-        );
-      }
-    }
-  }
-
-  /**
-   * Constructs new instance of a method's generator.
-   *
-   * @param methodName           method's name
-   * @param methodAccessModifier method's access modifier
-   * @param methodReturnType     method's return type
-   * @param methodParameters     method's parameters
-   * @param methodImpl           method's implementation
+   * @param methodName           name of the method, it is required parameter
+   * @param methodAccessModifier access modifier of the method
+   * @param methodReturnType     return type of the method, if it has null-value, then void will be used
+   * @param methodParameters     parameters of the method
+   * @param methodImpl           implementation of the method, if it has null-value, then
+   *                             {@link JavaMethodUnsupportedImpl} will be used
    */
   public JavaClassMethodDefinition(
     String methodName,
@@ -101,20 +76,23 @@ public class JavaClassMethodDefinition implements JavaElement, Comparable<JavaCl
   ) {
     this.methodName = methodName;
     this.methodAccessModifier = methodAccessModifier;
-    this.methodReturnType = methodReturnType;
-    this.methodParameters = methodParameters;
-    this.methodImpl = methodImpl;
-  }
 
-  /**
-   * Sets name of the method.
-   *
-   * @param methodName name of the method
-   * @return current method's instance
-   */
-  public JavaClassMethodDefinition setMethodName(String methodName) {
-    this.methodName = methodName;
-    return this;
+    if (methodReturnType == null) {
+      this.methodReturnType = new JavaExplicitType(void.class);
+    } else {
+      this.methodReturnType = methodReturnType;
+    }
+
+    this.methodParameters = new TreeSet<>();
+    if (methodParameters != null) {
+      this.methodParameters.addAll(methodParameters);
+    }
+
+    if (methodImpl == null) {
+      this.methodImpl = new JavaMethodUnsupportedImpl();
+    } else {
+      this.methodImpl = methodImpl;
+    }
   }
 
   /**
@@ -127,34 +105,12 @@ public class JavaClassMethodDefinition implements JavaElement, Comparable<JavaCl
   }
 
   /**
-   * Sets access modifier of the method.
-   *
-   * @param methodAccessModifier method's access modfier
-   * @return current method's instance
-   */
-  public JavaClassMethodDefinition setMethodAccessModifier(JavaModifier methodAccessModifier) {
-    this.methodAccessModifier = methodAccessModifier;
-    return this;
-  }
-
-  /**
    * Returns method's access modifier.
    *
    * @return method's access modifier
    */
   public JavaModifier getMethodAccessModifier() {
     return methodAccessModifier;
-  }
-
-  /**
-   * Sets return type of the method.
-   *
-   * @param methodReturnType method's return type
-   * @return current method's instance
-   */
-  public JavaClassMethodDefinition setMethodReturnType(JavaType methodReturnType) {
-    this.methodReturnType = methodReturnType;
-    return this;
   }
 
   /**
@@ -167,38 +123,12 @@ public class JavaClassMethodDefinition implements JavaElement, Comparable<JavaCl
   }
 
   /**
-   * Sets parameters of the method.
-   *
-   * @param methodParameters method's parameters
-   * @return current method's instance
-   */
-  public JavaClassMethodDefinition setMethodParameters(JavaParameter... methodParameters) {
-    if (this.methodParameters == null) {
-      this.methodParameters = new TreeSet<>();
-    }
-    this.methodParameters.addAll(Arrays.asList(methodParameters));
-
-    return this;
-  }
-
-  /**
    * Returns parameters of the method.
    *
    * @return method's parameters
    */
   public Collection<JavaParameter> getMethodParameters() {
     return methodParameters;
-  }
-
-  /**
-   * Sets an implementation of the method.
-   *
-   * @param methodImpl method's implementation
-   * @return current method's instance
-   */
-  public JavaClassMethodDefinition setMethodImpl(JavaMethodImpl methodImpl) {
-    this.methodImpl = methodImpl;
-    return this;
   }
 
   /**
@@ -215,18 +145,13 @@ public class JavaClassMethodDefinition implements JavaElement, Comparable<JavaCl
    *
    * @return method for invocation
    */
-  public JavaClassMethodInvokeOperator getMethod(JavaArgument... methodArguments) {
-    int size = 0;
-    if (methodParameters != null) {
-      size = methodParameters.size();
-    }
-
+  public JavaClassMethodInvokeOperator invoke(JavaArgument... methodArguments) {
     List<JavaArgument> arguments = new ArrayList<>();
-    if (methodArguments != null) {
+    if (methodArguments != null && methodArguments.length > 0) {
       arguments.addAll(Arrays.asList(methodArguments));
     }
 
-    if (size == arguments.size()) {
+    if (methodParameters.size() == arguments.size()) {
       return new JavaClassMethodInvokeOperator(this, arguments);
     }
     throw new IllegalArgumentException("The number of arguments does not match the number of parameters!");
@@ -236,18 +161,13 @@ public class JavaClassMethodDefinition implements JavaElement, Comparable<JavaCl
   public int compareTo(JavaClassMethodDefinition other) {
     int result = methodName.compareTo(other.getMethodName());
     if (result == 0) {
-      int size = 0;
-      if (methodParameters != null) {
-        size = methodParameters.size();
-      }
-
       int otherSize = 0;
       Collection<JavaParameter> otherParameters = other.getMethodParameters();
       if (otherParameters != null) {
         otherSize = otherParameters.size();
       }
 
-      result = Integer.compare(size, otherSize);
+      result = Integer.compare(methodParameters.size(), otherSize);
       if (result == 0 && otherSize > 0) {
         Iterator<JavaParameter> iterator = otherParameters.iterator();
 
@@ -265,7 +185,11 @@ public class JavaClassMethodDefinition implements JavaElement, Comparable<JavaCl
   }
 
   @Override
-  public void render(JavaElementRender target) {
+  public void render(JavaElementRender target) throws JavaElementRenderingException {
+    if (methodName == null || methodName.trim().isEmpty()) {
+      throw new JavaElementRenderingException("Method name has incorrect value: [$]", methodName);
+    }
+
     target
       .append(JavaElementType.METHOD_DEFINITION_BEGIN)
       .append(JavaElementType.METHOD_DEFINITION_ACCESS_MODIFIER_BEGIN)

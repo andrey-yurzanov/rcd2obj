@@ -20,15 +20,22 @@ import dev.rcd2obj.codegen.JavaElement;
 import dev.rcd2obj.codegen.JavaElementRenderingException;
 import dev.rcd2obj.codegen.JavaElementType;
 import dev.rcd2obj.codegen.method.JavaClassMethodDefinition;
+import dev.rcd2obj.codegen.method.JavaMethodUnsupportedImpl;
+import dev.rcd2obj.codegen.modifier.JavaModifier;
+import dev.rcd2obj.codegen.parameter.JavaParameter;
 import dev.rcd2obj.codegen.render.JavaElementRender;
+import dev.rcd2obj.codegen.type.JavaExplicitType;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Base inheritable element of Java language. Can be the class or the interface.
@@ -77,7 +84,29 @@ public class JavaInheritableElement implements JavaElement, Comparable<JavaInher
       List<JavaClassMethodDefinition> methods = new ArrayList<>();
       for (Method method : type.getMethods()) {
         if (!isDefinedInObject(method) && canOverride(method)) {
-          methods.add(new JavaClassMethodDefinition(method));
+          Set<JavaParameter> methodParameters = new TreeSet<>();
+          Parameter[] parameters = method.getParameters();
+          if (parameters.length > 0) {
+            for (int i = 0; i < parameters.length; i++) {
+              methodParameters.add(
+                new JavaParameter(
+                  i + 1,
+                  parameters[i].getName(),
+                  new JavaExplicitType(parameters[i].getType())
+                )
+              );
+            }
+          }
+
+          methods.add(
+            new JavaClassMethodDefinition(
+              method.getName(),
+              JavaModifier.getModifier(method.getModifiers()),
+              new JavaExplicitType(method.getReturnType()),
+              methodParameters,
+              new JavaMethodUnsupportedImpl()
+            )
+          );
         }
       }
       return methods;

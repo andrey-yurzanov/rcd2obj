@@ -40,11 +40,10 @@ class JavaVariableInvokeMethodOperatorTest {
 
   @Test
   void renderTest() {
-    JavaClassMethodInvokeOperator method = new JavaClassMethodDefinition()
-      .setMethodName(METHOD_NAME)
-      .setMethodParameters(
-        new JavaParameter(1, VARIABLE_NAME, new JavaExplicitType(String.class))
-      ).getMethod(new JavaNullArgument());
+    JavaClassMethodInvokeOperator method = new JavaClassMethodDefinition(
+      METHOD_NAME,
+      new JavaParameter(1, VARIABLE_NAME, new JavaExplicitType(String.class))
+    ).invoke(new JavaNullArgument());
 
     StringWriter writer = new StringWriter();
     JavaVariableInvokeMethodOperator operator = new JavaVariableInvokeMethodOperator(
@@ -76,11 +75,10 @@ class JavaVariableInvokeMethodOperatorTest {
     Assertions.assertDoesNotThrow(
       () -> new JavaVariableInvokeMethodOperator(
         new JavaVariableDefinition(new JavaExplicitType(String.class), VARIABLE_NAME),
-        new JavaClassMethodDefinition()
-          .setMethodName(METHOD_NAME)
-          .setMethodParameters(
-            new JavaParameter(1, VARIABLE_NAME, new JavaExplicitType(String.class))
-          ).getMethod(new JavaNullArgument())
+        new JavaClassMethodDefinition(
+          METHOD_NAME,
+          new JavaParameter(1, VARIABLE_NAME, new JavaExplicitType(String.class))
+        ).invoke(new JavaNullArgument())
       ).render(render)
     );
   }

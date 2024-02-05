@@ -16,33 +16,29 @@
 
 package dev.rcd2obj.codegen.modifier;
 
-import dev.rcd2obj.codegen.JavaElement;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Modifier;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
- * Basic abstraction for Java modifiers, such as public, private, static, final etc.
+ * Tests of {@link JavaModifier}.
  *
  * @author Andrey_Yurzanov
- * @since 1.0
  */
-public interface JavaModifier extends JavaElement {
-  /**
-   * Returns modifier by modifier's code: {@link Modifier}.
-   *
-   * @param modifier modifier's code
-   * @return found modifier
-   * @throws IllegalArgumentException throws if modifier is not found by code
-   */
-  static JavaModifier getModifier(int modifier) throws IllegalArgumentException {
-    if (Modifier.isPublic(modifier)) {
-      return new JavaPublicModifier();
-    }
-    throw new IllegalArgumentException(
-      String.join(
-        "",
-        "Unsupported modifier: [", String.valueOf(modifier), "]"
-      )
+class JavaModifierTest {
+  @Test
+  void getModifierTest() {
+    Assertions.assertEquals(JavaModifier.getModifier(Modifier.PUBLIC), new JavaPublicModifier());
+  }
+
+  @Test
+  void getModifierExceptionTest() {
+    Assertions.assertThrows(
+      IllegalArgumentException.class,
+      () -> JavaModifier.getModifier(Modifier.STRICT)
     );
   }
 }
