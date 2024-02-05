@@ -18,6 +18,7 @@ package dev.rcd2obj.codegen;
 
 import dev.rcd2obj.codegen.constructor.JavaClassConstructorDefinition;
 import dev.rcd2obj.codegen.inherited.JavaInheritableElement;
+import dev.rcd2obj.codegen.modifier.JavaPublicModifier;
 import dev.rcd2obj.codegen.parameter.JavaParameter;
 import dev.rcd2obj.codegen.render.JavaElementWriteRender;
 import dev.rcd2obj.codegen.type.JavaExplicitType;
@@ -27,6 +28,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Tests of the class's renderer.
@@ -35,7 +38,6 @@ import java.io.StringWriter;
  */
 class JavaClassTest {
   private static final String CLASS_NAME = "MyClass";
-  private static final String CLASS_NAME_2 = "MyClass2";
   private static final String PARAM_NAME_1 = "name";
   private static final String PARAM_NAME_2 = "age";
   private static final String PACKAGE_NAME = "dev.rcd2obj.codegen";
@@ -63,24 +65,12 @@ class JavaClassTest {
     "publicIteratoriterator(){thrownewUnsupportedOperationException();}",
     "publicvoidrun(){thrownewUnsupportedOperationException();}}"
   );
-  private static final String CLASS_2_CONSTRUCTORS_EXPECTED = String.join(
-    "",
-    "packagedev.rcd2obj.codegen;",
-    "importjava.io.Serializable;importjava.util.Iterator;",
-    "publicclassMyClass2implementsSerializable,Comparable,Iterable,Runnable{",
-    "MyClass2(){thrownewUnsupportedOperationException();}",
-    "publicMyClass2(Stringname){thrownewUnsupportedOperationException();}",
-    "publicMyClass2(Stringname,Integerage){thrownewUnsupportedOperationException();}",
-    "publicintcompareTo(Objectarg0){thrownewUnsupportedOperationException();}",
-    "publicIteratoriterator(){thrownewUnsupportedOperationException();}",
-    "publicvoidrun(){thrownewUnsupportedOperationException();}}"
-  );
 
   @Test
   void renderEmptyTest() {
     StringWriter writer = new StringWriter();
 
-    JavaClass javaClass = new JavaClass(CLASS_NAME);
+    JavaClass javaClass = new JavaClass(CLASS_NAME, null, new JavaPublicModifier(), null, null, null);
     javaClass.render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(EMPTY_CLASS_EXPECTED, writer.toString());
@@ -90,10 +80,16 @@ class JavaClassTest {
   void renderPackageTest() {
     StringWriter writer = new StringWriter();
 
-    JavaClass javaClass = new JavaClass(CLASS_NAME)
-      .setClassPackage(new JavaClassPackage(PACKAGE_NAME));
-
+    JavaClass javaClass = new JavaClass(
+      CLASS_NAME,
+      new JavaClassPackage(PACKAGE_NAME),
+      new JavaPublicModifier(),
+      null,
+      null,
+      null
+    );
     javaClass.render(new JavaElementWriteRender(writer));
+
     Assertions.assertEquals(CLASS_PACKAGE_EXPECTED, writer.toString());
   }
 
@@ -101,14 +97,19 @@ class JavaClassTest {
   void renderImplementsTest() {
     StringWriter writer = new StringWriter();
 
-    JavaClass javaClass = new JavaClass(CLASS_NAME)
-      .setClassPackage(new JavaClassPackage(PACKAGE_NAME))
-      .setClassImplements(
+    JavaClass javaClass = new JavaClass(
+      CLASS_NAME,
+      new JavaClassPackage(PACKAGE_NAME),
+      new JavaPublicModifier(),
+      Arrays.asList(
         new JavaInheritableElement(Comparable.class),
         new JavaInheritableElement(Runnable.class),
         new JavaInheritableElement(Iterable.class),
         new JavaInheritableElement(Serializable.class)
-      );
+      ),
+      null,
+      null
+    );
 
     javaClass.render(new JavaElementWriteRender(writer));
     Assertions.assertEquals(CLASS_METHODS_EXPECTED, writer.toString());
@@ -118,33 +119,49 @@ class JavaClassTest {
   void renderConstructorsTest() {
     StringWriter writer = new StringWriter();
 
-    JavaClass javaClass = new JavaClass(CLASS_NAME)
-      .setClassPackage(new JavaClassPackage(PACKAGE_NAME))
-      .setClassImplements(
+    JavaClass javaClass = new JavaClass(
+      CLASS_NAME,
+      new JavaClassPackage(PACKAGE_NAME),
+      new JavaPublicModifier(),
+      Arrays.asList(
         new JavaInheritableElement(Comparable.class),
         new JavaInheritableElement(Runnable.class),
         new JavaInheritableElement(Iterable.class),
         new JavaInheritableElement(Serializable.class)
-      )
-      .setClassConstructors(
+      ),
+      Arrays.asList(
         new JavaClassConstructorDefinition(new JavaNameType(CLASS_NAME)),
         new JavaClassConstructorDefinition(
           new JavaNameType(CLASS_NAME),
-          new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
+          Collections.singletonList(
+            new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
+          ),
+          new JavaPublicModifier(),
+          null
         ),
         new JavaClassConstructorDefinition(
           new JavaNameType(CLASS_NAME),
-          new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class)),
-          new JavaParameter(2, PARAM_NAME_2, new JavaExplicitType(Integer.class))
+          Arrays.asList(
+            new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class)),
+            new JavaParameter(2, PARAM_NAME_2, new JavaExplicitType(Integer.class))
+          ),
+          new JavaPublicModifier(),
+          null
         )
-      );
+      ),
+      null
+    );
 
     javaClass.render(new JavaElementWriteRender(writer));
     Assertions.assertEquals(CLASS_CONSTRUCTORS_EXPECTED, writer.toString());
+  }
 
-    writer = new StringWriter();
-    javaClass.setClassName(CLASS_NAME_2);
-    javaClass.render(new JavaElementWriteRender(writer));
-    Assertions.assertEquals(CLASS_2_CONSTRUCTORS_EXPECTED, writer.toString());
+  @Test
+  void renderExceptionTest() {
+    JavaClass javaClass = new JavaClass(null, null, null, null, null, null);
+    Assertions.assertThrows(
+      JavaElementRenderingException.class,
+      () -> javaClass.render(new JavaElementWriteRender(new StringWriter()))
+    );
   }
 }

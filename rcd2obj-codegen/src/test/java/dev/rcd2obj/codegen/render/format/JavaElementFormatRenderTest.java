@@ -19,12 +19,14 @@ package dev.rcd2obj.codegen.render.format;
 import dev.rcd2obj.codegen.JavaClass;
 import dev.rcd2obj.codegen.JavaClassPackage;
 import dev.rcd2obj.codegen.inherited.JavaInheritableElement;
+import dev.rcd2obj.codegen.modifier.JavaPublicModifier;
 import dev.rcd2obj.codegen.render.JavaElementWriteRender;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.function.BiConsumer;
 
 /**
@@ -86,15 +88,20 @@ class JavaElementFormatRenderTest {
   void renderTest() {
     StringWriter writer = new StringWriter();
 
-    JavaClass javaClass = new JavaClass(CLASS_NAME)
-      .setClassPackage(new JavaClassPackage(PACKAGE_NAME))
-      .setClassImplements(
+    JavaClass javaClass = new JavaClass(
+      CLASS_NAME,
+      new JavaClassPackage(PACKAGE_NAME),
+      new JavaPublicModifier(),
+      Arrays.asList(
         new JavaInheritableElement(Comparable.class),
         new JavaInheritableElement(Runnable.class),
         new JavaInheritableElement(Iterable.class),
         new JavaInheritableElement(Serializable.class),
         new JavaInheritableElement(BiConsumer.class)
-      );
+      ),
+      null,
+      null
+    );
 
     JavaElementFormatRender renderer = new JavaElementFormatRender(new JavaElementWriteRender(writer));
 

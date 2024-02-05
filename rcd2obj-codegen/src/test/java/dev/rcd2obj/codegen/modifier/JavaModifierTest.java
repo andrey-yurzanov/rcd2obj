@@ -21,8 +21,6 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Modifier;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * Tests of {@link JavaModifier}.
  *
@@ -31,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class JavaModifierTest {
   @Test
   void getModifierTest() {
-    Assertions.assertEquals(JavaModifier.getModifier(Modifier.PUBLIC), new JavaPublicModifier());
+    Assertions.assertEquals(JavaModifier.getModifier(Modifier.PUBLIC).getClass(), JavaPublicModifier.class);
   }
 
   @Test

@@ -21,10 +21,12 @@ import dev.rcd2obj.annotation.meta.TableMetaInfo;
 import dev.rcd2obj.codegen.JavaClass;
 import dev.rcd2obj.codegen.JavaClassPackage;
 import dev.rcd2obj.codegen.inherited.JavaInheritableElement;
+import dev.rcd2obj.codegen.modifier.JavaPublicModifier;
 import dev.rcd2obj.codegen.render.JavaElementWriteRender;
 import dev.rcd2obj.codegen.render.format.JavaElementFormatRender;
 
 import java.io.StringWriter;
+import java.util.Collections;
 
 /**
  * The generated Java's source code.
@@ -45,9 +47,14 @@ public class JavaSourceCode {
     Class<?> type = info.getType();
     this.name = type.getSimpleName().concat("StubMapper");
     this.writer = new StringWriter();
-    this.javaClass = new JavaClass(name)
-      .setClassPackage(new JavaClassPackage(type.getName().replace("." + type.getSimpleName(), "")))
-      .setClassImplements(new JavaInheritableElement(Mapper.class));
+    this.javaClass = new JavaClass(
+      name,
+      new JavaClassPackage(type.getName().replace("." + type.getSimpleName(), "")),
+      new JavaPublicModifier(),
+      Collections.singletonList(new JavaInheritableElement(Mapper.class)),
+      null,
+      null
+    );
   }
 
   /**
