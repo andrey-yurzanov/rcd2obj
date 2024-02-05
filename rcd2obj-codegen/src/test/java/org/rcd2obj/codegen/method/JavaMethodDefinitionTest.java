@@ -32,7 +32,7 @@ import java.io.StringWriter;
  *
  * @author Andrey_Yurzanov
  */
-class JavaClassMethodDefinitionTest {
+class JavaMethodDefinitionTest {
   private static final String METHOD_NAME = "renderTest";
   private static final String WRONG_METHOD_NAME = "renderTest1";
   private static final String PARAM_NAME_1 = "name";
@@ -52,7 +52,7 @@ class JavaClassMethodDefinitionTest {
   void renderTest() {
     StringWriter writer = new StringWriter();
 
-    JavaClassMethodDefinition definition = new JavaClassMethodDefinition(METHOD_NAME);
+    JavaMethodDefinition definition = new JavaMethodDefinition(METHOD_NAME);
     definition.render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(EXPECTED_VALUE, writer.toString());
@@ -62,7 +62,7 @@ class JavaClassMethodDefinitionTest {
   void renderWithReturnTest() {
     StringWriter writer = new StringWriter();
 
-    JavaClassMethodDefinition definition = new JavaClassMethodDefinition(
+    JavaMethodDefinition definition = new JavaMethodDefinition(
       METHOD_NAME,
       null,
       new JavaExplicitType(String.class),
@@ -78,7 +78,7 @@ class JavaClassMethodDefinitionTest {
   void renderWithAccessModifierTest() {
     StringWriter writer = new StringWriter();
 
-    JavaClassMethodDefinition definition = new JavaClassMethodDefinition(
+    JavaMethodDefinition definition = new JavaMethodDefinition(
       METHOD_NAME,
       new JavaPublicModifier(),
       new JavaExplicitType(String.class),
@@ -92,7 +92,7 @@ class JavaClassMethodDefinitionTest {
 
   @Test
   void renderExceptionTest() {
-    JavaClassMethodDefinition definition = new JavaClassMethodDefinition(
+    JavaMethodDefinition definition = new JavaMethodDefinition(
       null,
       null,
       null,
@@ -107,7 +107,7 @@ class JavaClassMethodDefinitionTest {
 
   @Test
   void invokeTest() {
-    JavaClassMethodDefinition definition = new JavaClassMethodDefinition(METHOD_NAME);
+    JavaMethodDefinition definition = new JavaMethodDefinition(METHOD_NAME);
     Assertions.assertThrows(
       IllegalArgumentException.class,
       () -> definition.invoke(new JavaNullArgument())
@@ -116,7 +116,7 @@ class JavaClassMethodDefinitionTest {
 
   @Test
   void invokeWithParamsTest() {
-    JavaClassMethodDefinition definition = new JavaClassMethodDefinition(
+    JavaMethodDefinition definition = new JavaMethodDefinition(
       METHOD_NAME,
       new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
       new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
@@ -127,7 +127,7 @@ class JavaClassMethodDefinitionTest {
       () -> definition.invoke(new JavaNullArgument())
     );
 
-    JavaClassMethodInvokeOperator method = definition.invoke(new JavaNullArgument(), new JavaNullArgument());
+    JavaMethodInvokeOperator method = definition.invoke(new JavaNullArgument(), new JavaNullArgument());
     Assertions.assertEquals(
       definition.getMethodParameters().size(),
       method.getMethodArguments().size()
@@ -139,24 +139,24 @@ class JavaClassMethodDefinitionTest {
   void compareToTest() {
     Assertions.assertNotEquals(
       0,
-      new JavaClassMethodDefinition(METHOD_NAME)
-        .compareTo(new JavaClassMethodDefinition(WRONG_METHOD_NAME))
+      new JavaMethodDefinition(METHOD_NAME)
+        .compareTo(new JavaMethodDefinition(WRONG_METHOD_NAME))
     );
     Assertions.assertNotEquals(
       0,
-      new JavaClassMethodDefinition(
+      new JavaMethodDefinition(
         METHOD_NAME,
         new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
-      ).compareTo(new JavaClassMethodDefinition(METHOD_NAME))
+      ).compareTo(new JavaMethodDefinition(METHOD_NAME))
     );
     Assertions.assertNotEquals(
       0,
-      new JavaClassMethodDefinition(
+      new JavaMethodDefinition(
         METHOD_NAME,
         new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class)),
         new JavaParameter(2, PARAM_NAME_2, new JavaExplicitType(Integer.class))
       ).compareTo(
-        new JavaClassMethodDefinition(
+        new JavaMethodDefinition(
           METHOD_NAME,
           new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
           new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
@@ -164,17 +164,17 @@ class JavaClassMethodDefinitionTest {
       )
     );
 
-    JavaClassMethodDefinition methodDefinition = new JavaClassMethodDefinition(METHOD_NAME);
+    JavaMethodDefinition methodDefinition = new JavaMethodDefinition(METHOD_NAME);
 
     Assertions.assertEquals(0, methodDefinition.compareTo(methodDefinition));
-    Assertions.assertEquals(0, methodDefinition.compareTo(new JavaClassMethodDefinition(METHOD_NAME)));
+    Assertions.assertEquals(0, methodDefinition.compareTo(new JavaMethodDefinition(METHOD_NAME)));
 
-    methodDefinition = new JavaClassMethodDefinition(
+    methodDefinition = new JavaMethodDefinition(
       METHOD_NAME,
       new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
     );
     Assertions.assertEquals(0, methodDefinition.compareTo(
-      new JavaClassMethodDefinition(
+      new JavaMethodDefinition(
         METHOD_NAME,
         new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
       )));

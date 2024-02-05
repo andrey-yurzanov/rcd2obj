@@ -29,8 +29,8 @@ import java.util.Collection;
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaClassMethodInvokeOperator implements JavaArgument {
-  private final JavaClassMethodDefinition methodDefinition;
+public class JavaMethodInvokeOperator implements JavaArgument {
+  private final JavaMethodDefinition methodDefinition;
   private final Collection<JavaArgument> methodArguments;
 
   /**
@@ -39,8 +39,8 @@ public class JavaClassMethodInvokeOperator implements JavaArgument {
    * @param methodDefinition declared method
    * @param methodArguments  method's arguments
    */
-  protected JavaClassMethodInvokeOperator(
-    JavaClassMethodDefinition methodDefinition,
+  protected JavaMethodInvokeOperator(
+    JavaMethodDefinition methodDefinition,
     Collection<JavaArgument> methodArguments
   ) {
     this.methodDefinition = methodDefinition;
@@ -52,7 +52,7 @@ public class JavaClassMethodInvokeOperator implements JavaArgument {
    *
    * @return declared method
    */
-  public JavaClassMethodDefinition getMethodDefinition() {
+  public JavaMethodDefinition getMethodDefinition() {
     return methodDefinition;
   }
 

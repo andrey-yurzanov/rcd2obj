@@ -16,15 +16,16 @@
 
 package org.rcd2obj.codegen;
 
-import org.rcd2obj.codegen.constructor.JavaClassConstructorDefinition;
+import org.rcd2obj.codegen.constructor.JavaConstructorDefinition;
 import org.rcd2obj.codegen.inherited.JavaInheritableElement;
-import org.rcd2obj.codegen.method.JavaClassMethodDefinition;
+import org.rcd2obj.codegen.method.JavaMethodDefinition;
 import org.rcd2obj.codegen.method.JavaMethodUnsupportedImpl;
 import org.rcd2obj.codegen.modifier.JavaModifier;
 import org.rcd2obj.codegen.render.JavaClassBufferRender;
 import org.rcd2obj.codegen.render.JavaElementRender;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.TreeSet;
 
 /**
@@ -38,8 +39,8 @@ public class JavaClass implements JavaElement {
   private final JavaClassPackage classPackage;
   private final JavaModifier classAccessModifier;
   private final Collection<JavaInheritableElement> classImplements;
-  private final Collection<JavaClassConstructorDefinition> classConstructors;
-  private final Collection<JavaClassMethodDefinition> classMethods;
+  private final Collection<JavaConstructorDefinition> classConstructors;
+  private final Collection<JavaMethodDefinition> classMethods;
 
   /**
    * It creates new instance of the class renderer. The generated class won't have package, constructor and methods.
@@ -67,8 +68,8 @@ public class JavaClass implements JavaElement {
     JavaClassPackage classPackage,
     JavaModifier classAccessModifier,
     Collection<JavaInheritableElement> classImplements,
-    Collection<JavaClassConstructorDefinition> classConstructors,
-    Collection<JavaClassMethodDefinition> classMethods
+    Collection<JavaConstructorDefinition> classConstructors,
+    Collection<JavaMethodDefinition> classMethods
   ) {
     this.className = className;
     this.classPackage = classPackage;
@@ -136,7 +137,7 @@ public class JavaClass implements JavaElement {
    * @return implemented interfaces
    */
   public Collection<JavaInheritableElement> getClassImplements() {
-    return classImplements;
+    return Collections.unmodifiableCollection(classImplements);
   }
 
   /**
@@ -144,8 +145,8 @@ public class JavaClass implements JavaElement {
    *
    * @return constructors of the class
    */
-  public Collection<JavaClassConstructorDefinition> getClassConstructors() {
-    return classConstructors;
+  public Collection<JavaConstructorDefinition> getClassConstructors() {
+    return Collections.unmodifiableCollection(classConstructors);
   }
 
   /**
@@ -153,8 +154,8 @@ public class JavaClass implements JavaElement {
    *
    * @return methods of the class
    */
-  public Collection<JavaClassMethodDefinition> getClassMethods() {
-    return classMethods;
+  public Collection<JavaMethodDefinition> getClassMethods() {
+    return Collections.unmodifiableCollection(classMethods);
   }
 
   @Override

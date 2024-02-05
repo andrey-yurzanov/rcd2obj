@@ -17,7 +17,7 @@
 package org.rcd2obj.codegen.inherited;
 
 import org.rcd2obj.codegen.JavaElementRenderingException;
-import org.rcd2obj.codegen.method.JavaClassMethodDefinition;
+import org.rcd2obj.codegen.method.JavaMethodDefinition;
 import org.rcd2obj.codegen.render.JavaElementWriteRender;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -44,7 +44,7 @@ class JavaInheritableElementTest {
   @Test
   void getInheritedMethodsTest() {
     JavaInheritableElement element = new JavaInheritableElement(Comparable.class);
-    Collection<JavaClassMethodDefinition> methods = element.getInheritedMethods();
+    Collection<JavaMethodDefinition> methods = element.getInheritedMethods();
 
     Assertions.assertEquals(1, methods.size());
     Assertions.assertEquals("compareTo", methods.stream().findFirst().get().getMethodName());

@@ -29,11 +29,11 @@ import java.util.Arrays;
 import java.util.Collections;
 
 /**
- * Tests of {@link JavaClassMethodInvokeOperator}.
+ * Tests of {@link JavaMethodInvokeOperator}.
  *
  * @author Andrey_Yurzanov
  */
-class JavaClassMethodInvokeOperatorTest {
+class JavaMethodInvokeOperatorTest {
   private static final String METHOD_NAME = "renderTest";
   private static final String PARAM_NAME_1 = "name";
   private static final String PARAM_NAME_2 = "age";
@@ -47,20 +47,20 @@ class JavaClassMethodInvokeOperatorTest {
 
     Assertions.assertThrows(
       JavaElementRenderingException.class,
-      () -> new JavaClassMethodInvokeOperator(new JavaClassMethodDefinition(null), Collections.emptyList())
+      () -> new JavaMethodInvokeOperator(new JavaMethodDefinition(null), Collections.emptyList())
         .render(render)
     );
 
     Assertions.assertThrows(
       JavaElementRenderingException.class,
-      () -> new JavaClassMethodInvokeOperator(null, Collections.emptyList()).render(render)
+      () -> new JavaMethodInvokeOperator(null, Collections.emptyList()).render(render)
     );
   }
 
   @Test
   void renderWithoutParamsTest() {
-    JavaClassMethodInvokeOperator operator = new JavaClassMethodInvokeOperator(
-      new JavaClassMethodDefinition(METHOD_NAME),
+    JavaMethodInvokeOperator operator = new JavaMethodInvokeOperator(
+      new JavaMethodDefinition(METHOD_NAME),
       Collections.emptyList()
     );
 
@@ -72,8 +72,8 @@ class JavaClassMethodInvokeOperatorTest {
 
   @Test
   void renderSingleParamTest() {
-    JavaClassMethodInvokeOperator operator = new JavaClassMethodInvokeOperator(
-      new JavaClassMethodDefinition(
+    JavaMethodInvokeOperator operator = new JavaMethodInvokeOperator(
+      new JavaMethodDefinition(
         METHOD_NAME,
         new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
       ),
@@ -88,8 +88,8 @@ class JavaClassMethodInvokeOperatorTest {
 
   @Test
   void renderMultiParamTest() {
-    JavaClassMethodInvokeOperator operator = new JavaClassMethodInvokeOperator(
-      new JavaClassMethodDefinition(
+    JavaMethodInvokeOperator operator = new JavaMethodInvokeOperator(
+      new JavaMethodDefinition(
         METHOD_NAME,
         new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class)),
         new JavaParameter(2, PARAM_NAME_2, new JavaExplicitType(Integer.class))

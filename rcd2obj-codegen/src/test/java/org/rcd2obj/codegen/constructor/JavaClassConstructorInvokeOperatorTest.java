@@ -45,7 +45,7 @@ class JavaClassConstructorInvokeOperatorTest {
   void renderTest() {
     StringWriter writer = new StringWriter();
     JavaClassConstructorInvokeOperator operator = new JavaClassConstructorInvokeOperator(
-      new JavaClassConstructorDefinition(new JavaNameType(NAME)),
+      new JavaConstructorDefinition(new JavaNameType(NAME)),
       Collections.emptyList()
     );
     operator.render(new JavaElementWriteRender(writer));
@@ -57,7 +57,7 @@ class JavaClassConstructorInvokeOperatorTest {
   void renderArgsTest() {
     StringWriter writer = new StringWriter();
     JavaClassConstructorInvokeOperator operator = new JavaClassConstructorInvokeOperator(
-      new JavaClassConstructorDefinition(
+      new JavaConstructorDefinition(
         new JavaNameType(NAME),
         new JavaParameter(2, PARAM_NAME_1, new JavaExplicitType(String.class)),
         new JavaParameter(1, PARAM_NAME_2, new JavaExplicitType(Integer.class))
@@ -81,7 +81,7 @@ class JavaClassConstructorInvokeOperatorTest {
     );
     Assertions.assertThrows(
       JavaElementRenderingException.class,
-      () -> new JavaClassConstructorInvokeOperator(new JavaClassConstructorDefinition(null), null).render(render)
+      () -> new JavaClassConstructorInvokeOperator(new JavaConstructorDefinition(null), null).render(render)
     );
   }
 }

@@ -17,8 +17,8 @@
 package org.rcd2obj.codegen.variable;
 
 import org.rcd2obj.codegen.JavaElementRenderingException;
-import org.rcd2obj.codegen.method.JavaClassMethodDefinition;
-import org.rcd2obj.codegen.method.JavaClassMethodInvokeOperator;
+import org.rcd2obj.codegen.method.JavaMethodDefinition;
+import org.rcd2obj.codegen.method.JavaMethodInvokeOperator;
 import org.rcd2obj.codegen.operator.JavaNullArgument;
 import org.rcd2obj.codegen.parameter.JavaParameter;
 import org.rcd2obj.codegen.render.JavaElementWriteRender;
@@ -40,7 +40,7 @@ class JavaVariableInvokeMethodOperatorTest {
 
   @Test
   void renderTest() {
-    JavaClassMethodInvokeOperator method = new JavaClassMethodDefinition(
+    JavaMethodInvokeOperator method = new JavaMethodDefinition(
       METHOD_NAME,
       new JavaParameter(1, VARIABLE_NAME, new JavaExplicitType(String.class))
     ).invoke(new JavaNullArgument());
@@ -75,7 +75,7 @@ class JavaVariableInvokeMethodOperatorTest {
     Assertions.assertDoesNotThrow(
       () -> new JavaVariableInvokeMethodOperator(
         new JavaVariableDefinition(new JavaExplicitType(String.class), VARIABLE_NAME),
-        new JavaClassMethodDefinition(
+        new JavaMethodDefinition(
           METHOD_NAME,
           new JavaParameter(1, VARIABLE_NAME, new JavaExplicitType(String.class))
         ).invoke(new JavaNullArgument())

@@ -29,6 +29,7 @@ import org.rcd2obj.codegen.type.JavaType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
@@ -39,7 +40,7 @@ import java.util.TreeSet;
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaClassMethodDefinition implements JavaElement, Comparable<JavaClassMethodDefinition> {
+public class JavaMethodDefinition implements JavaElement, Comparable<JavaMethodDefinition> {
   private final String methodName;
   private final JavaModifier methodAccessModifier;
   private final JavaType methodReturnType;
@@ -53,7 +54,7 @@ public class JavaClassMethodDefinition implements JavaElement, Comparable<JavaCl
    * @param methodName       name of the method
    * @param methodParameters parameters of the method
    */
-  public JavaClassMethodDefinition(String methodName, JavaParameter... methodParameters) {
+  public JavaMethodDefinition(String methodName, JavaParameter... methodParameters) {
     this(methodName, null, null, Arrays.asList(methodParameters), null);
   }
 
@@ -67,7 +68,7 @@ public class JavaClassMethodDefinition implements JavaElement, Comparable<JavaCl
    * @param methodImpl           implementation of the method, if it has null-value, then
    *                             {@link JavaMethodUnsupportedImpl} will be used
    */
-  public JavaClassMethodDefinition(
+  public JavaMethodDefinition(
     String methodName,
     JavaModifier methodAccessModifier,
     JavaType methodReturnType,
@@ -128,7 +129,7 @@ public class JavaClassMethodDefinition implements JavaElement, Comparable<JavaCl
    * @return method's parameters
    */
   public Collection<JavaParameter> getMethodParameters() {
-    return methodParameters;
+    return Collections.unmodifiableCollection(methodParameters);
   }
 
   /**
@@ -145,20 +146,20 @@ public class JavaClassMethodDefinition implements JavaElement, Comparable<JavaCl
    *
    * @return method for invocation
    */
-  public JavaClassMethodInvokeOperator invoke(JavaArgument... methodArguments) {
+  public JavaMethodInvokeOperator invoke(JavaArgument... methodArguments) {
     List<JavaArgument> arguments = new ArrayList<>();
     if (methodArguments != null && methodArguments.length > 0) {
       arguments.addAll(Arrays.asList(methodArguments));
     }
 
     if (methodParameters.size() == arguments.size()) {
-      return new JavaClassMethodInvokeOperator(this, arguments);
+      return new JavaMethodInvokeOperator(this, arguments);
     }
     throw new IllegalArgumentException("The number of arguments does not match the number of parameters!");
   }
 
   @Override
-  public int compareTo(JavaClassMethodDefinition other) {
+  public int compareTo(JavaMethodDefinition other) {
     int result = methodName.compareTo(other.getMethodName());
     if (result == 0) {
       int otherSize = 0;

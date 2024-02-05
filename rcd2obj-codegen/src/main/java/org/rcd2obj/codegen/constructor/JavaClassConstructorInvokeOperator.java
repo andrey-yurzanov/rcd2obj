@@ -32,7 +32,7 @@ import java.util.Collection;
  * @since 1.0
  */
 public class JavaClassConstructorInvokeOperator implements JavaArgument {
-  private final JavaClassConstructorDefinition constructorDefinition;
+  private final JavaConstructorDefinition constructorDefinition;
   private final Collection<JavaArgument> constructorArguments;
 
   /**
@@ -41,7 +41,7 @@ public class JavaClassConstructorInvokeOperator implements JavaArgument {
    * @param constructorDefinition definition of constructor
    */
   protected JavaClassConstructorInvokeOperator(
-    JavaClassConstructorDefinition constructorDefinition,
+    JavaConstructorDefinition constructorDefinition,
     Collection<JavaArgument> constructorArguments
   ) {
     this.constructorDefinition = constructorDefinition;
@@ -53,7 +53,7 @@ public class JavaClassConstructorInvokeOperator implements JavaArgument {
    *
    * @return constructor's definition
    */
-  public JavaClassConstructorDefinition getConstructorDefinition() {
+  public JavaConstructorDefinition getConstructorDefinition() {
     return constructorDefinition;
   }
 

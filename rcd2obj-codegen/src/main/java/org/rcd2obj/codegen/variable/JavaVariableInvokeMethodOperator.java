@@ -18,7 +18,7 @@ package org.rcd2obj.codegen.variable;
 
 import org.rcd2obj.codegen.JavaElementRenderingException;
 import org.rcd2obj.codegen.JavaElementType;
-import org.rcd2obj.codegen.method.JavaClassMethodInvokeOperator;
+import org.rcd2obj.codegen.method.JavaMethodInvokeOperator;
 import org.rcd2obj.codegen.operator.JavaArgument;
 import org.rcd2obj.codegen.render.JavaElementRender;
 
@@ -30,7 +30,7 @@ import org.rcd2obj.codegen.render.JavaElementRender;
  */
 public class JavaVariableInvokeMethodOperator implements JavaArgument {
   private final JavaVariableDefinition variableDefinition;
-  private final JavaClassMethodInvokeOperator methodInvoke;
+  private final JavaMethodInvokeOperator methodInvoke;
 
   /**
    * It constructs new instance of the operator to code generating of variable's method invocation.
@@ -40,7 +40,7 @@ public class JavaVariableInvokeMethodOperator implements JavaArgument {
    */
   protected JavaVariableInvokeMethodOperator(
     JavaVariableDefinition variableDefinition,
-    JavaClassMethodInvokeOperator methodInvoke
+    JavaMethodInvokeOperator methodInvoke
   ) {
     this.variableDefinition = variableDefinition;
     this.methodInvoke = methodInvoke;
@@ -60,7 +60,7 @@ public class JavaVariableInvokeMethodOperator implements JavaArgument {
    *
    * @return variable's method
    */
-  public JavaClassMethodInvokeOperator getMethodInvoke() {
+  public JavaMethodInvokeOperator getMethodInvoke() {
     return methodInvoke;
   }
 

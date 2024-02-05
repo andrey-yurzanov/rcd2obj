@@ -16,7 +16,7 @@
 
 package org.rcd2obj.codegen;
 
-import org.rcd2obj.codegen.constructor.JavaClassConstructorDefinition;
+import org.rcd2obj.codegen.constructor.JavaConstructorDefinition;
 import org.rcd2obj.codegen.inherited.JavaInheritableElement;
 import org.rcd2obj.codegen.modifier.JavaPublicModifier;
 import org.rcd2obj.codegen.parameter.JavaParameter;
@@ -130,8 +130,8 @@ class JavaClassTest {
         new JavaInheritableElement(Serializable.class)
       ),
       Arrays.asList(
-        new JavaClassConstructorDefinition(new JavaNameType(CLASS_NAME)),
-        new JavaClassConstructorDefinition(
+        new JavaConstructorDefinition(new JavaNameType(CLASS_NAME)),
+        new JavaConstructorDefinition(
           new JavaNameType(CLASS_NAME),
           Collections.singletonList(
             new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class))
@@ -139,7 +139,7 @@ class JavaClassTest {
           new JavaPublicModifier(),
           null
         ),
-        new JavaClassConstructorDefinition(
+        new JavaConstructorDefinition(
           new JavaNameType(CLASS_NAME),
           Arrays.asList(
             new JavaParameter(1, PARAM_NAME_1, new JavaExplicitType(String.class)),

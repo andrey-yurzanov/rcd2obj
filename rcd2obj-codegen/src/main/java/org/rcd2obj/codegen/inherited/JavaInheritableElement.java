@@ -19,7 +19,7 @@ package org.rcd2obj.codegen.inherited;
 import org.rcd2obj.codegen.JavaElement;
 import org.rcd2obj.codegen.JavaElementRenderingException;
 import org.rcd2obj.codegen.JavaElementType;
-import org.rcd2obj.codegen.method.JavaClassMethodDefinition;
+import org.rcd2obj.codegen.method.JavaMethodDefinition;
 import org.rcd2obj.codegen.method.JavaMethodUnsupportedImpl;
 import org.rcd2obj.codegen.modifier.JavaModifier;
 import org.rcd2obj.codegen.parameter.JavaParameter;
@@ -78,10 +78,10 @@ public class JavaInheritableElement implements JavaElement, Comparable<JavaInher
    *
    * @return inherited methods
    */
-  public Collection<JavaClassMethodDefinition> getInheritedMethods() {
+  public Collection<JavaMethodDefinition> getInheritedMethods() {
     Method[] typeMethods = type.getMethods();
     if (typeMethods.length > 0) {
-      List<JavaClassMethodDefinition> methods = new ArrayList<>();
+      List<JavaMethodDefinition> methods = new ArrayList<>();
       for (Method method : type.getMethods()) {
         if (!isDefinedInObject(method) && canOverride(method)) {
           Set<JavaParameter> methodParameters = new TreeSet<>();
@@ -99,7 +99,7 @@ public class JavaInheritableElement implements JavaElement, Comparable<JavaInher
           }
 
           methods.add(
-            new JavaClassMethodDefinition(
+            new JavaMethodDefinition(
               method.getName(),
               JavaModifier.getModifier(method.getModifiers()),
               new JavaExplicitType(method.getReturnType()),

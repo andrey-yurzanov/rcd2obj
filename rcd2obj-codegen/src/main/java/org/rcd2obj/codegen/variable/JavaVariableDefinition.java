@@ -19,7 +19,7 @@ package org.rcd2obj.codegen.variable;
 import org.rcd2obj.codegen.JavaElement;
 import org.rcd2obj.codegen.JavaElementRenderingException;
 import org.rcd2obj.codegen.JavaElementType;
-import org.rcd2obj.codegen.method.JavaClassMethodInvokeOperator;
+import org.rcd2obj.codegen.method.JavaMethodInvokeOperator;
 import org.rcd2obj.codegen.operator.JavaAssignOperator;
 import org.rcd2obj.codegen.render.JavaElementRender;
 import org.rcd2obj.codegen.type.JavaType;
@@ -100,7 +100,7 @@ public class JavaVariableDefinition implements JavaElement {
    * @param methodInvoke variable's method
    * @return operator for generating variable's method invocation
    */
-  public JavaVariableInvokeMethodOperator invoke(JavaClassMethodInvokeOperator methodInvoke) {
+  public JavaVariableInvokeMethodOperator invoke(JavaMethodInvokeOperator methodInvoke) {
     return new JavaVariableInvokeMethodOperator(this, methodInvoke);
   }
 

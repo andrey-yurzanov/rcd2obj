@@ -17,7 +17,7 @@
 package org.rcd2obj.codegen.operator;
 
 import org.rcd2obj.codegen.JavaElementRenderingException;
-import org.rcd2obj.codegen.constructor.JavaClassConstructorDefinition;
+import org.rcd2obj.codegen.constructor.JavaConstructorDefinition;
 import org.rcd2obj.codegen.parameter.JavaParameter;
 import org.rcd2obj.codegen.render.JavaElementWriteRender;
 
@@ -41,9 +41,9 @@ class JavaNewOperatorTest {
   @Test
   void renderTest() {
     JavaNewOperator operator = new JavaNewOperator(
-      new JavaClassConstructorDefinition(
+      new JavaConstructorDefinition(
         new JavaExplicitType(UnsupportedOperationException.class)
-      ).getConstructor()
+      ).invoke()
     );
 
     StringWriter writer = new StringWriter();
@@ -54,10 +54,10 @@ class JavaNewOperatorTest {
   @Test
   void renderTestWithParams() {
     JavaNewOperator operator = new JavaNewOperator(
-      new JavaClassConstructorDefinition(
+      new JavaConstructorDefinition(
         new JavaExplicitType(UnsupportedOperationException.class),
         new JavaParameter(1, NAME, new JavaExplicitType(String.class))
-      ).getConstructor(new JavaNullArgument())
+      ).invoke(new JavaNullArgument())
     );
 
     StringWriter writer = new StringWriter();

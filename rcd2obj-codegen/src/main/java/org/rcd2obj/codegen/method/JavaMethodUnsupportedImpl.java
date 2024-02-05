@@ -17,7 +17,7 @@
 package org.rcd2obj.codegen.method;
 
 import org.rcd2obj.codegen.JavaElementType;
-import org.rcd2obj.codegen.constructor.JavaClassConstructorDefinition;
+import org.rcd2obj.codegen.constructor.JavaConstructorDefinition;
 import org.rcd2obj.codegen.operator.JavaNewOperator;
 import org.rcd2obj.codegen.operator.JavaOperator;
 import org.rcd2obj.codegen.operator.JavaThrowOperator;
@@ -33,9 +33,9 @@ import org.rcd2obj.codegen.type.JavaExplicitType;
 public class JavaMethodUnsupportedImpl implements JavaMethodImpl {
   private static final JavaOperator UNSUPPORTED = new JavaThrowOperator(
     new JavaNewOperator(
-      new JavaClassConstructorDefinition(
+      new JavaConstructorDefinition(
         new JavaExplicitType(UnsupportedOperationException.class)
-      ).getConstructor()
+      ).invoke()
     )
   );
 

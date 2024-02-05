@@ -28,6 +28,7 @@ import org.rcd2obj.codegen.type.JavaType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -37,7 +38,7 @@ import java.util.TreeSet;
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaClassConstructorDefinition implements JavaElement, Comparable<JavaClassConstructorDefinition> {
+public class JavaConstructorDefinition implements JavaElement, Comparable<JavaConstructorDefinition> {
   private final JavaType constructorType;
   private final Collection<JavaParameter> constructorParameters;
   private final JavaModifier constructorAccessModifier;
@@ -50,7 +51,7 @@ public class JavaClassConstructorDefinition implements JavaElement, Comparable<J
    * @param constructorType       type of constructor
    * @param constructorParameters constructor parameters
    */
-  public JavaClassConstructorDefinition(JavaType constructorType, JavaParameter... constructorParameters) {
+  public JavaConstructorDefinition(JavaType constructorType, JavaParameter... constructorParameters) {
     this(
       constructorType,
       Arrays.asList(constructorParameters),
@@ -67,7 +68,7 @@ public class JavaClassConstructorDefinition implements JavaElement, Comparable<J
    * @param constructorAccessModifier access modifier of constructor
    * @param constructorImpl           implementation of the constructor, if it has null-value, then {@link JavaConstructorUnsupportedImpl} will be used
    */
-  public JavaClassConstructorDefinition(
+  public JavaConstructorDefinition(
     JavaType constructorType,
     Collection<JavaParameter> constructorParameters,
     JavaModifier constructorAccessModifier,
@@ -104,7 +105,7 @@ public class JavaClassConstructorDefinition implements JavaElement, Comparable<J
    * @return constructor's parameters
    */
   public Collection<JavaParameter> getConstructorParameters() {
-    return constructorParameters;
+    return Collections.unmodifiableCollection(constructorParameters);
   }
 
   /**
@@ -131,7 +132,7 @@ public class JavaClassConstructorDefinition implements JavaElement, Comparable<J
    * @param constructorArguments constructor's invocation arguments
    * @return new instance for invocation of the constructor
    */
-  public JavaClassConstructorInvokeOperator getConstructor(JavaArgument... constructorArguments) {
+  public JavaClassConstructorInvokeOperator invoke(JavaArgument... constructorArguments) {
     int size = 0;
     if (constructorParameters != null) {
       size = constructorParameters.size();
@@ -166,7 +167,7 @@ public class JavaClassConstructorDefinition implements JavaElement, Comparable<J
   }
 
   @Override
-  public int compareTo(JavaClassConstructorDefinition other) {
+  public int compareTo(JavaConstructorDefinition other) {
     int result = constructorType.compareTo(other.getConstructorType());
     if (result == 0) {
       Collection<JavaParameter> otherParameters = other.getConstructorParameters();
