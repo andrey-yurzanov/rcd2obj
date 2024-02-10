@@ -29,7 +29,7 @@ import java.io.StringWriter;
  * @author Andrey_Yurzanov
  */
 class JavaThrowOperatorTest {
-  private static final String RESULT = "throwX;";
+  private static final String RESULT = "throwX";
   private static final String TYPE = "X";
 
   @Test

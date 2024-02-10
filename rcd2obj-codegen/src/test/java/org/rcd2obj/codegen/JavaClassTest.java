@@ -82,7 +82,7 @@ class JavaClassTest {
 
     JavaClass javaClass = new JavaClass(
       CLASS_NAME,
-      new JavaClassPackage(PACKAGE_NAME),
+      new JavaPackage(PACKAGE_NAME),
       new JavaPublicModifier(),
       null,
       null,
@@ -99,7 +99,7 @@ class JavaClassTest {
 
     JavaClass javaClass = new JavaClass(
       CLASS_NAME,
-      new JavaClassPackage(PACKAGE_NAME),
+      new JavaPackage(PACKAGE_NAME),
       new JavaPublicModifier(),
       Arrays.asList(
         new JavaInheritableElement(Comparable.class),
@@ -121,7 +121,7 @@ class JavaClassTest {
 
     JavaClass javaClass = new JavaClass(
       CLASS_NAME,
-      new JavaClassPackage(PACKAGE_NAME),
+      new JavaPackage(PACKAGE_NAME),
       new JavaPublicModifier(),
       Arrays.asList(
         new JavaInheritableElement(Comparable.class),

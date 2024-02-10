@@ -27,14 +27,14 @@ import java.io.StringWriter;
  *
  * @author Andrey_Yurzanov
  */
-class JavaClassPackageTest {
-  private static final String PACKAGE_EXPECTED = "packagejava.util;";
+class JavaPackageTest {
+  private static final String PACKAGE_EXPECTED = "packagejava.util";
 
   @Test
   void renderTest() {
     StringWriter writer = new StringWriter();
 
-    JavaClassPackage classPackage = new JavaClassPackage("java.util");
+    JavaPackage classPackage = new JavaPackage("java.util");
     classPackage.render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(PACKAGE_EXPECTED, writer.toString());
@@ -44,7 +44,7 @@ class JavaClassPackageTest {
   void renderExceptionTest() {
     Assertions.assertThrows(
       JavaElementRenderingException.class,
-      () -> new JavaClassPackage(null).render(new JavaElementWriteRender(new StringWriter()))
+      () -> new JavaPackage(null).render(new JavaElementWriteRender(new StringWriter()))
     );
   }
 }

@@ -16,52 +16,47 @@
 
 package org.rcd2obj.codegen.operator;
 
+import org.rcd2obj.codegen.JavaElement;
 import org.rcd2obj.codegen.JavaElementRenderingException;
 import org.rcd2obj.codegen.JavaElementType;
 import org.rcd2obj.codegen.render.JavaElementRender;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 /**
- * A renderer of throw operator. It renders code 'throw ...', where '...' is exception instance.
- *
+ * A renderer of ';' operator.
  * <pre>
  *   Example:
  *   {@code
- *   JavaConstructorDefinition cons = new JavaConstructorDefinition(new JavaExplicitType(RuntimeException.class))
- *   JavaThrowOperator th = new JavaThrowOperator(cons.invoke());
- *   th.render(...);
+ *   new JavaCompleteOperator(new JavaNullArgument())
  *   }
  *
  *   Result:
  *   {@code
- *   throw new RuntimeException()
+ *   null;
  *   }
  * </pre>
  *
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaThrowOperator implements JavaOperator {
-  private final JavaOperator operator;
+public class JavaCompleteOperator implements JavaOperator {
+  private final Collection<JavaElement> elements;
 
   /**
-   * Constructs new instance of the throw operator.
+   * It creates new instance of {@link JavaCompleteOperator}.
    *
-   * @param operator returns an instance for throws
+   * @param elements elements before complete operator
    */
-  public JavaThrowOperator(JavaOperator operator) {
-    this.operator = operator;
+  public JavaCompleteOperator(JavaElement... elements) {
+    this.elements = Arrays.asList(elements);
   }
 
   @Override
   public void render(JavaElementRender target) throws JavaElementRenderingException {
-    if (operator == null) {
-      throw new JavaElementRenderingException("Exception instance has incorrect value: [$]!", operator);
-    }
-
     target
-      .append(JavaElementType.THROW_BEGIN)
-      .append(JavaElementType.THROW_KEYWORD)
-      .append(operator)
-      .append(JavaElementType.THROW_END);
+      .append(elements)
+      .append(JavaElementType.END_EXPRESSION_OPERATOR);
   }
 }

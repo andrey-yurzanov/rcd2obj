@@ -21,7 +21,19 @@ import org.rcd2obj.codegen.JavaElementType;
 import org.rcd2obj.codegen.render.JavaElementRender;
 
 /**
- * Java's assign operator.
+ * A renderer of assign operator. It renders code '= ...', where '...' is argument for assignment.
+ * <pre>
+ *   Example:
+ *   {@code
+ *   JavaAssignOperator op = new JavaAssignOperator(new JavaNullArgument());
+ *   op.render(...);
+ *   }
+ *
+ *   Result:
+ *   {@code
+ *   = null
+ *   }
+ * </pre>
  *
  * @author Andrey_Yurzanov
  * @since 1.0
@@ -58,7 +70,6 @@ public class JavaAssignOperator implements JavaOperator {
       .append(JavaElementType.ASSIGN_OPERATOR)
       .append(JavaElementType.ASSIGN_VALUE)
       .append(assignArgument)
-      .append(JavaElementType.END_EXPRESSION_OPERATOR)
       .append(JavaElementType.ASSIGN_END);
   }
 }

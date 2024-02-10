@@ -19,12 +19,24 @@ package org.rcd2obj.codegen;
 import org.rcd2obj.codegen.render.JavaElementRender;
 
 /**
- * Java package. Renders by template 'package[name];'.
+ * A renderer of Java package. It renders code 'package ...', where '...' is name of the package.
+ * <pre>
+ *   Example:
+ *   {@code
+ *   JavaPackage pkg = new JavaPackage("org.rcd2obj.codegen");
+ *   pkg.render(...);
+ *   }
+ *
+ *   Result:
+ *   {@code
+ *   package org.rcd2obj.codegen
+ *   }
+ * </pre>
  *
  * @author Andrey_Yurzanov
  * @since 1.0
  */
-public class JavaClassPackage implements JavaElement {
+public class JavaPackage implements JavaElement {
   private final String name;
 
   /**
@@ -32,7 +44,7 @@ public class JavaClassPackage implements JavaElement {
    *
    * @param name package name
    */
-  public JavaClassPackage(String name) {
+  public JavaPackage(String name) {
     this.name = name;
   }
 
@@ -47,7 +59,6 @@ public class JavaClassPackage implements JavaElement {
       .append(JavaElementType.PACKAGE_KEYWORD)
       .append(JavaElementType.PACKAGE_NAME)
       .append(name)
-      .append(JavaElementType.END_EXPRESSION_OPERATOR)
       .append(JavaElementType.PACKAGE_END);
   }
 }

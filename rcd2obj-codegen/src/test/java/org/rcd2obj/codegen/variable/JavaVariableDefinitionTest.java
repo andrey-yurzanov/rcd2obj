@@ -38,10 +38,10 @@ import java.util.Map;
 class JavaVariableDefinitionTest {
   private static final String NAME = "myVariable";
   private static final String METHOD_NAME = "setMyVariable";
-  private static final String RENDER_LANG_EXPECTED = "StringmyVariable;";
-  private static final String RENDER_UTIL_EXPECTED = "java.util.MapmyVariable;";
+  private static final String RENDER_LANG_EXPECTED = "StringmyVariable";
+  private static final String RENDER_UTIL_EXPECTED = "java.util.MapmyVariable";
 
-  private static final String RENDER_ASSIGN_EXPECTED = "StringmyVariable=null;";
+  private static final String RENDER_ASSIGN_EXPECTED = "StringmyVariable=null";
 
   @Test
   void renderLangTest() {
