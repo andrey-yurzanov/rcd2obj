@@ -19,7 +19,7 @@ package org.rcd2obj.codegen.plugin;
 import org.rcd2obj.annotation.mapping.Mapper;
 import org.rcd2obj.annotation.meta.TableMetaInfo;
 import org.rcd2obj.codegen.JavaClass;
-import org.rcd2obj.codegen.JavaClassPackage;
+import org.rcd2obj.codegen.JavaPackage;
 import org.rcd2obj.codegen.inherited.JavaInheritableElement;
 import org.rcd2obj.codegen.modifier.JavaPublicModifier;
 import org.rcd2obj.codegen.render.JavaElementWriteRender;
@@ -49,7 +49,7 @@ public class JavaSourceCode {
     this.writer = new StringWriter();
     this.javaClass = new JavaClass(
       name,
-      new JavaClassPackage(type.getName().replace("." + type.getSimpleName(), "")),
+      new JavaPackage(type.getName().replace("." + type.getSimpleName(), "")),
       new JavaPublicModifier(),
       Collections.singletonList(new JavaInheritableElement(Mapper.class)),
       null,

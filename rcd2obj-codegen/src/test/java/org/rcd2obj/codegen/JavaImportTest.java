@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Andrey_Yurzanov
  */
 class JavaImportTest {
-  private static final String IMPORT_EXPECTED = "importjava.util.ArrayList;";
+  private static final String IMPORT_EXPECTED = "importjava.util.ArrayList";
 
   @Test
   void compareToTest() {

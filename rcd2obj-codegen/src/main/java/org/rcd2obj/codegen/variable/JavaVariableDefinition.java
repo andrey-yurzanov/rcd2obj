@@ -25,7 +25,32 @@ import org.rcd2obj.codegen.render.JavaElementRender;
 import org.rcd2obj.codegen.type.JavaType;
 
 /**
- * Java's variable definition.
+ * A renderer of variable definition.
+ * <pre>
+ *   Example 1:
+ *   {@code
+ *   JavaVariableDefinition def = new JavaVariableDefinition(new JavaExplicitType(String.class), "myVar");
+ *   def.render(...);
+ *   }
+ *
+ *   Result:
+ *   {@code
+ *   String myVar
+ *   }
+ *
+ *   Example 2:
+ *   {@code
+ *   JavaExplicitType type = new JavaExplicitType(String.class);
+ *   JavaAssignOperator assign = new JavaAssignOperator(new JavaNullArgument());
+ *   JavaVariableDefinition def = new JavaVariableDefinition(type, "myVar", assign);
+ *   def.render(...);
+ *   }
+ *
+ *   Result:
+ *   {@code
+ *   String myVar = null
+ *   }
+ * </pre>
  *
  * @author Andrey_Yurzanov
  * @since 1.0
@@ -124,8 +149,6 @@ public class JavaVariableDefinition implements JavaElement {
     // assign value
     if (variableAssign != null) {
       target.append(variableAssign);
-    } else {
-      target.append(JavaElementType.END_EXPRESSION_OPERATOR);
     }
     target.append(JavaElementType.VARIABLE_DEFINITION_END);
   }

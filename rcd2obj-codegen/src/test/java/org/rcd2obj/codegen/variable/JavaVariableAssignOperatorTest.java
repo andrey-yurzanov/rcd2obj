@@ -33,7 +33,7 @@ import java.io.StringWriter;
  */
 class JavaVariableAssignOperatorTest {
   private static final String NAME = "myVariable";
-  private static final String RENDER_ASSIGN_EXPECTED = "myVariable=null;";
+  private static final String RENDER_ASSIGN_EXPECTED = "myVariable=null";
 
   @Test
   void renderTest() {

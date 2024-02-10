@@ -16,39 +16,34 @@
 
 package org.rcd2obj.codegen.operator;
 
-import org.rcd2obj.codegen.JavaElementRenderingException;
-import org.rcd2obj.codegen.render.JavaElementWriteRender;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.rcd2obj.codegen.render.JavaElementWriteRender;
 
 import java.io.StringWriter;
 
 /**
- * Tests of {@link JavaAssignOperator}.
+ * Tests of {@link JavaCompleteOperator}.
  *
  * @author Andrey_Yurzanov
  */
-class JavaAssignOperatorTest {
-  private static final String EXPECTED = "=null";
+class JavaCompleteOperatorTest {
+  private static final String EMPTY_EXPECTED = ";";
+  private static final String EXPECTED = "null;";
+
+  @Test
+  void renderEmptyTest() {
+    StringWriter writer = new StringWriter();
+    new JavaCompleteOperator().render(new JavaElementWriteRender(writer));
+
+    Assertions.assertEquals(EMPTY_EXPECTED, writer.toString());
+  }
 
   @Test
   void renderTest() {
     StringWriter writer = new StringWriter();
-    JavaAssignOperator assign = new JavaAssignOperator(
-      new JavaNullArgument()
-    );
-    assign.render(new JavaElementWriteRender(writer));
+    new JavaCompleteOperator(new JavaNullArgument()).render(new JavaElementWriteRender(writer));
 
     Assertions.assertEquals(EXPECTED, writer.toString());
-  }
-
-  @Test
-  void renderExceptionTest() {
-    JavaElementWriteRender render = new JavaElementWriteRender(new StringWriter());
-
-    Assertions.assertThrows(
-      JavaElementRenderingException.class,
-      () -> new JavaAssignOperator(null).render(render)
-    );
   }
 }

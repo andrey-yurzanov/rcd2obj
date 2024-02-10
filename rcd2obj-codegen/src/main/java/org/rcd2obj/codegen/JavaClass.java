@@ -21,6 +21,7 @@ import org.rcd2obj.codegen.inherited.JavaInheritableElement;
 import org.rcd2obj.codegen.method.JavaMethodDefinition;
 import org.rcd2obj.codegen.method.JavaMethodUnsupportedImpl;
 import org.rcd2obj.codegen.modifier.JavaModifier;
+import org.rcd2obj.codegen.operator.JavaCompleteOperator;
 import org.rcd2obj.codegen.render.JavaClassBufferRender;
 import org.rcd2obj.codegen.render.JavaElementRender;
 
@@ -36,7 +37,7 @@ import java.util.TreeSet;
  */
 public class JavaClass implements JavaElement {
   private final String className;
-  private final JavaClassPackage classPackage;
+  private final JavaPackage classPackage;
   private final JavaModifier classAccessModifier;
   private final Collection<JavaInheritableElement> classImplements;
   private final Collection<JavaConstructorDefinition> classConstructors;
@@ -65,7 +66,7 @@ public class JavaClass implements JavaElement {
    */
   public JavaClass(
     String className,
-    JavaClassPackage classPackage,
+    JavaPackage classPackage,
     JavaModifier classAccessModifier,
     Collection<JavaInheritableElement> classImplements,
     Collection<JavaConstructorDefinition> classConstructors,
@@ -118,7 +119,7 @@ public class JavaClass implements JavaElement {
    *
    * @return package of the class.
    */
-  public JavaClassPackage getClassPackage() {
+  public JavaPackage getClassPackage() {
     return classPackage;
   }
 
@@ -197,14 +198,19 @@ public class JavaClass implements JavaElement {
       .append(JavaElementType.CLASS_BODY_END)
       .append(JavaElementType.CLASS_DEFINITION_BLOCK_END);
 
-    target
-      // package
-      .append(classPackage)
-      // imports
-      .append(JavaElementType.IMPORT_BLOCK_BEGIN)
-      .append(classRender.getImports())
-      .append(JavaElementType.IMPORT_BLOCK_END)
-      // class
-      .append(classRender.getBuffer());
+    // package
+    if (classPackage != null) {
+      target.append(new JavaCompleteOperator(classPackage));
+    }
+
+    // imports
+    target.append(JavaElementType.IMPORT_BLOCK_BEGIN);
+    for (JavaImport imp : classRender.getImports()) {
+      target.append(new JavaCompleteOperator(imp));
+    }
+    target.append(JavaElementType.IMPORT_BLOCK_END);
+
+    // class
+    target.append(classRender.getBuffer());
   }
 }

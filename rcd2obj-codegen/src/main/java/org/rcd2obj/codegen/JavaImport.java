@@ -19,7 +19,19 @@ package org.rcd2obj.codegen;
 import org.rcd2obj.codegen.render.JavaElementRender;
 
 /**
- * Import's renderer of the Java language.
+ * A renderer of import operation. It renders code 'import ...', where '...' is class's name.
+ * <pre>
+ * Example:
+ * {@code
+ * JavaImport imp = new JavaImport(HashMap.class);
+ * imp.render(...);
+ * }
+ *
+ * Result:
+ * {@code
+ * import java.util.HashMap
+ * }
+ * </pre>
  *
  * @author Andrey_Yurzanov
  * @since 1.0
@@ -64,7 +76,6 @@ public class JavaImport implements JavaElement, Comparable<JavaImport> {
       .append(JavaElementType.IMPORT_KEYWORD)
       .append(JavaElementType.IMPORT_TYPE)
       .append(type)
-      .append(JavaElementType.END_EXPRESSION_OPERATOR)
       .append(JavaElementType.IMPORT_END);
   }
 }

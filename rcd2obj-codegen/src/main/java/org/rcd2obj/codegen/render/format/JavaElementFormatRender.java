@@ -41,6 +41,7 @@ import java.util.LinkedList;
  * @since 1.0
  */
 public class JavaElementFormatRender implements JavaElementRender {
+  private boolean isNewLine;
   private JavaElementType current;
   private JavaElementType next;
   private final JavaElementRender target;
@@ -74,6 +75,7 @@ public class JavaElementFormatRender implements JavaElementRender {
     Collection<JavaElementFormatRule> rules,
     Collection<JavaElementIndentBlockFormatRule> indentBlocks
   ) {
+    this.isNewLine = true;
     this.target = target;
     this.rules = rules;
     this.indentBlocks = indentBlocks;
@@ -83,10 +85,15 @@ public class JavaElementFormatRender implements JavaElementRender {
   @Override
   public JavaElementRender append(String... elements) {
     for (String element : elements) {
+      if (isNewLine) {
+        target.append(currentIndents);
+      }
       target.append(element);
 
       if (element.contains(NEW_LINE)) {
-        target.append(currentIndents);
+        isNewLine = true;
+      } else {
+        isNewLine = false;
       }
     }
     return this;
@@ -211,11 +218,12 @@ public class JavaElementFormatRender implements JavaElementRender {
   }
 
   private Collection<JavaElementFormatRule> getDefaultLineRules(JavaElementFormatRuleAnyCondition anyRule) {
-    return Arrays.asList(new JavaElementFormatLineBeforeRule(
+    return Arrays.asList(
+      new JavaElementFormatLineBeforeRule(
         new JavaElementFormatRuleConditionAndGroup(
           anyRule,
           new JavaElementFormatRuleIsCondition(
-            JavaElementType.METHOD_IMPL_BLOCK_END
+            JavaElementType.IMPORT_BLOCK_BEGIN
           ),
           anyRule
         )
@@ -233,20 +241,10 @@ public class JavaElementFormatRender implements JavaElementRender {
         )
       ),
       new JavaElementFormatLineAfterRule(
-        LINES_COUNT,
         new JavaElementFormatRuleConditionAndGroup(
           anyRule,
           new JavaElementFormatRuleIsCondition(
-            JavaElementType.PACKAGE_END
-          ),
-          anyRule
-        )
-      ),
-      new JavaElementFormatLineAfterRule(
-        new JavaElementFormatRuleConditionAndGroup(
-          anyRule,
-          new JavaElementFormatRuleIsCondition(
-            JavaElementType.IMPORT_END,
+            JavaElementType.END_EXPRESSION_OPERATOR,
             JavaElementType.IMPORT_BLOCK_END,
             JavaElementType.METHOD_IMPL_BLOCK_BEGIN
           ),

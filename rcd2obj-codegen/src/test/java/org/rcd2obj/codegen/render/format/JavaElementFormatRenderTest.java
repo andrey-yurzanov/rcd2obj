@@ -17,7 +17,7 @@
 package org.rcd2obj.codegen.render.format;
 
 import org.rcd2obj.codegen.JavaClass;
-import org.rcd2obj.codegen.JavaClassPackage;
+import org.rcd2obj.codegen.JavaPackage;
 import org.rcd2obj.codegen.inherited.JavaInheritableElement;
 import org.rcd2obj.codegen.modifier.JavaPublicModifier;
 import org.rcd2obj.codegen.render.JavaElementWriteRender;
@@ -90,7 +90,7 @@ class JavaElementFormatRenderTest {
 
     JavaClass javaClass = new JavaClass(
       CLASS_NAME,
-      new JavaClassPackage(PACKAGE_NAME),
+      new JavaPackage(PACKAGE_NAME),
       new JavaPublicModifier(),
       Arrays.asList(
         new JavaInheritableElement(Comparable.class),
