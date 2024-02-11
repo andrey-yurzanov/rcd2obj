@@ -35,7 +35,52 @@ import java.util.List;
 import java.util.TreeSet;
 
 /**
- * A code generator for method definition generating.
+ * A method definition of the Java class.
+ * <pre>
+ *   Example 1:
+ *   {@code
+ *   JavaMethodDefinition def = new JavaMethodDefinition("run");
+ *   def.render(...);
+ *   }
+ *   Result:
+ *   {@code
+ *   void run() {
+ *     throw new UnsupportedOperationException();
+ *   }
+ *   }
+ *
+ *   Example 2:
+ *   {@code
+ *   JavaParameter param = new JavaParameter(1, "value", new JavaExplicitType(String.class));
+ *   JavaMethodDefinition def = new JavaMethodDefinition("apply", param);
+ *   def.render(...);
+ *   }
+ *   Result:
+ *   {@code
+ *   void apply(String value) {
+ *     throw new UnsupportedOperationException();
+ *   }
+ *   }
+ *
+ *   Example 3:
+ *   {@code
+ *   JavaParameter param = new JavaParameter(1, "value", new JavaExplicitType(String.class));
+ *   JavaMethodDefinition def = new JavaMethodDefinition(
+ *     "mapToInt",
+ *     new JavaPublicModifier(),
+ *     new JavaExplicitType(int.class),
+ *     Arrays.asList(param),
+ *     new JavaMethodUnsupportedImpl()
+ *   );
+ *   def.render(...);
+ *   }
+ *   Result:
+ *   {@code
+ *   public int mapToInt(String value) {
+ *     throw new UnsupportedOperationException();
+ *   }
+ *   }
+ * </pre>
  *
  * @author Andrey_Yurzanov
  * @since 1.0

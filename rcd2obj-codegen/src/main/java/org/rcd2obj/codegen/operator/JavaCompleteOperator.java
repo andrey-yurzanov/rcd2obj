@@ -25,11 +25,12 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * A renderer of ';' operator.
+ * A completion operator.
  * <pre>
  *   Example:
  *   {@code
- *   new JavaCompleteOperator(new JavaNullArgument())
+ *   JavaCompleteOperator op = new JavaCompleteOperator(new JavaNullArgument());
+ *   op.render(...);
  *   }
  *
  *   Result:

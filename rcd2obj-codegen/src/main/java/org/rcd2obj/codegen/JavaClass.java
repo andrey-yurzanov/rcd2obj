@@ -30,7 +30,57 @@ import java.util.Collections;
 import java.util.TreeSet;
 
 /**
- * The renderer of the Java class.
+ * The class of Java language.
+ * <pre>
+ *   Example 1:
+ *   {@code
+ *   JavaClass cls = new JavaClass("MyClass");
+ *   cls.render(...);
+ *   }
+ *   Result:
+ *   {@code
+ *   MyClass {
+ *   }
+ *   }
+ *
+ *   Example 2:
+ *   {@code
+ *   JavaPublicModifier mod = new JavaPublicModifier();
+ *   JavaParameter param = new JavaParameter(1, "data", new JavaExplicitType(Map.class));
+ *   JavaConstructorDefinition def = new JavaConstructorDefinition(
+ *     new JavaNameType("MyClass"),
+ *     Collections.singletonList(param),
+ *     mod,
+ *     null
+ *   );
+ *
+ *   JavaClass cls = new JavaClass(
+ *     "MyClass",
+ *     new JavaPackage("org.rcd2obj.codegen"),
+ *     mod,
+ *     Collections.singletonList(new JavaInheritableElement(Runnable.class)),
+ *     Collections.singletonList(def),
+ *     null
+ *   );
+ *   cls.render(...);
+ *   }
+ *   Result:
+ *   {@code
+ *   package org.rcd2obj.codegen;
+ *
+ *   import java.util.Map;
+ *
+ *   public class MyClass implements Runnable {
+ *     public MyClass(Map data) {
+ *       throw new UnsupportedOperationException();
+ *     }
+ *
+ *     public void run() {
+ *       throw new UnsupportedOperationException();
+ *     }
+ *   }
+ *   }
+ * </pre>
  *
  * @author Andrey_Yurzanov
  * @since 1.0
@@ -44,7 +94,7 @@ public class JavaClass implements JavaElement {
   private final Collection<JavaMethodDefinition> classMethods;
 
   /**
-   * It creates new instance of the class renderer. The generated class won't have package, constructor and methods.
+   * It creates new instance of the class. The generated class won't have package, constructor and methods.
    *
    * @param className name of the class, it is required
    */
@@ -53,7 +103,7 @@ public class JavaClass implements JavaElement {
   }
 
   /**
-   * It creates new instance of the class renderer. Any types will add to the import block.
+   * It creates new instance of the class. Any types will add to the import block.
    *
    * @param className           name of the class, it is required
    * @param classPackage        package of the class

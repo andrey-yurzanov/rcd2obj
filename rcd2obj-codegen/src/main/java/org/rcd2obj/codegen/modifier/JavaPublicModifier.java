@@ -21,6 +21,17 @@ import org.rcd2obj.codegen.render.JavaElementRender;
 
 /**
  * Public modifier of constructors, methods, classes etc.
+ * <pre>
+ *   Example:
+ *   {@code
+ *   JavaPublicModifier mod = new JavaPublicModifier();
+ *   mod.render(...);
+ *   }
+ *   Result:
+ *   {@code
+ *   public
+ *   }
+ * </pre>
  *
  * @author Andrey_Yurzanov
  * @since 1.0

@@ -19,14 +19,13 @@ package org.rcd2obj.codegen;
 import org.rcd2obj.codegen.render.JavaElementRender;
 
 /**
- * A renderer of import operation. It renders code 'import ...', where '...' is class's name.
+ * The import operator of Java language.
  * <pre>
  * Example:
  * {@code
  * JavaImport imp = new JavaImport(HashMap.class);
  * imp.render(...);
  * }
- *
  * Result:
  * {@code
  * import java.util.HashMap

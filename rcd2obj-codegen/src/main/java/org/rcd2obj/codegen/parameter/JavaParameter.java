@@ -23,7 +23,35 @@ import org.rcd2obj.codegen.render.JavaElementRender;
 import org.rcd2obj.codegen.type.JavaType;
 
 /**
- * Parameter of constructor, method and something else.
+ * The parameter of constructor or method.
+ * <pre>
+ *   Example 1:
+ *   {@code
+ *   JavaNameType type = new JavaNameType("MyClass");
+ *   JavaParameter param = new JavaParameter(1, "message", new JavaExplicitType(String.class));
+ *   JavaConstructorDefinition def = new JavaConstructorDefinition(type, param);
+ *   def.render(...);
+ *   }
+ *   Result:
+ *   {@code
+ *   MyClass(String message) {
+ *     throw new UnsupportedOperationException();
+ *   }
+ *   }
+ *
+ *   Example 2:
+ *   {@code
+ *   JavaParameter param = new JavaParameter(1, "value", new JavaExplicitType(String.class));
+ *   JavaMethodDefinition def = new JavaMethodDefinition("apply", param);
+ *   def.render(...);
+ *   }
+ *   Result:
+ *   {@code
+ *   void apply(String value) {
+ *     throw new UnsupportedOperationException();
+ *   }
+ *   }
+ * </pre>
  *
  * @author Andrey_Yurzanov
  * @since 1.0
@@ -34,7 +62,7 @@ public class JavaParameter implements JavaElement, Comparable<JavaParameter> {
   private final JavaType parameterType;
 
   /**
-   * Constructs new instance of the parameter.
+   * It constructs new instance of the parameter.
    *
    * @param parameterOrder order of the parameter
    * @param parameterName  name of the parameter

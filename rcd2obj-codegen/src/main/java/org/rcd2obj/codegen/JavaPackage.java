@@ -19,14 +19,13 @@ package org.rcd2obj.codegen;
 import org.rcd2obj.codegen.render.JavaElementRender;
 
 /**
- * A renderer of Java package. It renders code 'package ...', where '...' is name of the package.
+ * The package of Java language.
  * <pre>
  *   Example:
  *   {@code
  *   JavaPackage pkg = new JavaPackage("org.rcd2obj.codegen");
  *   pkg.render(...);
  *   }
- *
  *   Result:
  *   {@code
  *   package org.rcd2obj.codegen

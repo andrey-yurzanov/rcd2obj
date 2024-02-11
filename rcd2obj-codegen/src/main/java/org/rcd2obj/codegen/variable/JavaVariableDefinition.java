@@ -25,14 +25,13 @@ import org.rcd2obj.codegen.render.JavaElementRender;
 import org.rcd2obj.codegen.type.JavaType;
 
 /**
- * A renderer of variable definition.
+ * An operation of variable definition.
  * <pre>
  *   Example 1:
  *   {@code
  *   JavaVariableDefinition def = new JavaVariableDefinition(new JavaExplicitType(String.class), "myVar");
  *   def.render(...);
  *   }
- *
  *   Result:
  *   {@code
  *   String myVar
@@ -45,7 +44,6 @@ import org.rcd2obj.codegen.type.JavaType;
  *   JavaVariableDefinition def = new JavaVariableDefinition(type, "myVar", assign);
  *   def.render(...);
  *   }
- *
  *   Result:
  *   {@code
  *   String myVar = null
@@ -61,7 +59,7 @@ public class JavaVariableDefinition implements JavaElement {
   private final JavaAssignOperator variableAssign;
 
   /**
-   * Constructs new instance of variable definition renderer.
+   * It constructs new instance of variable definition renderer.
    *
    * @param variableType type of the variable
    * @param variableName name of the variable
@@ -71,7 +69,7 @@ public class JavaVariableDefinition implements JavaElement {
   }
 
   /**
-   * Constructs new instance of variable definition renderer.
+   * It constructs new instance of variable definition renderer.
    *
    * @param variableType type of the variable
    * @param variableName name of the variable

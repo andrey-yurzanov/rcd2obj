@@ -23,7 +23,23 @@ import org.rcd2obj.codegen.operator.JavaArgument;
 import org.rcd2obj.codegen.render.JavaElementRender;
 
 /**
- * An operator for code generating of variable's method invocation.
+ * An operator of variable's method invocation.
+ * <pre>
+ *   Example:
+ *   {@code
+ *   JavaParameter param = new JavaParameter(1, "value", new JavaExplicitType(String.class));
+ *   JavaMethodDefinition metDef = new JavaMethodDefinition("setValue", param);
+ *   JavaMethodInvokeOperator metInvoke = def.invoke(new JavaNullArgument());
+ *
+ *   JavaVariableDefinition varDef = new JavaVariableDefinition(new JavaNameType("MyClass"), "myVar");
+ *   JavaVariableInvokeMethodOperator varInvoke = varDef.invoke(metInvoke);
+ *   varInvoke.render(...);
+ *   }
+ *   Result:
+ *   {@code
+ *   myVar.setValue(null)
+ *   }
+ * </pre>
  *
  * @author Andrey_Yurzanov
  * @since 1.0
