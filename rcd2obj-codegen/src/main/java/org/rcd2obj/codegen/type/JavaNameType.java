@@ -20,7 +20,7 @@ import org.rcd2obj.codegen.JavaElementRenderingException;
 import org.rcd2obj.codegen.render.JavaElementRender;
 
 /**
- * Simple type of the Java, renders any specified name.
+ * Simple type of the Java, it renders any specified name.
  *
  * @author Andrey_Yurzanov
  * @since 1.0
@@ -29,7 +29,7 @@ public class JavaNameType implements JavaType {
   private final String name;
 
   /**
-   * Constructs new instance of type.
+   * It constructs new instance of type.
    *
    * @param name type's name
    */

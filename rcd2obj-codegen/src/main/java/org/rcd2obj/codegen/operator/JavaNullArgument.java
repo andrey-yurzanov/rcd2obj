@@ -19,7 +19,18 @@ package org.rcd2obj.codegen.operator;
 import org.rcd2obj.codegen.render.JavaElementRender;
 
 /**
- * Java's null literal.
+ * A null value argument.
+ * <pre>
+ *   Example:
+ *   {@code
+ *   JavaNullArgument nullArg = new JavaNullArgument();
+ *   nullArg.render(...);
+ *   }
+ *   Result:
+ *   {@code
+ *   null
+ *   }
+ * </pre>
  *
  * @author Andrey_Yurzanov
  * @since 1.0

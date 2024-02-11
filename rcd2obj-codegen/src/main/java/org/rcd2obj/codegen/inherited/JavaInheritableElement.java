@@ -38,7 +38,19 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Base inheritable element of Java language. Can be the class or the interface.
+ * The base inheritable element of Java language. Can be the class or the interface.
+ * <pre>
+ *   Example:
+ *   {@code
+ *   JavaInheritableElement inh = new JavaInheritableElement(Comparable.class);
+ *   JavaClass cls = new JavaClass("MyClass", null, null, Arrays.asList(inh), null, null); // implements
+ *   cls.render(...)
+ *   }
+ *   Result:
+ *   {@code
+ *   class MyClass implements Comparable {}
+ *   }
+ * </pre>
  *
  * @author Andrey_Yurzanov
  * @since 1.0

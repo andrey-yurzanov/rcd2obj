@@ -24,6 +24,18 @@ import org.rcd2obj.codegen.render.JavaElementRender;
 
 /**
  * An operator for assignment new value to defined variable.
+ * <pre>
+ *   Example:
+ *   {@code
+ *   JavaVariableDefinition def = new JavaVariableDefinition(new JavaExplicitType(String.class), "myVar");
+ *   JavaVariableAssignOperator assign = dev.assign(new JavaNullArgument());
+ *   assign.render(...);
+ *   }
+ *   Result:
+ *   {@code
+ *   myVar = null
+ *   }
+ * </pre>
  *
  * @author Andrey_Yurzanov
  * @since 1.0
@@ -33,7 +45,7 @@ public class JavaVariableAssignOperator implements JavaArgument {
   private final JavaAssignOperator variableAssign;
 
   /**
-   * Constructs new instance of operator.
+   * It constructs new instance of operator.
    *
    * @param variableDefinition defined variable
    * @param variableAssign     assignment

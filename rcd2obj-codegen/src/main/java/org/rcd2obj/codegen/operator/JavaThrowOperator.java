@@ -21,8 +21,7 @@ import org.rcd2obj.codegen.JavaElementType;
 import org.rcd2obj.codegen.render.JavaElementRender;
 
 /**
- * A renderer of throw operator. It renders code 'throw ...', where '...' is exception instance.
- *
+ * The throw operator of Java language.
  * <pre>
  *   Example:
  *   {@code
@@ -30,7 +29,6 @@ import org.rcd2obj.codegen.render.JavaElementRender;
  *   JavaThrowOperator th = new JavaThrowOperator(cons.invoke());
  *   th.render(...);
  *   }
- *
  *   Result:
  *   {@code
  *   throw new RuntimeException()
@@ -44,7 +42,7 @@ public class JavaThrowOperator implements JavaOperator {
   private final JavaOperator operator;
 
   /**
-   * Constructs new instance of the throw operator.
+   * It constructs new instance of the throw operator.
    *
    * @param operator returns an instance for throws
    */

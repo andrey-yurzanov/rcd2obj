@@ -24,7 +24,20 @@ import org.rcd2obj.codegen.render.JavaElementRender;
 import java.util.Collection;
 
 /**
- * A code generator for generating of class' method invocation.
+ * An operator of the method invocation.
+ * <pre>
+ *   Example:
+ *   {@code
+ *   JavaParameter param = new JavaParameter(1, "value", new JavaExplicitType(String.class));
+ *   JavaMethodDefinition def = new JavaMethodDefinition("apply", param);
+ *   JavaMethodInvokeOperator invoke = def.invoke(new JavaNullArgument());
+ *   invoke.render(...);
+ *   }
+ *   Result:
+ *   {@code
+ *   apply(null)
+ *   }
+ * </pre>
  *
  * @author Andrey_Yurzanov
  * @since 1.0

@@ -22,7 +22,20 @@ import org.rcd2obj.codegen.constructor.JavaClassConstructorInvokeOperator;
 import org.rcd2obj.codegen.render.JavaElementRender;
 
 /**
- * New operator of Java.
+ * An operator of new keyword.
+ * <pre>
+ *   Example:
+ *   {@code
+ *   JavaExplicitType type = new JavaExplicitType(UnsupportedOperationException.class);
+ *   JavaConstructorDefinition def = new JavaConstructorDefinition(type);
+ *   JavaNewOperator op = new JavaNewOperator(def.invoke());
+ *   op.render(...);
+ *   }
+ *   Result:
+ *   {@code
+ *   new UnsupportedOperationException()
+ *   }
+ * </pre>
  *
  * @author Andrey_Yurzanov
  * @since 1.0

@@ -25,8 +25,21 @@ import org.rcd2obj.codegen.type.JavaType;
 import java.util.Collection;
 
 /**
- * Code generator for invocation of a Java's constructor.
- * Generated: JavaType(JavaArgument...N)
+ * An operator for constructor invocation.
+ * <pre>
+ *   Example:
+ *   {@code
+ *   JavaNameType type = new JavaNameType("MyClass");
+ *   JavaParameter param = new JavaParameter(1, "message", new JavaExplicitType(String.class));
+ *   JavaConstructorDefinition def = new JavaConstructorDefinition(type, param);
+ *   JavaClassConstructorInvokeOperator invoke = def.invoke(new JavaNullArgument());
+ *   invoke.render(...);
+ *   }
+ *   Result:
+ *   {@code
+ *   MyClass(null)
+ *   }
+ * </pre>
  *
  * @author Andrey_Yurzanov
  * @since 1.0

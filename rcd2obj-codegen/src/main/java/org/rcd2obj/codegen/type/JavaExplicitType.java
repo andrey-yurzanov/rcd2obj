@@ -20,7 +20,7 @@ import org.rcd2obj.codegen.JavaElementRenderingException;
 import org.rcd2obj.codegen.render.JavaElementRender;
 
 /**
- * Explicit type of Java. Renders name of the class.
+ * Explicit type of Java. It renders name of the class.
  *
  * @author Andrey_Yurzanov
  * @since 1.0
@@ -29,7 +29,7 @@ public class JavaExplicitType implements JavaType {
   private final Class<?> type;
 
   /**
-   * Constructs new instance of Java type.
+   * It constructs new instance of Java type.
    *
    * @param type a class for rendering
    */

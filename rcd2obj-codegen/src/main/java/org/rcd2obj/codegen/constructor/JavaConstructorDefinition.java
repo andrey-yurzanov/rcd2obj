@@ -33,7 +33,55 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 /**
- * The constructor of Java's class.
+ * A constructor definition of a class.
+ * <pre>
+ *   Example 1:
+ *   {@code
+ *   JavaNameType type = new JavaNameType("MyClass");
+ *   JavaConstructorDefinition def = new JavaConstructorDefinition(type);
+ *   def.render(...);
+ *   }
+ *   Result:
+ *   {@code
+ *   MyClass() {
+ *     throw new UnsupportedOperationException();
+ *   }
+ *   }
+ *
+ *   Example 2:
+ *   {@code
+ *   JavaNameType type = new JavaNameType("MyClass");
+ *   JavaParameter param = new JavaParameter(1, "message", new JavaExplicitType(String.class));
+ *   JavaConstructorDefinition def = new JavaConstructorDefinition(type, param);
+ *   def.render(...);
+ *   }
+ *   Result:
+ *   {@code
+ *   MyClass(String message) {
+ *     throw new UnsupportedOperationException();
+ *   }
+ *   }
+ *
+ *   Example 3:
+ *   {@code
+ *   JavaNameType type = new JavaNameType("MyClass");
+ *   JavaParameter param1 = new JavaParameter(1, "message", new JavaExplicitType(String.class));
+ *   JavaParameter param2 = new JavaParameter(2, "count", new JavaExplicitType(int.class));
+ *   JavaConstructorDefinition def = new JavaConstructorDefinition(
+ *     type,
+ *     Arrays.asList(param1, param2),
+ *     new JavaPublicModifier(),
+ *     new JavaConstructorUnsupportedImpl()
+ *   );
+ *   def.render(...);
+ *   }
+ *   Result:
+ *   {@code
+ *   public MyClass(String message, int count) {
+ *     throw new UnsupportedOperationException();
+ *   }
+ *   }
+ * </pre>
  *
  * @author Andrey_Yurzanov
  * @since 1.0

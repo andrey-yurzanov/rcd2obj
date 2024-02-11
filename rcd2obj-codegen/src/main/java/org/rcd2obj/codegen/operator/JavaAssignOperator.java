@@ -21,7 +21,7 @@ import org.rcd2obj.codegen.JavaElementType;
 import org.rcd2obj.codegen.render.JavaElementRender;
 
 /**
- * A renderer of assign operator. It renders code '= ...', where '...' is argument for assignment.
+ * An operator of value assignment.
  * <pre>
  *   Example:
  *   {@code
@@ -42,7 +42,7 @@ public class JavaAssignOperator implements JavaOperator {
   private final JavaArgument assignArgument;
 
   /**
-   * Constructs new instance of assign operator.
+   * It constructs new instance of assign operator.
    *
    * @param assignArgument argument of operator
    */
